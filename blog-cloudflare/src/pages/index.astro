@@ -1,361 +1,194 @@
 ---
-import Base from '../layouts/Base.astro';
+import {
+	getEmDashCollection,
+	getTermsForEntries,
+	getSiteSettings,
+} from "emdash";
+import Base from "../layouts/Base.astro";
+import PostCard from "../components/PostCard.astro";
+import { resolveBlogSiteIdentity } from "../utils/site-identity";
 
-const pageTitle = "ラ・シュエット｜草津市の女性専用深層アロマオイルマッサージサロン";
-const pageDescription = "滋賀県草津市・草津駅東口。施術歴10年・1,200名以上の実績を持つベテラン男性セラピストによる女性専用深層アロマオイルトリートメント。1日2名様限定、完全予約制の静寂なプライベート空間で深い安らぎを。";
+// Limit to what we render (1 featured + 6 grid). The DB does the slicing
+// instead of fetching every post and discarding the tail in JS.
+const POSTS_PER_PAGE = 7;
+
+const [{ entries: posts, cacheHint }, settings] = await Promise.all([
+	getEmDashCollection("posts", {
+		orderBy: { published_at: "desc" },
+		limit: POSTS_PER_PAGE + 1, // +1 to detect "view all" need
+	}),
+	getSiteSettings(),
+]);
+const { siteTitle, siteTagline } = resolveBlogSiteIdentity(settings);
+
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+// Trim the lookahead post used to detect overflow
+const visiblePosts = posts.slice(0, POSTS_PER_PAGE);
+const hasMorePosts = posts.length > POSTS_PER_PAGE;
+
+// Find the first post with a featured image for the hero
+const featuredPost = visiblePosts.find((p) => p.data.featured_image);
+const featuredIndex = featuredPost ? visiblePosts.indexOf(featuredPost) : -1;
+
+// Get remaining posts (exclude featured if found, limit to 6 for grid)
+const gridPosts = visiblePosts
+	.filter((_, i) => i !== featuredIndex)
+	.slice(0, 6);
+
+// Single batched query for tags across the featured post + grid posts.
+// Avoids the N+1 pattern of calling getEntryTerms() per entry.
+// Bylines are already hydrated on entry.data.bylines by getEmDashCollection.
+const tagEntryIds = [
+	...(featuredPost ? [featuredPost.data.id] : []),
+	...gridPosts.map((p) => p.data.id),
+];
+const tagsByEntry = await getTermsForEntries("posts", tagEntryIds, "tag");
+
+const featuredTags = featuredPost
+	? (tagsByEntry.get(featuredPost.data.id) ?? []).map((t) => ({
+			slug: t.slug,
+			label: t.label,
+		}))
+	: [];
+
+const gridPostsWithTags = gridPosts.map((post) => ({
+	post,
+	tags: (tagsByEntry.get(post.data.id) ?? []).map((t) => ({
+		slug: t.slug,
+		label: t.label,
+	})),
+}));
 ---
 
-<Base title={pageTitle} description={pageDescription}>
-  <div class="chouette-home">
-    
-    <!-- セクション1 ― ファーストビュー -->
-    <section class="lc-hero">
-      <div class="lc-inner">
-        <div class="lc-hero-content">
-          
-          <div class="lc-hero-text">
-            <div class="lc-hero-badge">🌿 女性専用 / 1日2名様限定 / 草津駅東口</div>
-            <h1 class="lc-hero-title">
-              静寂なプライベート空間で、<br />
-              身体の奥深くからほどけていく。
-            </h1>
-            <p class="lc-hero-lead">
-              滋賀県草津市 ― 施術歴10年・1,200名以上の実績を持つベテラン男性セラピストによる、大人の女性のための深層アロマオイルトリートメント。日々の緊張や慢性的なコリを静かに手放す時間をお届けします。
-            </p>
+<Base title={siteTitle} description={siteTagline}>
+	<header class="band intro">
+		<div class="frame home-intro">
+			<div>
+				<p class="eyebrow">Blog</p>
+				<h1 class="intro__title">{siteTitle}</h1>
+				{siteTagline && <p class="intro__subtitle">{siteTagline}</p>}
+			</div>
+			<a
+				href="/rss.xml"
+				type="application/rss+xml"
+				class="btn btn--ghost btn--sm home-intro__rss"
+			>
+				<svg
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.75"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<path d="M4 11a9 9 0 0 1 9 9"></path>
+					<path d="M4 4a16 16 0 0 1 16 16"></path>
+					<circle cx="5" cy="19" r="1"></circle>
+				</svg>
+				RSS feed
+			</a>
+		</div>
+	</header>
 
-            <div class="lc-hero-cta">
-              <a href="https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start" target="_blank" rel="noopener noreferrer" class="lc-btn lc-btn-web">
-                📅 Web即時予約（空き状況を確認）
-              </a>
-              <a href="https://lin.ee/uqQK27J" target="_blank" rel="noopener noreferrer" class="lc-btn lc-btn-line">
-                💬 公式LINEで予約・相談する
-              </a>
-              <div class="lc-hero-note">※完全予約制 / 24時間いつでもWebからご予約いただけます</div>
-            </div>
-          </div>
+	{
+		posts.length === 0 ? (
+			<section class="band section">
+				<div class="frame">
+					<div class="empty-state">
+						<h2 class="empty-state__title">No posts yet</h2>
+						<p class="empty-state__text">
+							Create your first post in the admin panel.
+						</p>
+						<div class="empty-state__actions">
+							<a href="/_emdash/admin/content/posts/new" class="btn">
+								Create a post
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+		) : (
+			<>
+				{featuredPost && (
+					<section class="band section">
+						<div class="frame">
+							<PostCard
+								post={featuredPost}
+								tags={featuredTags}
+								variant="feature"
+								headingLevel={2}
+								priority
+							/>
+						</div>
+					</section>
+				)}
 
-          <div class="lc-hero-visual">
-            <img src="/assets/salon-main.jpg" alt="ラ・シュエット 施術ルーム" class="lc-hero-img" />
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- セクション2 ― 3つの約束 -->
-    <section class="lc-promises">
-      <div class="lc-inner">
-        
-        <div class="lc-sec-header">
-          <span class="lc-sec-tag">Our Commitment</span>
-          <h2 class="lc-sec-title">ラ・シュエットが大切にしている3つの約束</h2>
-          <p class="lc-sec-lead">
-            初めて訪れる場所だからこそ、不安なく心から力を抜いていただけるよう、施術環境と技術に誠実に向き合っています。
-          </p>
-        </div>
-
-        <div class="lc-cards-grid">
-          
-          <div class="lc-card">
-            <div class="lc-card-num">01</div>
-            <h3 class="lc-card-title">完全個室・1対1のプライベート空間</h3>
-            <p class="lc-card-desc">
-              他のお客様と顔を合わせることのない完全貸切のプライベート空間です。周囲の視線や生活音を気にすることなく、ご自身の呼吸と身体の感覚に静かに意識を向けていただけます。
-            </p>
-            <div class="lc-card-tag">✓ 完全予約制 / 施術室完全貸切</div>
-          </div>
-
-          <div class="lc-card">
-            <div class="lc-card-num">02</div>
-            <h3 class="lc-card-title">10年・1,200名以上の実績による深層アプローチ</h3>
-            <p class="lc-card-desc">
-              表面を滑らせるだけのリラクゼーションにとどまらず、深部の筋緊張やリンパの滞りを丁寧に捉える確かな圧加減でほぐします。丁寧なドレーピング（タオル保護）を徹底し、安心感を最優先に施術いたします。
-            </p>
-            <div class="lc-card-tag">✓ 確かな深部圧 / ドレーピング徹底</div>
-          </div>
-
-          <div class="lc-card">
-            <div class="lc-card-num">03</div>
-            <h3 class="lc-card-title">植物療法に基づく天然精油と高純度植物油</h3>
-            <p class="lc-card-desc">
-              当日の心身の疲労状態やお好みに合わせて天然100%精油を調合。肌なじみが良く保湿力に優れた高純度ホホバオイルとともに、豊かな香りと温かな手のぬくもりで深い安らぎへと導きます。
-            </p>
-            <div class="lc-card-tag">✓ 天然100%精油 / 高純度ホホバオイル</div>
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-
-    <!-- セクション3 ― 予約・アクセス案内バー -->
-    <section class="lc-bottom-cta">
-      <div class="lc-inner">
-        <div class="lc-cta-box">
-          <h2 class="lc-cta-title">今日、がんばった自分へ上質な休息を。</h2>
-          <p class="lc-cta-desc">草津駅東口徒歩圏内。当日予約やメニューのご相談もお気軽にお問い合わせください。</p>
-          <div class="lc-hero-cta" style="margin: 0 auto; max-width: 440px;">
-            <a href="https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start" target="_blank" rel="noopener noreferrer" class="lc-btn lc-btn-web">
-              📅 Web即時予約（空き状況を確認）
-            </a>
-            <a href="https://lin.ee/uqQK27J" target="_blank" rel="noopener noreferrer" class="lc-btn lc-btn-line">
-              💬 公式LINEで予約・相談する
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </div>
+				{gridPostsWithTags.length > 0 && (
+					<section class="band section" aria-labelledby="latest-posts">
+						<div class="frame">
+							<div class="section-head">
+								<h2 id="latest-posts" class="section-head__title">
+									Latest posts
+								</h2>
+								{hasMorePosts && (
+									<a href="/posts" class="arrow-link">
+										View all<span class="sr-only"> posts</span>
+										<svg
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="1.75"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											aria-hidden="true"
+										>
+											<path d="M5 12h14" />
+											<path d="m12 5 7 7-7 7" />
+										</svg>
+									</a>
+								)}
+							</div>
+							<div class="post-grid">
+								{gridPostsWithTags.map(({ post, tags }) => (
+									<PostCard
+										post={post}
+										tags={tags}
+										variant="card"
+										headingLevel={3}
+									/>
+								))}
+							</div>
+						</div>
+					</section>
+				)}
+			</>
+		)
+	}
 </Base>
 
 <style>
-  .chouette-home {
-    --lc-green-primary: #537365;
-    --lc-green-dark: #2D4B47;
-    --lc-green-light: #F4F7F2;
-    --lc-green-border: #DDE7DA;
-    --lc-bg-cream: #FAF8F5;
-    --lc-bg-white: #FFFFFF;
-    --lc-text-main: #2C2623;
-    --lc-text-sub: #524741;
-    --lc-text-muted: #7A6D65;
-    --lc-gold: #B89758;
-    --lc-line-green: #06C755;
-    
-    background-color: var(--lc-bg-cream);
-    color: var(--lc-text-main);
-    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "BIZ UDPGothic", Meiryo, sans-serif;
-    line-height: 1.8;
-    width: 100%;
-  }
+	.home-intro {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		align-items: end;
+		gap: var(--spacing-6) var(--spacing-8);
+	}
 
-  .lc-inner {
-    width: min(1120px, 100% - 3rem);
-    margin-inline: auto;
-  }
+	/* Lifts the pill from the line box's bottom onto the last line's baseline */
+	.home-intro__rss {
+		margin-block-end: var(--spacing-2);
+	}
 
-  /* ヒーローセクション */
-  .lc-hero {
-    padding: clamp(3.5rem, 6vw, 5.5rem) 0 clamp(3.5rem, 6vw, 5rem);
-    background: linear-gradient(180deg, #F2EFE9 0%, var(--lc-bg-cream) 100%);
-  }
-  .lc-hero-content {
-    display: grid;
-    grid-template-columns: 1.15fr 0.85fr;
-    gap: clamp(2rem, 5vw, 4rem);
-    align-items: center;
-  }
-  .lc-hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.4rem 1.1rem;
-    background-color: var(--lc-green-light);
-    border: 1px solid var(--lc-green-border);
-    border-radius: 9999px;
-    font-size: 0.84rem;
-    font-weight: 600;
-    color: var(--lc-green-primary);
-    letter-spacing: 0.05em;
-    margin-bottom: 1.5rem;
-  }
-  .lc-hero-title {
-    font-size: clamp(1.8rem, 3.2vw, 2.6rem);
-    font-weight: 600;
-    line-height: 1.45;
-    color: var(--lc-green-dark);
-    letter-spacing: 0.04em;
-    margin: 0 0 1.25rem;
-  }
-  .lc-hero-lead {
-    font-size: clamp(0.95rem, 1.1vw, 1.05rem);
-    color: var(--lc-text-sub);
-    line-height: 1.95;
-    margin: 0 0 2rem;
-  }
-  .lc-hero-cta {
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
-  }
-  .lc-btn {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 1.05rem 1.75rem;
-    border-radius: 9999px;
-    font-size: 0.98rem;
-    font-weight: 600;
-    text-decoration: none;
-    letter-spacing: 0.04em;
-    transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 4px 14px rgba(44, 38, 35, 0.08);
-  }
-  .lc-btn:hover {
-    transform: translateY(-2px);
-    filter: brightness(0.96);
-    box-shadow: 0 6px 18px rgba(44, 38, 35, 0.12);
-  }
-  .lc-btn-web {
-    background-color: var(--lc-green-primary);
-    color: #FFFFFF !important;
-  }
-  .lc-btn-line {
-    background-color: var(--lc-line-green);
-    color: #FFFFFF !important;
-  }
-  .lc-hero-note {
-    font-size: 0.8rem;
-    color: var(--lc-text-muted);
-    margin-top: 0.4rem;
-  }
+	@media (max-width: 720px) {
+		.home-intro {
+			grid-template-columns: minmax(0, 1fr);
+		}
 
-  .lc-hero-visual {
-    position: relative;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 16px 36px rgba(44, 38, 35, 0.1);
-    background-color: #EAE5DE;
-    aspect-ratio: 4 / 3;
-  }
-  .lc-hero-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  /* 3つの約束 */
-  .lc-promises {
-    padding: clamp(4.5rem, 7vw, 6.5rem) 0;
-    background-color: var(--lc-bg-white);
-  }
-  .lc-sec-header {
-    text-align: center;
-    max-width: 720px;
-    margin: 0 auto clamp(2.5rem, 5vw, 3.8rem);
-  }
-  .lc-sec-tag {
-    display: inline-block;
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.18em;
-    color: var(--lc-gold);
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
-  }
-  .lc-sec-title {
-    font-size: clamp(1.45rem, 2.6vw, 2rem);
-    font-weight: 600;
-    color: var(--lc-green-dark);
-    line-height: 1.45;
-    margin: 0 0 1rem;
-    letter-spacing: 0.03em;
-  }
-  .lc-sec-lead {
-    font-size: 0.95rem;
-    color: var(--lc-text-sub);
-    line-height: 1.9;
-    margin: 0;
-  }
-
-  .lc-cards-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.75rem;
-  }
-  .lc-card {
-    background-color: var(--lc-bg-cream);
-    border: 1px solid #ECE7E0;
-    border-radius: 16px;
-    padding: 2.2rem 1.7rem;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-  }
-  .lc-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 28px rgba(44, 38, 35, 0.06);
-  }
-  .lc-card-num {
-    font-family: Georgia, serif;
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: var(--lc-gold);
-    line-height: 1;
-    margin-bottom: 1rem;
-  }
-  .lc-card-title {
-    font-size: 1.15rem;
-    font-weight: 600;
-    color: var(--lc-green-dark);
-    line-height: 1.5;
-    margin: 0 0 1rem;
-    border-bottom: 1px solid var(--lc-green-border);
-    padding-bottom: 0.85rem;
-  }
-  .lc-card-desc {
-    font-size: 0.92rem;
-    color: var(--lc-text-sub);
-    line-height: 1.85;
-    margin: 0 0 1.5rem;
-    flex-grow: 1;
-  }
-  .lc-card-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    background-color: #FFFFFF;
-    border: 1px solid #E4DDD3;
-    border-radius: 6px;
-    padding: 0.4rem 0.75rem;
-    font-size: 0.8rem;
-    color: var(--lc-green-primary);
-    font-weight: 500;
-    width: fit-content;
-  }
-
-  /* 下部CTA */
-  .lc-bottom-cta {
-    padding: clamp(3.5rem, 5vw, 5rem) 0;
-    background: linear-gradient(180deg, var(--lc-bg-white) 0%, #F2EFE9 100%);
-  }
-  .lc-cta-box {
-    text-align: center;
-    max-width: 680px;
-    margin: 0 auto;
-  }
-  .lc-cta-title {
-    font-size: clamp(1.4rem, 2.4vw, 1.85rem);
-    font-weight: 600;
-    color: var(--lc-green-dark);
-    margin: 0 0 1rem;
-  }
-  .lc-cta-desc {
-    font-size: 0.95rem;
-    color: var(--lc-text-sub);
-    margin: 0 0 2rem;
-  }
-
-  @media (max-width: 860px) {
-    .lc-hero-content {
-      grid-template-columns: 1fr;
-      gap: 2.25rem;
-    }
-    .lc-hero-visual {
-      order: -1;
-      max-width: 520px;
-      margin: 0 auto;
-      width: 100%;
-    }
-    .lc-cards-grid {
-      grid-template-columns: 1fr;
-      gap: 1.25rem;
-    }
-    .lc-card {
-      padding: 1.8rem 1.4rem;
-    }
-  }
+		.home-intro__rss {
+			justify-self: start;
+			margin-block-end: 0;
+		}
+	}
 </style>
