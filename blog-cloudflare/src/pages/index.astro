@@ -1,17 +1,28 @@
 ---
-// src/pages/index.astro
-import { getEmDashCollection } from '@emdash/core';
+import {
+	getEmDashEntry,
+	getSeoMeta,
+	getSiteSettings,
+} from "emdash";
+import { PortableText } from "emdash/ui";
+import { resolveBlogSiteIdentity } from "../utils/site-identity";
 
-// 管理画面のPagesからスラッグ「home」を取得
-const pages = await getEmDashCollection('pages', {
-  where: { slug: 'home' },
-  limit: 1,
+// 1. 管理画面の「Pages」からスラッグ「home」のデータを取得
+const { entry: page, cacheHint } = await getEmDashEntry("pages", "home");
+
+if (!page) {
+	return Astro.rewrite("/404");
+}
+
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+// 2. SEO情報・サイトタイトルの生成
+const { siteTitle } = resolveBlogSiteIdentity(await getSiteSettings());
+const seo = getSeoMeta(page, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: "",
 });
-
-const page = pages[0];
-
-const pageTitle = page?.data?.seo?.title || page?.data?.title || 'ラ・シュエット';
-const pageDescription = page?.data?.seo?.description || '';
 ---
 
 <!DOCTYPE html>
@@ -19,9 +30,11 @@ const pageDescription = page?.data?.seo?.description || '';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{pageTitle}</title>
-    {pageDescription && <meta name="description" content={pageDescription} />}
+    <title>{seo.title}</title>
+    {seo.description && <meta name="description" content={seo.description} />}
+    {seo.canonical && <link rel="canonical" href={seo.canonical} />}
     
+    {/* 余計な余白や枠組みを排除するベース設定 */}
     <style>
       *, *::before, *::after {
         box-sizing: border-box;
@@ -35,12 +48,9 @@ const pageDescription = page?.data?.seo?.description || '';
     </style>
   </head>
   <body>
-    {page ? (
-      <Fragment set:html={page.body} />
-    ) : (
-      <div style="padding: 40px; text-align: center; font-family: sans-serif;">
-        <p>管理画面の「Pages」でスラッグ「home」の固定ページを公開してください。</p>
-      </div>
-    )}
+    <main>
+      {/* 管理画面の「ホーム」に入力したHTML/CSS/JSをそのまま全画面出力 */}
+      <PortableText value={page.data.content} />
+    </main>
   </body>
 </html>
