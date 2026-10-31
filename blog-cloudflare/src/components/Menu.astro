@@ -1,0 +1,230 @@
+---
+// src/components/Menu.astro
+const menus = [
+  {
+    name: "深層オイルトリートメント 60分",
+    tag: "お試し・部分集中",
+    price: "4,290",
+    desc: "特にお疲れの部位（背中・脚・肩など）を中心に、上質なホホバオイルで緊張を丁寧に解きほぐすショートコースです。",
+  },
+  {
+    name: "全身アロマオイルコース 90分",
+    tag: "一番人気",
+    price: "6,630",
+    recommended: true,
+    desc: "足先から背中、デコルテまで全身を網羅。心地よい圧のロングストロークで、深いリフレッシュへと導く当サロンの定番コースです。",
+  },
+  {
+    name: "至福のロングリラクゼーション 120分",
+    tag: "贅沢ケア",
+    price: "8,970",
+    desc: "全身のオイルトリートメントに加え、ヘッドマッサージまでじっくり行う贅沢なコース。溜まった疲労を根本から癒やしたい方に。",
+  },
+];
+---
+
+<section class="menu-section" id="menu">
+  <div class="container">
+    <div class="section-header">
+      <span class="sub-title">MENU & PRICE</span>
+      <h2 class="main-title">施術メニュー・料金案内</h2>
+      <p class="lead-text">
+        入会金や追加料金は一切ございません。お体の状態やお好みに合わせてコースをお選びいただけます。
+      </p>
+    </div>
+
+    <div class="menu-grid">
+      {menus.map((item) => (
+        <div class={`menu-card ${item.recommended ? 'is-recommended' : ''}`}>
+          {item.tag && <span class="menu-tag">{item.tag}</span>}
+          <h3 class="menu-name">{item.name}</h3>
+          <div class="menu-price-box">
+            <span class="price-num">{item.price}</span>
+            <span class="price-unit">円（税込）</span>
+          </div>
+          <p class="menu-desc">{item.desc}</p>
+          <button type="button" class="menu-btn js-open-booking">
+            このコースで空きを確認
+          </button>
+        </div>
+      ))}
+    </div>
+
+    <div class="menu-note">
+      <p>※施術時間とは別にお着替え・カウンセリングの時間を約15〜20分いただいております。</p>
+      <p>※施術メニューの変更やご相談は公式LINEでもお気軽にお問い合わせいただけます。</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .menu-section {
+    padding: 5.5rem 1.5rem;
+    background-color: #ffffff;
+    color: #3b322c;
+  }
+
+  .container {
+    max-width: 1040px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+
+  .sub-title {
+    display: inline-block;
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    color: #9c7a59;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .main-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    line-height: 1.5;
+    margin: 0 0 1.25rem;
+    color: #332a24;
+  }
+
+  .lead-text {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #6b5e55;
+    margin: 0 auto;
+    max-width: 680px;
+  }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    align-items: stretch;
+  }
+
+  .menu-card {
+    background: #fbf9f6;
+    border: 1px solid #ede7e1;
+    border-radius: 12px;
+    padding: 2.25rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-sizing: border-box;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .menu-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  }
+
+  .menu-card.is-recommended {
+    border: 2px solid #9c7a59;
+    background: #ffffff;
+    box-shadow: 0 6px 20px rgba(156, 122, 89, 0.12);
+  }
+
+  .menu-tag {
+    align-self: flex-start;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #9c7a59;
+    background: #f4ece4;
+    padding: 0.25rem 0.65rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+
+  .is-recommended .menu-tag {
+    background: #9c7a59;
+    color: #ffffff;
+  }
+
+  .menu-name {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 0 0 1rem;
+    line-height: 1.45;
+    color: #332a24;
+  }
+
+  .menu-price-box {
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.25rem;
+  }
+
+  .price-num {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: #332a24;
+    letter-spacing: -0.02em;
+  }
+
+  .price-unit {
+    font-size: 0.85rem;
+    color: #7a6e65;
+  }
+
+  .menu-desc {
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: #6b5e55;
+    margin: 0 0 2rem;
+    flex-grow: 1;
+  }
+
+  .menu-btn {
+    width: 100%;
+    background-color: #5c4b43;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.85rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .menu-btn:hover {
+    background-color: #483932;
+  }
+
+  .is-recommended .menu-btn {
+    background-color: #9c7a59;
+  }
+
+  .is-recommended .menu-btn:hover {
+    background-color: #856444;
+  }
+
+  .menu-note {
+    margin-top: 3rem;
+    text-align: center;
+    font-size: 0.88rem;
+    line-height: 1.8;
+    color: #8c7e75;
+  }
+
+  .menu-note p {
+    margin: 0.25rem 0;
+  }
+
+  @media (max-width: 860px) {
+    .menu-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .menu-section {
+      padding: 3.5rem 1.25rem;
+    }
+  }
+</style>
