@@ -1,0 +1,115 @@
+---
+// src/components/Simulator.astro
+---
+
+<section id="simulator" class="py-16 sm:py-24 px-4 sm:px-6 bg-champagne/40 border-b border-sand/70">
+  <div class="max-w-xl lg:max-w-3xl mx-auto space-y-8 reveal">
+    <div class="text-center space-y-2">
+      <p class="font-serifEn text-xs tracking-[0.28em] text-bronze uppercase">
+        05 — COURSE FINDER
+      </p>
+      <h2 class="font-serifJp text-[22px] sm:text-3xl text-charcoal">
+        今日のあなたへの「おすすめコース診断」
+      </h2>
+      <p class="text-xs text-taupe">
+        3つの質問をタップするだけで、今の気分やお疲れにぴったりのコースをご提案します。
+      </p>
+    </div>
+
+    <div class="bg-white rounded-3xl border border-sand p-5 sm:p-8 shadow-sm space-y-7">
+      <div class="space-y-2.5">
+        <p class="text-xs font-medium text-bronze tracking-wider">
+          STEP 1 — 今の気分・ご希望に近いものは？
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <button type="button" onclick="selectSimulatorOption('concern', 'deep_relax')" data-concern="deep_relax" class="sim-concern-btn text-left p-3.5 rounded-2xl border border-bronze bg-champagne/70 transition-all">
+            <p class="font-serifJp text-sm font-medium text-charcoal">日常を忘れてとことん癒やされたい</p>
+            <p class="text-[11px] text-taupe mt-0.5">全身くまなくロングストロークで包まれたい</p>
+          </button>
+          <button type="button" onclick="selectSimulatorOption('concern', 'standard')" data-concern="standard" class="sim-concern-btn text-left p-3.5 rounded-2xl border border-sand hover:border-bronze/60 transition-all">
+            <p class="font-serifJp text-sm font-medium text-charcoal">全身の疲れをバランスよく流したい</p>
+            <p class="text-[11px] text-taupe mt-0.5">首肩から脚先まで心地よくリフレッシュしたい</p>
+          </button>
+          <button type="button" onclick="selectSimulatorOption('concern', 'sleep')" data-concern="sleep" class="sim-concern-btn text-left p-3.5 rounded-2xl border border-sand hover:border-bronze/60 transition-all">
+            <p class="font-serifJp text-sm font-medium text-charcoal">頭を空っぽにして深くまどろみたい</p>
+            <p class="text-[11px] text-taupe mt-0.5">温かい手のぬくもりで静かに休息したい</p>
+          </button>
+          <button type="button" onclick="selectSimulatorOption('concern', 'trial')" data-concern="trial" class="sim-concern-btn text-left p-3.5 rounded-2xl border border-sand hover:border-bronze/60 transition-all">
+            <p class="font-serifJp text-sm font-medium text-charcoal">まずは気軽に体験してみたい</p>
+            <p class="text-[11px] text-taupe mt-0.5">男性セラピストの施術が初めて・短時間で癒やされたい</p>
+          </button>
+        </div>
+      </div>
+
+      <div class="space-y-2.5">
+        <p class="text-xs font-medium text-bronze tracking-wider">
+          STEP 2 — お好みのタッチ・圧の強さは？
+        </p>
+        <div class="grid grid-cols-3 gap-2">
+          <button type="button" onclick="selectSimulatorOption('pressure', 'deep')" data-pressure="deep" class="sim-pressure-btn py-3 px-2 rounded-xl border border-bronze bg-champagne/70 text-xs font-serifJp text-center transition-all">
+            しっかり密着圧
+          </button>
+          <button type="button" onclick="selectSimulatorOption('pressure', 'medium')" data-pressure="medium" class="sim-pressure-btn py-3 px-2 rounded-xl border border-sand text-xs font-serifJp text-center transition-all">
+            心地よい中圧
+          </button>
+          <button type="button" onclick="selectSimulatorOption('pressure', 'gentle')" data-pressure="gentle" class="sim-pressure-btn py-3 px-2 rounded-xl border border-sand text-xs font-serifJp text-center transition-all">
+            優しいロングストローク
+          </button>
+        </div>
+      </div>
+
+      <div class="space-y-2.5">
+        <p class="text-xs font-medium text-bronze tracking-wider">
+          STEP 3 — ご希望の時間帯は？（8:00〜27:00）
+        </p>
+        <div class="grid grid-cols-3 gap-2">
+          <button type="button" onclick="selectSimulatorOption('timeband', 'morning')" data-timeband="morning" class="sim-time-btn py-2.5 px-2 rounded-xl border border-sand text-center transition-all">
+            <span class="block font-serifEn text-xs sm:text-sm text-bronze">8:00—12:00</span>
+            <span class="text-[10px] text-taupe">朝・午前</span>
+          </button>
+          <button type="button" onclick="selectSimulatorOption('timeband', 'day')" data-timeband="day" class="sim-time-btn py-2.5 px-2 rounded-xl border border-bronze bg-champagne/70 text-center transition-all">
+            <span class="block font-serifEn text-xs sm:text-sm text-bronze">12:00—19:00</span>
+            <span class="text-[10px] text-taupe">日中</span>
+          </button>
+          <button type="button" onclick="selectSimulatorOption('timeband', 'night')" data-timeband="night" class="sim-time-btn py-2.5 px-2 rounded-xl border border-sand text-center transition-all">
+            <span class="block font-serifEn text-xs sm:text-sm text-bronze">19:00—27:00</span>
+            <span class="text-[10px] text-taupe">夜・深夜</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-alabaster rounded-2xl border border-bronze/40 p-5 sm:p-6 space-y-4">
+        <div class="flex items-center justify-between border-b border-sand pb-2.5">
+          <span class="text-[10px] tracking-[0.2em] text-bronze font-serifEn">RECOMMENDED COURSE</span>
+          <span id="simBadge" class="text-[10px] px-2.5 py-0.5 rounded-full bg-bronze text-white">一番人気・贅沢ケア</span>
+        </div>
+
+        <div>
+          <h3 id="simCourseTitle" class="font-serifJp text-lg sm:text-xl text-charcoal">
+            アロマオイルトリートメント 120分
+          </h3>
+          <p id="simCoursePrice" class="font-serifEn text-2xl text-bronze mt-0.5">
+            ¥8,970 <span class="text-xs font-sansJp text-sage font-medium">（ご新規様特典：+10分無料延長で計130分）</span>
+          </p>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-white border border-sand space-y-1.5">
+          <p id="simBlendName" class="text-xs font-medium text-bronze">
+            ✦ 施術のポイント：全身密着ロングストローク
+          </p>
+          <p id="simBlendDesc" class="text-xs text-taupe leading-relaxed">
+            大きな手のひら全体で包み込むように、背面から脚先、デコルテまで途切れのないロングストロークで深い癒やしへ導きます。
+          </p>
+        </div>
+
+        <p id="simTherapistNote" class="text-xs text-charcoal/80 leading-relaxed italic">
+          「大きな掌の重みと温かさを活かし、心地よい密着圧で丁寧にトリートメントいたします。」
+        </p>
+
+        <button onclick="applySimulatorToBooking()" class="w-full py-4 rounded-full bg-charcoal text-alabaster text-xs tracking-[0.18em] hover:bg-bronze transition-colors">
+          このコースで予約方法を選ぶ —
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
