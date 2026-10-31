@@ -1,230 +1,114 @@
 ---
 // src/components/Menu.astro
-const menus = [
-  {
-    name: "深層オイルトリートメント 60分",
-    tag: "お試し・部分集中",
-    price: "4,290",
-    desc: "特にお疲れの部位（背中・脚・肩など）を中心に、上質なホホバオイルで緊張を丁寧に解きほぐすショートコースです。",
-  },
-  {
-    name: "全身アロマオイルコース 90分",
-    tag: "一番人気",
-    price: "6,630",
-    recommended: true,
-    desc: "足先から背中、デコルテまで全身を網羅。心地よい圧のロングストロークで、深いリフレッシュへと導く当サロンの定番コースです。",
-  },
-  {
-    name: "至福のロングリラクゼーション 120分",
-    tag: "贅沢ケア",
-    price: "8,970",
-    desc: "全身のオイルトリートメントに加え、ヘッドマッサージまでじっくり行う贅沢なコース。溜まった疲労を根本から癒やしたい方に。",
-  },
-];
 ---
 
-<section class="menu-section" id="menu">
-  <div class="container">
-    <div class="section-header">
-      <span class="sub-title">MENU & PRICE</span>
-      <h2 class="main-title">施術メニュー・料金案内</h2>
-      <p class="lead-text">
-        入会金や追加料金は一切ございません。お体の状態やお好みに合わせてコースをお選びいただけます。
+<section id="menu" class="py-16 sm:py-24 px-4 sm:px-6 border-b border-sand/70">
+  <div class="max-w-xl lg:max-w-3xl mx-auto space-y-8 reveal">
+    <div class="text-center space-y-2">
+      <p class="font-serifEn text-xs tracking-[0.28em] text-bronze uppercase">
+        04 — TREATMENT MENU
+      </p>
+      <h2 class="font-serifJp text-[22px] sm:text-3xl text-charcoal">
+        アロマオイルトリートメント料金
+      </h2>
+      <p class="text-xs text-taupe leading-relaxed">
+        朝8:00〜深夜27:00まで割増料金なしでご利用いただけます。
       </p>
     </div>
 
-    <div class="menu-grid">
-      {menus.map((item) => (
-        <div class={`menu-card ${item.recommended ? 'is-recommended' : ''}`}>
-          {item.tag && <span class="menu-tag">{item.tag}</span>}
-          <h3 class="menu-name">{item.name}</h3>
-          <div class="menu-price-box">
-            <span class="price-num">{item.price}</span>
-            <span class="price-unit">円（税込）</span>
-          </div>
-          <p class="menu-desc">{item.desc}</p>
-          <button type="button" class="menu-btn js-open-booking">
-            このコースで空きを確認
-          </button>
-        </div>
-      ))}
+    <div class="bg-gradient-to-r from-bronzeDark via-bronze to-bronzeDark text-white rounded-3xl p-5 sm:p-6 shadow-md text-center space-y-1.5">
+      <p class="text-[11px] tracking-[0.2em] uppercase text-champagne font-serifEn">
+        WEB EXCLUSIVE PRIVILEGE
+      </p>
+      <p class="font-serifJp text-base sm:text-xl font-medium">
+        🎁 このサイトから新規様が予約すると【10分無料延長】
+      </p>
+      <p class="text-xs text-champagne/90">
+        60分コースは70分に、90分コースは100分に、120分コースは130分に無料延長いたします。
+      </p>
     </div>
 
-    <div class="menu-note">
-      <p>※施術時間とは別にお着替え・カウンセリングの時間を約15〜20分いただいております。</p>
-      <p>※施術メニューの変更やご相談は公式LINEでもお気軽にお問い合わせいただけます。</p>
+    <div class="space-y-5">
+      <!-- 120 MIN -->
+      <div onclick="openBookingWithCourse('アロマオイルトリートメント 120分（¥8,970 / 新規様10分無料延長）')" class="cursor-pointer bg-charcoal text-alabaster rounded-3xl border border-bronze p-6 sm:p-8 shadow-xl relative hover:border-sand transition-all">
+        <div class="flex flex-wrap items-center gap-2 mb-3">
+          <span class="inline-block bg-bronze text-white text-[10px] tracking-[0.18em] px-3.5 py-1 rounded-full">
+            DEEP RELAXATION — 贅沢ロングコース
+          </span>
+          <span class="inline-block bg-white/15 text-sand text-[10px] tracking-wider px-3 py-1 rounded-full">
+            ご新規様特典：130分に無料延長
+          </span>
+        </div>
+        <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 border-b border-white/15 pb-4">
+          <h3 class="font-serifJp text-xl text-white">
+            アロマオイルトリートメント 120分
+          </h3>
+          <div class="flex items-baseline gap-1.5">
+            <span class="font-serifEn text-3xl sm:text-4xl text-white">¥8,970</span>
+            <span class="text-[10px] text-sand/80">税込</span>
+          </div>
+        </div>
+        <p class="text-xs text-sand/85 leading-relaxed mt-4">
+          全身を隅々までゆったりと包み込む贅沢な120分。心身の疲れが深く溜まっている方や、時間を忘れて非日常の癒やしに浸りたい方におすすめです。
+        </p>
+        <button onclick="event.stopPropagation(); openBookingWithCourse('アロマオイルトリートメント 120分（¥8,970 / 新規様10分無料延長）')" class="mt-5 w-full py-3.5 rounded-full bg-bronze text-white text-xs tracking-[0.18em] hover:bg-bronzeDark transition-colors">
+          120分コースで予約に進む
+        </button>
+      </div>
+
+      <!-- 90 MIN -->
+      <div onclick="openBookingWithCourse('アロマオイルトリートメント 90分（¥6,630 / 新規様10分無料延長）')" class="cursor-pointer bg-white rounded-3xl border border-bronze/60 p-6 sm:p-7 shadow-sm relative hover:border-bronze transition-all">
+        <div class="flex flex-wrap items-center gap-2 mb-2">
+          <span class="inline-block bg-champagne text-bronzeDark text-[10px] tracking-[0.15em] px-3 py-1 rounded-full font-medium">
+            STANDARD — 人気定番・全身バランスケア
+          </span>
+          <span class="inline-block bg-sageLight text-sage text-[10px] tracking-wider px-3 py-1 rounded-full">
+            ご新規様特典：100分に無料延長
+          </span>
+        </div>
+        <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 border-b border-sand pb-3">
+          <h3 class="font-serifJp text-lg sm:text-xl text-charcoal">
+            アロマオイルトリートメント 90分
+          </h3>
+          <div class="flex items-baseline gap-1.5">
+            <span class="font-serifEn text-2xl sm:text-3xl text-charcoal">¥6,630</span>
+            <span class="text-[10px] text-taupe">税込</span>
+          </div>
+        </div>
+        <p class="text-xs text-taupe leading-relaxed mt-3">
+          首・肩・背中から脚先まで、全身をバランスよくトリートメントする定番コース。大きな手による密着ロングストロークの心地よさをじっくりご体感いただけます。
+        </p>
+        <button onclick="event.stopPropagation(); openBookingWithCourse('アロマオイルトリートメント 90分（¥6,630 / 新規様10分無料延長）')" class="mt-4 w-full py-3.5 rounded-full bg-charcoal text-alabaster text-xs tracking-[0.16em] hover:bg-bronze transition-colors">
+          90分コースで予約に進む
+        </button>
+      </div>
+
+      <!-- 60 MIN -->
+      <div onclick="openBookingWithCourse('アロマオイルトリートメント 60分（¥4,290 / 新規様10分無料延長）')" class="cursor-pointer bg-alabaster rounded-3xl border border-sand p-6 sm:p-7 shadow-sm hover:border-bronze transition-all">
+        <div class="flex flex-wrap items-center gap-2 mb-2">
+          <span class="inline-block bg-champagne text-bronzeDark text-[10px] tracking-[0.15em] px-3 py-1 rounded-full">
+            TRIAL & SHORT — お試し・ショートケア
+          </span>
+          <span class="inline-block bg-sageLight text-sage text-[10px] tracking-wider px-3 py-1 rounded-full">
+            ご新規様特典：70分に無料延長
+          </span>
+        </div>
+        <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 border-b border-sand pb-3">
+          <h3 class="font-serifJp text-lg sm:text-xl text-charcoal">
+            アロマオイルトリートメント 60分
+          </h3>
+          <div class="flex items-baseline gap-1.5">
+            <span class="font-serifEn text-2xl sm:text-3xl text-charcoal">¥4,290</span>
+            <span class="text-[10px] text-taupe">税込</span>
+          </div>
+        </div>
+        <p class="text-xs text-taupe leading-relaxed mt-3">
+          背面を中心に、お疲れの箇所を重点的にケアするショートコース。「男性セラピストの施術をまずは試してみたい」というご新規様や、お忙しい日のリフレッシュに最適です。
+        </p>
+        <button onclick="event.stopPropagation(); openBookingWithCourse('アロマオイルトリートメント 60分（¥4,290 / 新規様10分無料延長）')" class="mt-4 w-full py-3.5 rounded-full border border-charcoal text-charcoal text-xs tracking-[0.16em] hover:bg-charcoal hover:text-alabaster transition-colors">
+          60分コースで予約に進む
+        </button>
+      </div>
     </div>
   </div>
 </section>
-
-<style>
-  .menu-section {
-    padding: 5.5rem 1.5rem;
-    background-color: #ffffff;
-    color: #3b322c;
-  }
-
-  .container {
-    max-width: 1040px;
-    margin: 0 auto;
-  }
-
-  .section-header {
-    text-align: center;
-    margin-bottom: 3.5rem;
-  }
-
-  .sub-title {
-    display: inline-block;
-    font-size: 0.85rem;
-    letter-spacing: 0.2em;
-    color: #9c7a59;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-  }
-
-  .main-title {
-    font-size: 1.8rem;
-    font-weight: 600;
-    line-height: 1.5;
-    margin: 0 0 1.25rem;
-    color: #332a24;
-  }
-
-  .lead-text {
-    font-size: 1rem;
-    line-height: 1.8;
-    color: #6b5e55;
-    margin: 0 auto;
-    max-width: 680px;
-  }
-
-  .menu-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    align-items: stretch;
-  }
-
-  .menu-card {
-    background: #fbf9f6;
-    border: 1px solid #ede7e1;
-    border-radius: 12px;
-    padding: 2.25rem 1.75rem;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    box-sizing: border-box;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-
-  .menu-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-  }
-
-  .menu-card.is-recommended {
-    border: 2px solid #9c7a59;
-    background: #ffffff;
-    box-shadow: 0 6px 20px rgba(156, 122, 89, 0.12);
-  }
-
-  .menu-tag {
-    align-self: flex-start;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #9c7a59;
-    background: #f4ece4;
-    padding: 0.25rem 0.65rem;
-    border-radius: 4px;
-    margin-bottom: 1rem;
-  }
-
-  .is-recommended .menu-tag {
-    background: #9c7a59;
-    color: #ffffff;
-  }
-
-  .menu-name {
-    font-size: 1.15rem;
-    font-weight: 600;
-    margin: 0 0 1rem;
-    line-height: 1.45;
-    color: #332a24;
-  }
-
-  .menu-price-box {
-    margin-bottom: 1.25rem;
-    display: flex;
-    align-items: baseline;
-    gap: 0.25rem;
-  }
-
-  .price-num {
-    font-size: 1.9rem;
-    font-weight: 700;
-    color: #332a24;
-    letter-spacing: -0.02em;
-  }
-
-  .price-unit {
-    font-size: 0.85rem;
-    color: #7a6e65;
-  }
-
-  .menu-desc {
-    font-size: 0.92rem;
-    line-height: 1.7;
-    color: #6b5e55;
-    margin: 0 0 2rem;
-    flex-grow: 1;
-  }
-
-  .menu-btn {
-    width: 100%;
-    background-color: #5c4b43;
-    color: #ffffff;
-    border: none;
-    border-radius: 6px;
-    padding: 0.85rem 1rem;
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-
-  .menu-btn:hover {
-    background-color: #483932;
-  }
-
-  .is-recommended .menu-btn {
-    background-color: #9c7a59;
-  }
-
-  .is-recommended .menu-btn:hover {
-    background-color: #856444;
-  }
-
-  .menu-note {
-    margin-top: 3rem;
-    text-align: center;
-    font-size: 0.88rem;
-    line-height: 1.8;
-    color: #8c7e75;
-  }
-
-  .menu-note p {
-    margin: 0.25rem 0;
-  }
-
-  @media (max-width: 860px) {
-    .menu-grid {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-
-    .menu-section {
-      padding: 3.5rem 1.25rem;
-    }
-  }
-</style>
