@@ -2,115 +2,101 @@
 // src/components/Hero.astro
 ---
 
-<section class="hero-section">
-  <div class="hero-content">
-    <p class="hero-sub">滋賀・草津の完全プライベート空間</p>
-    <h1 class="hero-title">
-      心と体がほどける、<br />
-      極上のオイルトリートメント
-    </h1>
-    <p class="hero-text">
-      日常の慌ただしさを忘れ、深い安らぎへと導く女性専用サロン。<br />
-      熟練の手技と上質なオイルで、至福のひとときをお届けします。
-    </p>
-    <div class="hero-action">
-      <button type="button" class="hero-btn js-open-booking">
-        空き状況の確認・ご予約はこちら
-      </button>
+<!-- HERO SECTION -->
+<section class="pt-6 pb-16 sm:py-16 px-4 sm:px-6 border-b border-sand/70">
+  <div class="max-w-xl lg:max-w-4xl mx-auto space-y-8">
+    <div class="relative rounded-[1.75rem] overflow-hidden shadow-xl border border-sand bg-champagne aspect-[4/5] sm:aspect-[16/10] reveal active">
+      <img 
+        src="https://kusatsu-aroma.com/_emdash/api/media/file/01M63112AR4AJ7H9SMFBDYZDE8.01M6311348MM788S5PG8NN06NP.jpg" 
+        onerror="this.src='https://placehold.co/900x1100/EDE7DF/8E735B?text=La+Chouette+Main+Photo'" 
+        alt="心から寛げるプライベートサロン空間" 
+        class="w-full h-full object-cover object-center"
+      >
+      <div class="absolute inset-0 bg-gradient-to-t from-charcoal/85 via-charcoal/30 to-transparent"></div>
+
+      <div class="absolute top-4 left-4 right-4 flex items-center justify-between">
+        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-charcoal/70 backdrop-blur-md border border-white/15 text-[10px] tracking-[0.16em] text-alabaster">
+          <span class="w-1.5 h-1.5 rounded-full bg-bronze animate-pulse"></span>
+          女性専用・完全個室サロン
+        </span>
+        <span class="px-3 py-1 rounded-full bg-alabaster/90 backdrop-blur-md text-[10px] tracking-widest text-charcoal font-serifEn">
+          8:00 — 27:00
+        </span>
+      </div>
+
+      <div class="absolute bottom-6 left-5 right-5 sm:left-8 sm:right-8 text-alabaster space-y-3">
+        <div class="inline-block px-3 py-1 rounded-md bg-bronze/90 text-white text-[11px] tracking-wider font-medium shadow-sm">
+          ✦ 当サイトからのご予約で【ご新規様 10分無料延長】
+        </div>
+        <p class="font-serifEn italic text-base sm:text-xl text-sand tracking-wider">
+          A Quiet Pause in Your Busy Days —
+        </p>
+        <h1 class="font-serifJp text-[24px] sm:text-4xl leading-[1.45] font-normal tracking-wide text-white">
+          役割を脱ぎ捨て、<br>
+          ただひとりの女性に還る「間 —」を。
+        </h1>
+        <p class="text-xs sm:text-sm text-sand/90 leading-relaxed pt-1">
+          誰にも気を遣わない完全個室。施術歴15年の男性セラピストの大きな手を使った、密着感のあるロングストロークで深い非日常の癒やしへ誘います。
+        </p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-3 gap-2.5 sm:gap-4 reveal active">
+      <div class="bg-white/90 border border-sand rounded-2xl p-3.5 text-center">
+        <p class="text-[10px] tracking-[0.15em] text-bronze font-serifEn">OPEN HOURS</p>
+        <p class="font-serifEn text-lg sm:text-2xl font-medium text-charcoal mt-0.5">8:00—27:00</p>
+        <p class="text-[10px] text-taupe mt-0.5">朝〜深夜3時迄</p>
+      </div>
+      <div class="bg-white/90 border border-sand rounded-2xl p-3.5 text-center">
+        <p class="text-[10px] tracking-[0.15em] text-bronze font-serifEn">EXPERIENCE</p>
+        <p class="font-serifJp text-sm sm:text-lg font-medium text-charcoal mt-1">施術歴15年</p>
+        <p class="text-[10px] text-taupe mt-1">開業9年・1,000名以上</p>
+      </div>
+      <div class="bg-white/90 border border-sand rounded-2xl p-3.5 text-center">
+        <p class="text-[10px] tracking-[0.15em] text-bronze font-serifEn">SPECIAL GIFT</p>
+        <p class="font-serifJp text-sm sm:text-lg font-medium text-bronzeDark mt-1">+10分延長</p>
+        <p class="text-[10px] text-taupe mt-1">当サイト新規予約特典</p>
+      </div>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-3 pt-1 reveal active">
+      <a href="https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start" target="_blank" rel="noopener noreferrer" class="w-full py-4 px-6 rounded-full bg-charcoal text-alabaster text-xs tracking-[0.2em] hover:bg-bronze transition-all shadow-md flex items-center justify-center gap-3">
+        <span>WEB予約・空き状況を確認する</span>
+        <span class="w-5 h-[1px] bg-alabaster"></span>
+      </a>
+      <a href="https://lin.ee/uqQK27J" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto sm:min-w-[240px] py-4 px-6 rounded-full bg-champagne border border-sand text-charcoal text-xs tracking-[0.16em] hover:bg-sand/60 transition-colors text-center font-medium">
+        公式LINEで予約・相談する
+      </a>
     </div>
   </div>
 </section>
 
-<style>
-  .hero-section {
-    position: relative;
-    min-height: 65vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(rgba(45, 36, 32, 0.55), rgba(45, 36, 32, 0.55)),
-      #443831; /* 画像設定前のアーストーン背景 */
-    background-size: cover;
-    background-position: center;
-    color: #ffffff;
-    text-align: center;
-    padding: 4rem 1.5rem;
-    box-sizing: border-box;
-  }
-
-  .hero-content {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-
-  .hero-sub {
-    font-size: 1rem;
-    letter-spacing: 0.15em;
-    margin: 0 0 1.25rem;
-    color: #ebdcd0;
-  }
-
-  .hero-title {
-    font-size: 2.2rem;
-    line-height: 1.45;
-    font-weight: 500;
-    margin: 0 0 1.5rem;
-    letter-spacing: 0.05em;
-  }
-
-  .hero-text {
-    font-size: 1.05rem;
-    line-height: 1.85;
-    margin: 0 0 2.5rem;
-    color: #f2ebe4;
-  }
-
-  .hero-action {
-    display: flex;
-    justify-content: center;
-  }
-
-  .hero-btn {
-    background-color: #9c7a59;
-    color: #ffffff;
-    border: none;
-    border-radius: 9999px;
-    padding: 1.1rem 2.75rem;
-    font-size: 1.05rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
-    transition: background-color 0.25s, transform 0.2s;
-  }
-
-  .hero-btn:hover {
-    background-color: #886847;
-    transform: translateY(-2px);
-  }
-
-  .sp-only {
-    display: none;
-  }
-
-  @media (max-width: 768px) {
-    .hero-section {
-      min-height: 55vh;
-      padding: 3.5rem 1.25rem;
-    }
-    .hero-title {
-      font-size: 1.6rem;
-    }
-    .hero-text {
-      font-size: 0.95rem;
-    }
-    .sp-only {
-      display: inline;
-    }
-    .hero-btn {
-      width: 100%;
-      max-width: 320px;
-      padding: 1rem 1.5rem;
-    }
-  }
-</style>
+<!-- LATE NIGHT NOTICE -->
+<aside aria-label="今週の深夜営業日のお知らせ" class="px-4 sm:px-6 py-6 bg-champagne/40 border-b border-sand/70">
+  <div class="max-w-xl lg:max-w-4xl mx-auto space-y-0">
+    <div class="bg-white/95 border border-bronze/40 rounded-2xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left reveal active">
+      <div class="flex flex-col sm:flex-row items-center gap-3.5">
+        <span class="w-11 h-11 rounded-full bg-champagne text-bronze flex items-center justify-center shrink-0 text-lg shadow-inner">
+          🌙
+        </span>
+        <div>
+          <div class="flex items-center gap-2 justify-center sm:justify-start">
+            <span class="text-[10px] tracking-[0.2em] font-serifEn text-bronze uppercase font-medium">SPECIAL NIGHT</span>
+            <span class="text-[10px] px-2 py-0.5 rounded-full bg-bronze/10 text-bronze font-medium">深夜27:00迄営業</span>
+          </div>
+          <p class="font-serifJp text-sm sm:text-base text-charcoal font-medium mt-0.5">
+            深夜営業日：<strong class="text-bronze font-serifEn text-base sm:text-lg tracking-wide">10月31日(土)・11月1日(日)</strong>
+          </p>
+          <p class="text-[11px] text-taupe mt-0.5">
+            夜遅くのお仕事帰りや一日の締めくくりに。静かな完全個室でゆったりとお寛ぎいただけます。
+          </p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 shrink-0 w-full sm:w-auto">
+        <a href="https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto py-2.5 px-5 rounded-full bg-charcoal text-alabaster text-xs tracking-wider hover:bg-bronze transition-colors text-center font-medium shadow-sm">
+          空き状況を確認
+        </a>
+      </div>
+    </div>
+  </div>
+</aside>
