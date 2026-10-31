@@ -1,0 +1,72 @@
+---
+// src/components/Therapist.astro
+---
+
+<section id="therapist" class="py-16 sm:py-24 px-4 sm:px-6 bg-champagne/40 border-b border-sand/70">
+  <div class="max-w-xl lg:max-w-3xl mx-auto space-y-8 reveal">
+    <div class="text-center space-y-2">
+      <p class="font-serifEn text-xs tracking-[0.28em] text-bronze uppercase">
+        02 — OWNER PROFILE
+      </p>
+      <h2 class="font-serifJp text-[22px] sm:text-3xl text-charcoal">
+        セラピストご紹介
+      </h2>
+    </div>
+
+    <div class="bg-alabaster rounded-3xl border border-sand overflow-hidden shadow-sm">
+      <div class="grid grid-cols-1 md:grid-cols-12">
+        <div class="md:col-span-5 bg-champagne aspect-[4/4] md:aspect-auto">
+          {/* object-top を追加して頭上切れを解消 */}
+          <img 
+            src="https://kusatsu-aroma.com/_emdash/api/media/file/01M661ZK0REMWT6T12ZTGXXMM5.01M661ZKQ84Q0X5VSYND61F1A7.jpeg" 
+            onerror="this.src='https://placehold.co/700x700/EDE7DF/8E735B?text=Owner+Therapist+TAKAHASHI'" 
+            alt="オーナーセラピスト 高橋" 
+            class="w-full h-full object-cover object-top"
+          >
+        </div>
+
+        <div class="md:col-span-7 p-6 sm:p-8 flex flex-col justify-center space-y-5">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-sand pb-4">
+            <div>
+              <p class="text-[10px] tracking-[0.2em] text-bronze font-serifEn uppercase">Owner Profile</p>
+              <h3 class="font-serifJp text-xl sm:text-2xl text-charcoal mt-0.5 flex items-baseline gap-2">
+                <span>【高橋】</span>
+                <span class="font-serifEn text-sm tracking-[0.2em] text-bronze">TAKAHASHI</span>
+              </h3>
+            </div>
+            <span class="px-3 py-1 rounded-full bg-sageLight text-sage text-[11px] font-medium">
+              一人、ひとりのお客様に合わせた施術を提供します。
+            </span>
+          </div>
+
+          <dl class="space-y-2.5 text-xs leading-relaxed border-b border-sand pb-4">
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-1">
+              <dt class="sm:col-span-3 font-medium text-bronze">キャリア</dt>
+              <dd class="sm:col-span-9 text-charcoal">施術歴15年 / 開業9年目 / 施術実績1,000名以上</dd>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-1">
+              <dt class="sm:col-span-3 font-medium text-bronze">特徴</dt>
+              <dd class="sm:col-span-9 text-charcoal">アラフィフ / 男性セラピスト</dd>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-1">
+              <dt class="sm:col-span-3 font-medium text-bronze">得意な技術</dt>
+              <dd class="sm:col-span-9 text-charcoal">男性特有の大きな手を使った、密着感のあるロングストロークのアロマオイルマッサージ。</dd>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-1">
+              <dt class="sm:col-span-3 font-medium text-bronze">性格</dt>
+              <dd class="sm:col-span-9 text-charcoal">穏やか、聞き上手（とよく言われます）</dd>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-1">
+              <dt class="sm:col-span-3 font-medium text-bronze">趣味</dt>
+              <dd class="sm:col-span-9 text-charcoal">愛猫（レウ＆アメ）と遊ぶこと、ホームページ制作。このサイトも自分で作ってます。</dd>
+            </div>
+          </dl>
+
+          <p class="text-xs sm:text-sm text-taupe leading-[1.95]">
+            「男性の施術は初めて」という方もご安心ください。タオルワークやプライバシーには細心の注意を払い、女性専用サロンならではの細やかな気配りを徹底しております。 京都・滋賀エリアで「非日常の癒やし」をお求めの方は、ぜひ一度シュエットの施術をご体験ください。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
