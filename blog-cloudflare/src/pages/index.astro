@@ -6,10 +6,6 @@ import {
 } from "emdash";
 import { PortableText } from "emdash/ui";
 import { resolveBlogSiteIdentity } from "../utils/site-identity";
-import BookingModal from "../components/BookingModal.astro";
-import Hero from "../components/Hero.astro";
-import Concept from "../components/Concept.astro";
-import Menu from "../components/Menu.astro";
 
 // 1. 管理画面の「Pages」からスラッグ「home」のデータを取得
 const { entry: page, cacheHint } = await getEmDashEntry("pages", "home");
@@ -20,7 +16,7 @@ if (!page) {
 
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
 
-// 2. SEO情報・サイトタイトルの生成
+// 2. SEO情報
 const { siteTitle } = resolveBlogSiteIdentity(await getSiteSettings());
 const seo = getSeoMeta(page, {
 	siteTitle,
@@ -30,42 +26,1207 @@ const seo = getSeoMeta(page, {
 ---
 
 <!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{seo.title}</title>
-    {seo.description && <meta name="description" content={seo.description} />}
-    {seo.canonical && <link rel="canonical" href={seo.canonical} />}
-    
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Chouette（ラ・シュエット） | 女性専用・ベテラン男性セラピストによるアロマオイルトリートメントサロン（滋賀県草津市）</title>
+    <meta name="description" content="滋賀県草津市大路の女性専用プライベートサロン「La Chouette（ラ・シュエット）」。施術歴15年の男性セラピストによる密着感のあるロングストロークのアロマオイルマッサージで非日常の癒やしを。当サイトからのご予約でご新規様10分無料延長。">
+
+    <!-- Tailwind CSS -->
+    <script is:inline src="https://cdn.tailwindcss.com"></script>
+    <script is:inline>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        alabaster: '#F7F4EF',
+                        champagne: '#EDE7DF',
+                        sand: '#DCD3C6',
+                        bronze: '#8E735B',
+                        bronzeDark: '#6C5540',
+                        charcoal: '#221F1D',
+                        taupe: '#686058',
+                        rosewood: '#9A7B73',
+                        sage: '#46524A',
+                        sageLight: '#E8ECE9',
+                        lineGreen: '#06C755'
+                    },
+                    fontFamily: {
+                        serifEn: ['"Cormorant Garamond"', 'serif'],
+                        serifJp: ['"Shippori Mincho"', 'serif'],
+                        sansEn: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        sansJp: ['"Noto Sans JP"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Noto+Sans+JP:wght@300;400;500&family=Plus+Jakarta+Sans:wght@300;400;500&family=Shippori+Mincho:wght@400;500;600&display=swap" rel="stylesheet">
+
     <style>
-      *, *::before, *::after {
-        box-sizing: border-box;
-      }
-      html, body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        min-height: 100vh;
-      }
+        body {
+            background-color: #F7F4EF;
+            color: #221F1D;
+            font-family: 'Noto Sans JP', sans-serif;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .em-dash {
+            display: inline-block;
+            width: 2rem;
+            height: 1px;
+            background-color: currentColor;
+            vertical-align: middle;
+            margin: 0 0.6rem;
+        }
+
+        .bg-silk {
+            background-image: radial-gradient(rgba(142, 115, 91, 0.05) 1px, transparent 0);
+            background-size: 20px 20px;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 画面中央固定オーバーレイ */
+        .portal-modal-overlay {
+            display: none;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 100vw !important;
+            width: 100% !important;
+            height: 100vh !important;
+            height: 100dvh !important;
+            background-color: rgba(34, 31, 29, 0.85) !important;
+            backdrop-filter: blur(4px) !important;
+            -webkit-backdrop-filter: blur(4px) !important;
+            z-index: 99999999 !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 16px !important;
+            box-sizing: border-box !important;
+        }
+
+        .portal-modal-overlay.is-active {
+            display: flex !important;
+        }
+
+        .portal-modal-card {
+            margin: auto !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
     </style>
-  </head>
-  <body>
-    <main>
-      {/* 1. ファーストビュー */}
-      <Hero />
+</head>
+<body class="bg-alabaster text-charcoal bg-silk selection:bg-bronze selection:text-white">
 
-      {/* 2. サロンの特徴・こだわり */}
-      <Concept />
+    <!-- MINIMAL BRAND HEADER -->
+    <header class="pt-5 pb-4 px-4 border-b border-sand/70 bg-alabaster/95 backdrop-blur-md sticky top-0 z-30">
+        <div class="max-w-xl mx-auto text-center">
+            <p class="text-[10px] tracking-[0.25em] text-bronze font-medium uppercase">
+                WOMEN ONLY — PRIVATE OIL MASSAGE SANCTUARY
+            </p>
+            <a href="#" class="inline-flex items-center justify-center font-serifEn text-2xl sm:text-3xl tracking-[0.18em] text-charcoal mt-0.5 focus:outline-none">
+                <span>La Chouette</span>
+                <span class="em-dash bg-bronze"></span>
+                <span class="text-sm sm:text-base tracking-[0.2em] text-bronze font-serifJp">ラ・シュエット</span>
+            </a>
+            <p class="text-[10px] tracking-[0.14em] text-taupe mt-0.5">
+                滋賀県草津市大路 ｜ OPEN 8:00 — 27:00（女性専用・完全個室）
+            </p>
+        </div>
+    </header>
 
-      {/* 3. 施術メニュー・料金案内 */}
-      <Menu />
+    <!-- HERO SECTION -->
+    <section class="pt-6 pb-16 sm:py-16 px-4 sm:px-6 border-b border-sand/70">
+        <div class="max-w-xl lg:max-w-4xl mx-auto space-y-8">
+            <div class="relative rounded-[1.75rem] overflow-hidden shadow-xl border border-sand bg-champagne aspect-[4/5] sm:aspect-[16/10] reveal active">
+                <img 
+                    src="https://kusatsu-aroma.com/_emdash/api/media/file/01M63112AR4AJ7H9SMFBDYZDE8.01M6311348MM788S5PG8NN06NP.jpg" 
+                    onerror="this.src='https://placehold.co/900x1100/EDE7DF/8E735B?text=La+Chouette+Main+Photo'" 
+                    alt="心から寛げるプライベートサロン空間" 
+                    class="w-full h-full object-cover object-center"
+                >
+                <div class="absolute inset-0 bg-gradient-to-t from-charcoal/85 via-charcoal/30 to-transparent"></div>
 
-      {/* 4. 管理画面の「ホーム」に入力した文章や画像データを出力 */}
-      <PortableText value={page.data.content} />
-    </main>
+                <div class="absolute top-4 left-4 right-4 flex items-center justify-between">
+                    <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-charcoal/70 backdrop-blur-md border border-white/15 text-[10px] tracking-[0.16em] text-alabaster">
+                        <span class="w-1.5 h-1.5 rounded-full bg-bronze animate-pulse"></span>
+                        女性専用・完全個室サロン
+                    </span>
+                    <span class="px-3 py-1 rounded-full bg-alabaster/90 backdrop-blur-md text-[10px] tracking-widest text-charcoal font-serifEn">
+                        8:00 — 27:00
+                    </span>
+                </div>
 
-    {/* 画面中央に表示される予約モーダル */}
-    <BookingModal />
-  </body>
+                <div class="absolute bottom-6 left-5 right-5 sm:left-8 sm:right-8 text-alabaster space-y-3">
+                    <div class="inline-block px-3 py-1 rounded-md bg-bronze/90 text-white text-[11px] tracking-wider font-medium shadow-sm">
+                        ✦ 当サイトからのご予約で【ご新規様 10分無料延長】
+                    </div>
+                    <p class="font-serifEn italic text-base sm:text-xl text-sand tracking-wider">
+                        A Quiet Pause in Your Busy Days —
+                    </p>
+                    <h1 class="font-serifJp text-[24px] sm:text-4xl leading-[1.45] font-normal tracking-wide text-white">
+                        役割を脱ぎ捨て、<br>
+                        ただひとりの女性に還る「間 —」を。
+                    </h1>
+                    <p class="text-xs sm:text-sm text-sand/90 leading-relaxed pt-1">
+                        誰にも気を遣わない完全個室。施術歴15年の男性セラピストの大きな手を使った、密着感のあるロングストロークで深い非日常の癒やしへ誘います。
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2.5 sm:gap-4 reveal active">
+                <div class="bg-white/90 border border-sand rounded-2xl p-3.5 text-center">
+                    <p class="text-[10px] tracking-[0.15em] text-bronze font-serifEn">OPEN HOURS</p>
+                    <p class="font-serifEn text-lg sm:text-2xl font-medium text-charcoal mt-0.5">8:00—27:00</p>
+                    <p class="text-[10px] text-taupe mt-0.5">朝〜深夜3時迄</p>
+                </div>
+                <div class="bg-white/90 border border-sand rounded-2xl p-3.5 text-center">
+                    <p class="text-[10px] tracking-[0.15em] text-bronze font-serifEn">EXPERIENCE</p>
+                    <p class="font-serifJp text-sm sm:text-lg font-medium text-charcoal mt-1">施術歴15年</p>
+                    <p class="text-[10px] text-taupe mt-1">開業9年・1,000名以上</p>
+                </div>
+                <div class="bg-white/90 border border-sand rounded-2xl p-3.5 text-center">
+                    <p class="text-[10px] tracking-[0.15em] text-bronze font-serifEn">SPECIAL GIFT</p>
+                    <p class="font-serifJp text-sm sm:text-lg font-medium text-bronzeDark mt-1">+10分延長</p>
+                    <p class="text-[10px] text-taupe mt-1">当サイト新規予約特典</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3 pt-1 reveal active">
+                <a href="https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start" target="_blank" rel="noopener noreferrer" class="w-full py-4 px-6 rounded-full bg-charcoal text-alabaster text-xs tracking-[0.2em] hover:bg-bronze transition-all shadow-md flex items-center justify-center gap-3">
+                    <span>WEB予約・空き状況を確認する</span>
+                    <span class="w-5 h-[1px] bg-alabaster"></span>
+                </a>
+                <a href="https://lin.ee/uqQK27J" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto sm:min-w-[240px] py-4 px-6 rounded-full bg-champagne border border-sand text-charcoal text-xs tracking-[0.16em] hover:bg-sand/60 transition-colors text-center font-medium">
+                    公式LINEで予約・相談する
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- LATE NIGHT NOTICE -->
+    <aside aria-label="今週の深夜営業日のお知らせ" class="px-4 sm:px-6 py-6 bg-champagne/40 border-b border-sand/70">
+        <div class="max-w-xl lg:max-w-4xl mx-auto space-y-0">
+            <div class="bg-white/95 border border-bronze/40 rounded-2xl p-4 sm:p-5 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left reveal active">
+                <div class="flex flex-col sm:flex-row items-center gap-3.5">
+                    <span class="w-11 h-11 rounded-full bg-champagne text-bronze flex items-center justify-center shrink-0 text-lg shadow-inner">
+                        🌙
+                    </span>
+                    <div>
+                        <div class="flex items-center gap-2 justify-center sm:justify-start">
+                            <span class="text-[10px] tracking-[0.2em] font-serifEn text-bronze uppercase font-medium">SPECIAL NIGHT</span>
+                            <span class="text-[10px] px-2 py-0.5 rounded-full bg-bronze/10 text-bronze font-medium">深夜27:00迄営業</span>
+                        </div>
+                        <p class="font-serifJp text-sm sm:text-base text-charcoal font-medium mt-0.5">
+                            深夜営業日：<strong class="text-bronze font-serifEn text-base sm:text-lg tracking-wide">10月31日(土)・11月1日(日)</strong>
+                        </p>
+                        <p class="text-[11px] text-taupe mt-0.5">
+                            夜遅くのお仕事帰りや一日の締めくくりに。静かな完全個室でゆったりとお寛ぎいただけます。
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 shrink-0 w-full sm:w-auto">
+                    <a href="https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto py-2.5 px-5 rounded-full bg-charcoal text-alabaster text-xs tracking-wider hover:bg-bronze transition-colors text-center font-medium shadow-sm">
+                        空き状況を確認
+                    </a>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 01 — CONCEPT -->
+    <section class="py-16 sm:py-24 px-4 sm:px-6 border-b border-sand/70">
+        <div class="max-w-xl lg:max-w-3xl mx-auto space-y-10">
+            <div class="space-y-4 text-center reveal">
+                <p class="font-serifEn text-xs tracking-[0.28em] text-bronze uppercase">
+                    01 — CONCEPT
+                </p>
+                <h2 class="font-serifJp text-[22px] sm:text-3xl leading-[1.6] text-charcoal">
+                    「頑張り続ける私」と「素顔の私」のあいだに、<br class="hidden sm:inline">
+                    美しい余白（—）を引く場所。
+                </h2>
+            </div>
+
+            <div class="bg-white rounded-3xl border border-sand p-6 sm:p-10 space-y-6 shadow-sm reveal">
+                <p class="text-xs sm:text-sm text-taupe leading-[2.0]">
+                    仕事での責任、家庭での役割、周囲への気配り。<br>
+                    大人になるほど、自分の身体の疲れや心の緊張は「後回し」になりがちです。
+                </p>
+                <p class="text-xs sm:text-sm text-taupe leading-[2.0]">
+                    欧文で静かな間（ま）を表す記号「<strong>—（エムダッシュ）</strong>」のように、日常の延長線上でありながら、ここに入った瞬間だけは誰のためでもない「あなた自身の呼吸」を取り戻していただきたい——。<br>
+                    そんな想いから、滋賀県草津市大路の静かなマンションの一室に、女性専用の隠れ家サロン <strong>La Chouette（ラ・シュエット）</strong> をオープンしました。
+                </p>
+
+                <div class="pt-2">
+                    <div class="rounded-2xl overflow-hidden border border-sand bg-champagne aspect-[16/10] relative">
+                        <img 
+                            src="https://kusatsu-aroma.com/_emdash/api/media/file/01M663G82G76N15632FGEAFFDQ.01M663G8V8YN760HHG2SY037ZA.jpg" 
+                            onerror="this.src='https://placehold.co/800x500/EDE7DF/8E735B?text=Salon+Interior'" 
+                            alt="清潔なリネンを整えた完全個室の施術ルーム" 
+                            class="w-full h-full object-cover"
+                        >
+                    </div>
+                    <p class="text-[11px] text-taupe mt-2.5 text-center">
+                        周りを気にせずゆったりとお寛ぎいただける、清潔感あふれる完全個室空間をご用意しております。
+                    </p>
+                </div>
+            </div>
+
+            <div class="space-y-4 reveal">
+                <div class="text-center space-y-2">
+                    <p class="text-xs tracking-[0.2em] text-bronze font-serifEn">WHY MALE THERAPIST</p>
+                    <h3 class="font-serifJp text-lg sm:text-2xl text-charcoal">
+                        シュエットのオイルマッサージが<br class="sm:hidden">選ばれる3つの理由
+                    </h3>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+                    <div class="bg-champagne/60 rounded-2xl border border-sand p-5 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-serifEn text-xl text-bronze">01 —</span>
+                            <span class="text-[11px] text-taupe">LONG STROKE</span>
+                        </div>
+                        <h4 class="font-serifJp text-base font-medium text-charcoal">
+                            大きな掌で包み込む密着感
+                        </h4>
+                        <p class="text-xs text-taupe leading-relaxed">
+                            男性特有の大きな手を使い、手のひら全体で肌に吸い付くような密着感のあるロングストロークを行います。
+                        </p>
+                    </div>
+
+                    <div class="bg-champagne/60 rounded-2xl border border-sand p-5 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-serifEn text-xl text-bronze">02 —</span>
+                            <span class="text-[11px] text-taupe">WARMTH & PEACE</span>
+                        </div>
+                        <h4 class="font-serifJp text-base font-medium text-charcoal">
+                            温かい手と穏やかな時間
+                        </h4>
+                        <p class="text-xs text-taupe leading-relaxed">
+                            じんわりと伝わる手のぬくもりと一定のゆったりしたリズムが、張り詰めた心と身体を深い癒しへと導きます。
+                        </p>
+                    </div>
+
+                    <div class="bg-champagne/60 rounded-2xl border border-sand p-5 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-serifEn text-xl text-bronze">03 —</span>
+                            <span class="text-[11px] text-taupe">CAREFUL MANNER</span>
+                        </div>
+                        <h4 class="font-serifJp text-base font-medium text-charcoal">
+                            徹底したタオルワークと配慮
+                        </h4>
+                        <p class="text-xs text-taupe leading-relaxed">
+                            施術部位以外は常にタオルで丁寧に保護。女性専用サロンならではの細やかな気配りとプライバシー保護を徹底しています。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 02 — OWNER PROFILE -->
+    <section id="therapist" class="py-16 sm:py-24 px-4 sm:px-6 bg-champagne/40 border-b border-sand/70">
+        <div class="max-w-xl lg:max-w-3xl mx-auto space-y-8 reveal">
+            <div class="text-center space-y-2">
+                <p class="font-serifEn text-xs tracking-[0.28em] text-bronze uppercase">
+                    02 — OWNER PROFILE
+                </p>
+                <h2 class="font-serifJp text-[22px] sm:text-3xl text-charcoal">
+                    セラピストご紹介
+                </h2>
+            </div>
+
+            <div class="bg-alabaster rounded-3xl border border-sand overflow-hidden shadow-sm">
+                <div class="grid grid-cols-1 md:grid-cols-12">
+                    <div class="md:col-span-5 bg-champagne aspect-[4/4] md:aspect-auto">
+                        <img 
+                            src="https://kusatsu-aroma.com/_emdash/api/media/file/01M661ZK0REMWT6T12ZTGXXMM5.01M661ZKQ84Q0X5VSYND61F1A7.jpeg" 
+                            onerror="this.src='https://placehold.co/700x700/EDE7DF/8E735B?text=Owner+Therapist+TAKAHASHI'" 
+                            alt="オーナーセラピスト 高橋" 
+                            class="w-full h-full object-cover"
+                        >
+                    </div>
+
+                    <div class="md:col-span-7 p-6 sm:p-8 flex flex-col justify-center space-y-5">
+                        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-sand pb-4">
+                            <div>
+                                <p class="text-[10px] tracking-[0.2em] text-bronze font-serifEn uppercase">Owner Profile</p>
+                                <h3 class="font-serifJp text-xl sm:text-2xl text-charcoal mt-0.5 flex items-baseline gap-2">
+                                    <span>【高橋】</span>
+                                    <span class="font-serifEn text-sm tracking-[0.2em] text-bronze">TAKAHASHI</span>
+                                </h3>
+                            </div>
+                            <span class="px-3 py-1 rounded-full bg-sageLight text-sage text-[11px] font-medium">
+                                一人、ひとりのお客様に合わせた施術を提供します。
+                            </span>
+                        </div>
+
+                        <dl class="space-y-2.5 text-xs leading-relaxed border-b border-sand pb-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-12 gap-1">
+                                <dt class="sm:col-span-3 font-medium text-bronze">キャリア</dt>
+                                <dd class="sm:col-span-9 text-charcoal">施術歴15年 / 開業9年目 / 施術実績1,000名以上</dd>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-12 gap-1">
+                                <dt class="sm:col-span-3 font-medium text-bronze">特徴</dt>
+                                <dd class="sm:col-span-9 text-charcoal">アラフィフ / 男性セラピスト</dd>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-12 gap-1">
+                                <dt class="sm:col-span-3 font-medium text-bronze">得意な技術</dt>
+                                <dd class="sm:col-span-9 text-charcoal">男性特有の大きな手を使った、密着感のあるロングストロークのアロマオイルマッサージ。</dd>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-12 gap-1">
+                                <dt class="sm:col-span-3 font-medium text-bronze">性格</dt>
+                                <dd class="sm:col-span-9 text-charcoal">穏やか、聞き上手（とよく言われます）</dd>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-12 gap-1">
+                                <dt class="sm:col-span-3 font-medium text-bronze">趣味</dt>
+                                <dd class="sm:col-span-9 text-charcoal">愛猫（レウ＆アメ）と遊ぶこと、ホームページ制作。このサイトも自分で作ってます。</dd>
+                            </div>
+                        </dl>
+
+                        <p class="text-xs sm:text-sm text-taupe leading-[1.95]">
+                            「男性の施術は初めて」という方もご安心ください。タオルワークやプライバシーには細心の注意を払い、女性専用サロンならではの細やかな気配りを徹底しております。 京都・滋賀エリアで「非日常の癒やし」をお求めの方は、ぜひ一度シュエットの施術をご体験ください。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 03 — CUSTOMER REVIEWS -->
+    <section id="reviews" class="py-16 sm:py-24 px-4 sm:px-6 border-b border-sand/70">
+        <div class="max-w-xl lg:max-w-4xl mx-auto space-y-10">
+            <div class="space-y-3 text-center reveal">
+                <p class="font-serifEn text-xs tracking-[0.28em] text-bronze uppercase">
+                    03 — CUSTOMER REVIEWS
+                </p>
+                <h2 class="font-serifJp text-[22px] sm:text-3xl text-charcoal">
+                    お客様から届いた温かいお声
+                </h2>
+                <p class="text-xs sm:text-sm text-taupe leading-relaxed max-w-xl mx-auto">
+                    「男性の施術は初めてで不安だった」というお客様からも、たくさんの安心と満足のお声をいただいております。実際の口コミ投稿の一部をご紹介します。
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+                <!-- 口コミ 1 -->
+                <div class="bg-white rounded-3xl border border-sand p-6 shadow-sm flex flex-col justify-between space-y-4 reveal">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between border-b border-sand pb-3">
+                            <div>
+                                <div class="flex items-center gap-1.5 text-bronze text-sm">
+                                    <span>★★★★★</span>
+                                    <span class="text-xs font-serifEn font-medium text-charcoal ml-1">5.0</span>
+                                </div>
+                                <p class="text-xs font-medium text-charcoal mt-1">のんさん <span class="text-[11px] text-taupe font-normal">（女性 / 30代前半 / 会社員）</span></p>
+                            </div>
+                            <span class="text-[10px] px-2.5 py-1 rounded-full bg-champagne text-bronzeDark font-medium">通う価値あり</span>
+                        </div>
+                        <h3 class="font-serifJp text-sm sm:text-base font-medium text-charcoal leading-snug">
+                            「同性より緊張しない、とても良い雰囲気。この上手さでこの料金は格安です」
+                        </h3>
+                        <p class="text-xs text-taupe leading-relaxed">
+                            車で20分ほどかかりますが通う価値があります。安心して快適な時間を過ごせるように工夫・気遣いされており、ママ友の輪の中に1人入っていても違和感なく話せるようなお人柄です。
+                        </p>
+                    </div>
+                    <div class="pt-2">
+                        <div onclick="openReviewModal('https://kusatsu-aroma.com/_emdash/api/media/file/01M67NSZDXRB6ZYBHVG7RHBN7V.01M67NT0MCF82ZRYYBPZ4FMQ2D.jpg', 'のん様 口コミ原本')" class="cursor-pointer group relative rounded-xl overflow-hidden border border-sand bg-alabaster aspect-[16/9] flex items-center justify-center">
+                            <img src="https://kusatsu-aroma.com/_emdash/api/media/file/01M67NSZDXRB6ZYBHVG7RHBN7V.01M67NT0MCF82ZRYYBPZ4FMQ2D.jpg" onerror="this.src='https://placehold.co/800x450/EDE7DF/8E735B?text=Tap+to+View+Original+Review'" alt="のん様の実際の口コミ画像" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <div class="absolute inset-0 bg-charcoal/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <span class="px-3 py-1.5 rounded-full bg-charcoal/80 text-alabaster text-[11px] tracking-wider backdrop-blur-sm">🔍 タップで原本を拡大</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 口コミ 2 -->
+                <div class="bg-white rounded-3xl border border-sand p-6 shadow-sm flex flex-col justify-between space-y-4 reveal">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between border-b border-sand pb-3">
+                            <div>
+                                <div class="flex items-center gap-1.5 text-bronze text-sm">
+                                    <span>★★★★★</span>
+                                    <span class="text-xs font-serifEn font-medium text-charcoal ml-1">5.0</span>
+                                </div>
+                                <p class="text-xs font-medium text-charcoal mt-1">くろちゃんさん <span class="text-[11px] text-taupe font-normal">（女性 / 30代後半 / 会社員）</span></p>
+                            </div>
+                            <span class="text-[10px] px-2.5 py-1 rounded-full bg-champagne text-bronzeDark font-medium">完璧なタオルさばき</span>
+                        </div>
+                        <h3 class="font-serifJp text-sm sm:text-base font-medium text-charcoal leading-snug">
+                            「男性の施術に抵抗がありましたが、女性の方の施術より丁寧で気遣いがありました」
+                        </h3>
+                        <p class="text-xs text-taupe leading-relaxed">
+                            所々、気を遣ってもらいながら完璧なタオルさばきで安心でした。的確にこっている場所をマッサージしてくださり揉み返しもなく、手の暖かさや柔らかさが絶妙でその日の晩もグッスリ眠れました。
+                        </p>
+                    </div>
+                    <div class="pt-2">
+                        <div onclick="openReviewModal('https://kusatsu-aroma.com/_emdash/api/media/file/01M67NV4788B37TSKZ8HCC67XE.01M67NV5AF3CZWNKCNNSCJX0PR.jpg', 'くろちゃん様 口コミ原本')" class="cursor-pointer group relative rounded-xl overflow-hidden border border-sand bg-alabaster aspect-[16/9] flex items-center justify-center">
+                            <img src="https://kusatsu-aroma.com/_emdash/api/media/file/01M67NV4788B37TSKZ8HCC67XE.01M67NV5AF3CZWNKCNNSCJX0PR.jpg" onerror="this.src='https://placehold.co/800x450/EDE7DF/8E735B?text=Tap+to+View+Original+Review'" alt="くろちゃん様の実際の口コミ画像" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <div class="absolute inset-0 bg-charcoal/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <span class="px-3 py-1.5 rounded-full bg-charcoal/80 text-alabaster text-[11px] tracking-wider backdrop-blur-sm">🔍 タップで原本を拡大</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 口コミ 3 -->
+                <div class="bg-white rounded-3xl border border-sand p-6 shadow-sm flex flex-col justify-between space-y-4 reveal">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between border-b border-sand pb-3">
+                            <div>
+                                <div class="flex items-center gap-1.5 text-bronze text-sm">
+                                    <span>★★★★★</span>
+                                    <span class="text-xs font-serifEn font-medium text-charcoal ml-1">5.0</span>
+                                </div>
+                                <p class="text-xs font-medium text-charcoal mt-1">momoさん <span class="text-[11px] text-taupe font-normal">（女性 / 30代後半 / その他）</span></p>
+                            </div>
+                            <span class="text-[10px] px-2.5 py-1 rounded-full bg-sageLight text-sage font-medium">通って2年の常連様</span>
+                        </div>
+                        <h3 class="font-serifJp text-sm sm:text-base font-medium text-charcoal leading-snug">
+                            「男性ならではの大きくて温かい手、力強いのに優しい手に包まれる毎月の楽しみに」
+                        </h3>
+                        <p class="text-xs text-taupe leading-relaxed">
+                            聞き上手なセラピストさんでいつもたくさん話を聴いてくださり、会話も楽しくて毎日の活力になっています。このサロンとセラピストさんに出会えて本当に良かったと思っています。
+                        </p>
+                    </div>
+                    <div class="pt-2">
+                        <div onclick="openReviewModal('https://kusatsu-aroma.com/_emdash/api/media/file/01M67NV60F3YXM52PJ80Z9GP46.01M67NV70NV0Y7FHKRW9PBVE00.jpg', 'momo様 口コミ原本')" class="cursor-pointer group relative rounded-xl overflow-hidden border border-sand bg-alabaster aspect-[16/9] flex items-center justify-center">
+                            <img src="https://kusatsu-aroma.com/_emdash/api/media/file/01M67NV60F3YXM52PJ80Z9GP46.01M67NV70NV0Y7FHKRW9PBVE00.jpg" onerror="this.src='https://placehold.co/800x450/EDE7DF/8E735B?text=Tap+to+View+Original+Review'" alt="momo様の実際の口コミ画像" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <div class="absolute inset-0 bg-charcoal/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <span class="px-3 py-1.5 rounded-full bg-charcoal/80 text-alabaster text-[11px] tracking-wider backdrop-blur-sm">🔍 タップで原本を拡大</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 口コミ 4 -->
+                <div class="bg-white rounded-3xl border border-sand p-6 shadow-sm flex flex-col justify-between space-y-4 reveal">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between border-b border-sand pb-3">
+                            <div>
+                                <div class="flex items-center gap-1.5 text-bronze text-sm">
+                                    <span>★★★★★</span>
+                                    <span class="text-xs font-serifEn font-medium text-charcoal ml-1">5.0</span>
+                                </div>
+                                <p class="text-xs font-medium text-charcoal mt-1">にちゃんさん <span class="text-[11px] text-taupe font-normal">（女性 / 20代前半 / パート）</span></p>
+                            </div>
+                            <span class="text-[10px] px-2.5 py-1 rounded-full bg-champagne text-bronzeDark font-medium">オイルデビュー</span>
+                        </div>
+                        <h3 class="font-serifJp text-sm sm:text-base font-medium text-charcoal leading-snug">
+                            「男性と聞いて不安な方も全然安心。施術後は身体が芯からポカポカでした」
+                        </h3>
+                        <p class="text-xs text-taupe leading-relaxed">
+                            初めてのオイルマッサージで緊張していましたが、フレンドリーで話しやすかったです。『癒やされるってこういうことだったのか』と気付かされました。気遣いも完璧でした。
+                        </p>
+                    </div>
+                    <div class="pt-2">
+                        <div onclick="openReviewModal('https://kusatsu-aroma.com/_emdash/api/media/file/01M67NT62YXM3D4Q95HDXNJ1XF.01M67NT84MRYX2VZMWNF9ZX59Y.jpg', 'にちゃん様 口コミ原本')" class="cursor-pointer group relative rounded-xl overflow-hidden border border-sand bg-alabaster aspect-[16/9] flex items-center justify-center">
+                            <img src="https://kusatsu-aroma.com/_emdash/api/media/file/01M67NT62YXM3D4Q95HDXNJ1XF.01M67NT84MRYX2VZMWNF9ZX59Y.jpg" onerror="this.src='https://placehold.co/800x450/EDE7DF/8E735B?text=Tap+to+View+Original+Review'" alt="にちゃん様の実際の口コミ画像" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <div class="absolute inset-0 bg-charcoal/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <span class="px-3 py-1.5 rounded-full bg-charcoal/80 text-alabaster text-[11px] tracking-wider backdrop-blur-sm">🔍 タップで原本を拡大</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 口コミ 5 (横幅フル) -->
+                <div class="md:col-span-2 bg-champagne/40 rounded-3xl border border-sand p-6 sm:p-8 shadow-sm flex flex-col md:flex-row gap-6 items-center justify-between reveal">
+                    <div class="space-y-3 max-w-xl">
+                        <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-1 text-bronze text-sm">
+                                <span>★★★★☆</span>
+                                <span class="text-xs font-serifEn font-medium text-charcoal ml-1">4.0</span>
+                            </div>
+                            <span class="text-xs font-medium text-charcoal">まちゃらさん <span class="text-[11px] text-taupe font-normal">（女性 / 20代前半 / 会社員）</span></span>
+                        </div>
+                        <h3 class="font-serifJp text-base sm:text-lg font-medium text-charcoal leading-snug">
+                            「施術者が男性ということで触られて嫌じゃないかなど丁寧に確認があり、本当に女性のことを考えて施術されているのだと感じました」
+                        </h3>
+                        <p class="text-xs text-taupe leading-relaxed">
+                            家の前まで出迎えてくださって安心しました。足湯の際も楽しくお話を聞いてくださり、足のだるさもスッキリ無くなって軽くなりました。
+                        </p>
+                    </div>
+                    <div class="w-full md:w-72 shrink-0">
+                        <div onclick="openReviewModal('https://kusatsu-aroma.com/_emdash/api/media/file/01M67NXKTR16R1GCC8JWYFSH5Q.01M67NXMVTK7Y9SW3D8NCT0D90.jpg', 'まちゃら様 口コミ原本')" class="cursor-pointer group relative rounded-xl overflow-hidden border border-sand bg-white aspect-[16/9] flex items-center justify-center">
+                            <img src="https://kusatsu-aroma.com/_emdash/api/media/file/01M67NXKTR16R1GCC8JWYFSH5Q.01M67NXMVTK7Y9SW3D8NCT0D90.jpg" onerror="this.src='https://placehold.co/800x450/EDE7DF/8E735B?text=Tap+to+View+Original+Review'" alt="まちゃら様の実際の口コミ画像" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <div class="absolute inset-0 bg-charcoal/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <span class="px-3 py-1.5 rounded-full bg-charcoal/80 text-alabaster text-[11px] tracking-wider backdrop-blur-sm">🔍 タップで原本を拡大</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 04 — TREATMENT MENU -->
+    <section id="menu" class="py-16 sm:py-24 px-4 sm:px-6 border-b border-sand/70">
+        <div class="max-w-xl lg:max-w-3xl mx-auto space-y-8 reveal">
+            <div class="text-center space-y-2">
+                <p class="font-serifEn text-xs tracking-[0.28em] text-bronze uppercase">
+                    04 — TREATMENT MENU
+                </p>
+                <h2 class="font-serifJp text-[22px] sm:text-3xl text-charcoal">
+                    アロマオイルトリートメント料金
+                </h2>
+                <p class="text-xs text-taupe leading-relaxed">
+                    朝8:00〜深夜27:00まで割増料金なしでご利用いただけます。
+                </p>
+            </div>
+
+            <div class="bg-gradient-to-r from-bronzeDark via-bronze to-bronzeDark text-white rounded-3xl p-5 sm:p-6 shadow-md text-center space-y-1.5">
+                <p class="text-[11px] tracking-[0.2em] uppercase text-champagne font-serifEn">
+                    WEB EXCLUSIVE PRIVILEGE
+                </p>
+                <p class="font-serifJp text-base sm:text-xl font-medium">
+                    🎁 このサイトから新規様が予約すると【10分無料延長】
+                </p>
+                <p class="text-xs text-champagne/90">
+                    60分コースは70分に、90分コースは100分に、120分コースは130分に無料延長いたします。
+                </p>
+            </div>
+
+            <div class="space-y-5">
+                <!-- 120 MIN -->
+                <div onclick="openBookingWithCourse('アロマオイルトリートメント 120分（¥8,970 / 新規様10分無料延長）')" class="cursor-pointer bg-charcoal text-alabaster rounded-3xl border border-bronze p-6 sm:p-8 shadow-xl relative hover:border-sand transition-all">
+                    <div class="flex flex-wrap items-center gap-2 mb-3">
+                        <span class="inline-block bg-bronze text-white text-[10px] tracking-[0.18em] px-3.5 py-1 rounded-full">
+                            DEEP RELAXATION — 贅沢ロングコース
+                        </span>
+                        <span class="inline-block bg-white/15 text-sand text-[10px] tracking-wider px-3 py-1 rounded-full">
+                            ご新規様特典：130分に無料延長
+                        </span>
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 border-b border-white/15 pb-4">
+                        <h3 class="font-serifJp text-xl text-white">
+                            アロマオイルトリートメント 120分
+                        </h3>
+                        <div class="flex items-baseline gap-1.5">
+                            <span class="font-serifEn text-3xl sm:text-4xl text-white">¥8,970</span>
+                            <span class="text-[10px] text-sand/80">税込</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-sand/85 leading-relaxed mt-4">
+                        全身を隅々までゆったりと包み込む贅沢な120分。心身の疲れが深く溜まっている方や、時間を忘れて非日常の癒やしに浸りたい方におすすめです。
+                    </p>
+                    <button onclick="event.stopPropagation(); openBookingWithCourse('アロマオイルトリートメント 120分（¥8,970 / 新規様10分無料延長）')" class="mt-5 w-full py-3.5 rounded-full bg-bronze text-white text-xs tracking-[0.18em] hover:bg-bronzeDark transition-colors">
+                        120分コースで予約に進む
+                    </button>
+                </div>
+
+                <!-- 90 MIN -->
+                <div onclick="openBookingWithCourse('アロマオイルトリートメント 90分（¥6,630 / 新規様10分無料延長）')" class="cursor-pointer bg-white rounded-3xl border border-bronze/60 p-6 sm:p-7 shadow-sm relative hover:border-bronze transition-all">
+                    <div class="flex flex-wrap items-center gap-2 mb-2">
+                        <span class="inline-block bg-champagne text-bronzeDark text-[10px] tracking-[0.15em] px-3 py-1 rounded-full font-medium">
+                            STANDARD — 人気定番・全身バランスケア
+                        </span>
+                        <span class="inline-block bg-sageLight text-sage text-[10px] tracking-wider px-3 py-1 rounded-full">
+                            ご新規様特典：100分に無料延長
+                        </span>
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 border-b border-sand pb-3">
+                        <h3 class="font-serifJp text-lg sm:text-xl text-charcoal">
+                            アロマオイルトリートメント 90分
+                        </h3>
+                        <div class="flex items-baseline gap-1.5">
+                            <span class="font-serifEn text-2xl sm:text-3xl text-charcoal">¥6,630</span>
+                            <span class="text-[10px] text-taupe">税込</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-taupe leading-relaxed mt-3">
+                        首・肩・背中から脚先まで、全身をバランスよくトリートメントする定番コース。大きな手による密着ロングストロークの心地よさをじっくりご体感いただけます。
+                    </p>
+                    <button onclick="event.stopPropagation(); openBookingWithCourse('アロマオイルトリートメント 90分（¥6,630 / 新規様10分無料延長）')" class="mt-4 w-full py-3.5 rounded-full bg-charcoal text-alabaster text-xs tracking-[0.16em] hover:bg-bronze transition-colors">
+                        90分コースで予約に進む
+                    </button>
+                </div>
+
+                <!-- 60 MIN -->
+                <div onclick="openBookingWithCourse('アロマオイルトリートメント 60分（¥4,290 / 新規様10分無料延長）')" class="cursor-pointer bg-alabaster rounded-3xl border border-sand p-6 sm:p-7 shadow-sm hover:border-bronze transition-all">
+                    <div class="flex flex-wrap items-center gap-2 mb-2">
+                        <span class="inline-block bg-champagne text-bronzeDark text-[10px] tracking-[0.15em] px-3 py-1 rounded-full">
+                            TRIAL & SHORT — お試し・ショートケア
+                        </span>
+                        <span class="inline-block bg-sageLight text-sage text-[10px] tracking-wider px-3 py-1 rounded-full">
+                            ご新規様特典：70分に無料延長
+                        </span>
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 border-b border-sand pb-3">
+                        <h3 class="font-serifJp text-lg sm:text-xl text-charcoal">
+                            アロマオイルトリートメント 60分
+                        </h3>
+                        <div class="flex items-baseline gap-1.5">
+                            <span class="font-serifEn text-2xl sm:text-3xl text-charcoal">¥4,290</span>
+                            <span class="text-[10px] text-taupe">税込</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-taupe leading-relaxed mt-3">
+                        背面を中心に、お疲れの箇所を重点的にケアするショートコース。「男性セラピストの施術をまずは試してみたい」というご新規様や、お忙しい日のリフレッシュに最適です。
+                    </p>
+                    <button onclick="event.stopPropagation(); openBookingWithCourse('アロマオイルトリートメント 60分（¥4,290 / 新規様10分無料延長）')" class="mt-4 w-full py-3.5 rounded-full border border-charcoal text-charcoal text-xs tracking-[0.16em] hover:bg-charcoal hover:text-alabaster transition-colors">
+                        60分コースで予約に進む
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 05 — COURSE FINDER -->
+    <section id="simulator" class="py-16 sm:py-24 px-4 sm:px-6 bg-champagne/40 border-b border-sand/70">
+        <div class="max-w-xl lg:max-w-3xl mx-auto space-y-8 reveal">
+            <div class="text-center space-y-2">
+                <p class="font-serifEn text-xs tracking-[0.28em] text-bronze uppercase">
+                    05 — COURSE FINDER
+                </p>
+                <h2 class="font-serifJp text-[22px] sm:text-3xl text-charcoal">
+                    今日のあなたへの「おすすめコース診断」
+                </h2>
+                <p class="text-xs text-taupe">
+                    3つの質問をタップするだけで、今の気分やお疲れにぴったりのコースをご提案します。
+                </p>
+            </div>
+
+            <div class="bg-white rounded-3xl border border-sand p-5 sm:p-8 shadow-sm space-y-7">
+                <div class="space-y-2.5">
+                    <p class="text-xs font-medium text-bronze tracking-wider">
+                        STEP 1 — 今の気分・ご希望に近いものは？
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <button type="button" onclick="selectSimulatorOption('concern', 'deep_relax')" data-concern="deep_relax" class="sim-concern-btn text-left p-3.5 rounded-2xl border border-bronze bg-champagne/70 transition-all">
+                            <p class="font-serifJp text-sm font-medium text-charcoal">日常を忘れてとことん癒やされたい</p>
+                            <p class="text-[11px] text-taupe mt-0.5">全身くまなくロングストロークで包まれたい</p>
+                        </button>
+                        <button type="button" onclick="selectSimulatorOption('concern', 'standard')" data-concern="standard" class="sim-concern-btn text-left p-3.5 rounded-2xl border border-sand hover:border-bronze/60 transition-all">
+                            <p class="font-serifJp text-sm font-medium text-charcoal">全身の疲れをバランスよく流したい</p>
+                            <p class="text-[11px] text-taupe mt-0.5">首肩から脚先まで心地よくリフレッシュしたい</p>
+                        </button>
+                        <button type="button" onclick="selectSimulatorOption('concern', 'sleep')" data-concern="sleep" class="sim-concern-btn text-left p-3.5 rounded-2xl border border-sand hover:border-bronze/60 transition-all">
+                            <p class="font-serifJp text-sm font-medium text-charcoal">頭を空っぽにして深くまどろみたい</p>
+                            <p class="text-[11px] text-taupe mt-0.5">温かい手のぬくもりで静かに休息したい</p>
+                        </button>
+                        <button type="button" onclick="selectSimulatorOption('concern', 'trial')" data-concern="trial" class="sim-concern-btn text-left p-3.5 rounded-2xl border border-sand hover:border-bronze/60 transition-all">
+                            <p class="font-serifJp text-sm font-medium text-charcoal">まずは気軽に体験してみたい</p>
+                            <p class="text-[11px] text-taupe mt-0.5">男性セラピストの施術が初めて・短時間で癒やされたい</p>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="space-y-2.5">
+                    <p class="text-xs font-medium text-bronze tracking-wider">
+                        STEP 2 — お好みのタッチ・圧の強さは？
+                    </p>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button type="button" onclick="selectSimulatorOption('pressure', 'deep')" data-pressure="deep" class="sim-pressure-btn py-3 px-2 rounded-xl border border-bronze bg-champagne/70 text-xs font-serifJp text-center transition-all">
+                            しっかり密着圧
+                        </button>
+                        <button type="button" onclick="selectSimulatorOption('pressure', 'medium')" data-pressure="medium" class="sim-pressure-btn py-3 px-2 rounded-xl border border-sand text-xs font-serifJp text-center transition-all">
+                            心地よい中圧
+                        </button>
+                        <button type="button" onclick="selectSimulatorOption('pressure', 'gentle')" data-pressure="gentle" class="sim-pressure-btn py-3 px-2 rounded-xl border border-sand text-xs font-serifJp text-center transition-all">
+                            優しいロングストローク
+                        </button>
+                    </div>
+                </div>
+
+                <div class="space-y-2.5">
+                    <p class="text-xs font-medium text-bronze tracking-wider">
+                        STEP 3 — ご希望の時間帯は？（8:00〜27:00）
+                    </p>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button type="button" onclick="selectSimulatorOption('timeband', 'morning')" data-timeband="morning" class="sim-time-btn py-2.5 px-2 rounded-xl border border-sand text-center transition-all">
+                            <span class="block font-serifEn text-xs sm:text-sm text-bronze">8:00—12:00</span>
+                            <span class="text-[10px] text-taupe">朝・午前</span>
+                        </button>
+                        <button type="button" onclick="selectSimulatorOption('timeband', 'day')" data-timeband="day" class="sim-time-btn py-2.5 px-2 rounded-xl border border-bronze bg-champagne/70 text-center transition-all">
+                            <span class="block font-serifEn text-xs sm:text-sm text-bronze">12:00—19:00</span>
+                            <span class="text-[10px] text-taupe">日中</span>
+                        </button>
+                        <button type="button" onclick="selectSimulatorOption('timeband', 'night')" data-timeband="night" class="sim-time-btn py-2.5 px-2 rounded-xl border border-sand text-center transition-all">
+                            <span class="block font-serifEn text-xs sm:text-sm text-bronze">19:00—27:00</span>
+                            <span class="text-[10px] text-taupe">夜・深夜</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-alabaster rounded-2xl border border-bronze/40 p-5 sm:p-6 space-y-4">
+                    <div class="flex items-center justify-between border-b border-sand pb-2.5">
+                        <span class="text-[10px] tracking-[0.2em] text-bronze font-serifEn">RECOMMENDED COURSE</span>
+                        <span id="simBadge" class="text-[10px] px-2.5 py-0.5 rounded-full bg-bronze text-white">一番人気・贅沢ケア</span>
+                    </div>
+
+                    <div>
+                        <h3 id="simCourseTitle" class="font-serifJp text-lg sm:text-xl text-charcoal">
+                            アロマオイルトリートメント 120分
+                        </h3>
+                        <p id="simCoursePrice" class="font-serifEn text-2xl text-bronze mt-0.5">
+                            ¥8,970 <span class="text-xs font-sansJp text-sage font-medium">（ご新規様特典：+10分無料延長で計130分）</span>
+                        </p>
+                    </div>
+
+                    <div class="p-3.5 rounded-xl bg-white border border-sand space-y-1.5">
+                        <p id="simBlendName" class="text-xs font-medium text-bronze">
+                            ✦ 施術のポイント：全身密着ロングストローク
+                        </p>
+                        <p id="simBlendDesc" class="text-xs text-taupe leading-relaxed">
+                            大きな手のひら全体で包み込むように、背面から脚先、デコルテまで途切れのないロングストロークで深い癒やしへ導きます。
+                        </p>
+                    </div>
+
+                    <p id="simTherapistNote" class="text-xs text-charcoal/80 leading-relaxed italic">
+                        「大きな掌の重みと温かさを活かし、心地よい密着圧で丁寧にトリートメントいたします。」
+                    </p>
+
+                    <button onclick="applySimulatorToBooking()" class="w-full py-4 rounded-full bg-charcoal text-alabaster text-xs tracking-[0.18em] hover:bg-bronze transition-colors">
+                        このコースで予約方法を選ぶ —
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 06 — FOR FIRST-TIME GUESTS -->
+    <section id="faq" class="py-16 sm:py-24 px-4 sm:px-6 border-b border-sand/70">
+        <div class="max-w-xl lg:max-w-3xl mx-auto space-y-8 reveal">
+            <div class="text-center space-y-2">
+                <p class="font-serifEn text-xs tracking-[0.28em] text-bronze uppercase">
+                    06 — FOR FIRST-TIME GUESTS
+                </p>
+                <h2 class="font-serifJp text-[22px] sm:text-3xl text-charcoal">
+                    初めての方へ — 安心のお約束
+                </h2>
+            </div>
+
+            <div class="space-y-3">
+                <div class="bg-white rounded-2xl border border-sand overflow-hidden">
+                    <button onclick="toggleFaq(0)" class="w-full p-5 text-left flex items-center justify-between gap-3">
+                        <span class="font-serifJp text-sm font-medium text-charcoal leading-snug">
+                            Q. 男性セラピストの施術は初めてで緊張します。露出などは大丈夫ですか？
+                        </span>
+                        <span id="faqIcon0" class="text-bronze font-serifEn text-xl shrink-0">—</span>
+                    </button>
+                    <div id="faqContent0" class="px-5 pb-5 text-xs text-taupe leading-[1.9] border-t border-sand/50 pt-3">
+                        ご安心ください。タオルワークやプライバシーには細心の注意を払い、施術している部位以外は常にタオルで丁寧に覆って露出を最小限に抑えております。女性専用サロンならではの細やかな気配りを徹底しておりますので、初めての方もリラックスしてお過ごしいただけます。
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-sand overflow-hidden">
+                    <button onclick="toggleFaq(1)" class="w-full p-5 text-left flex items-center justify-between gap-3">
+                        <span class="font-serifJp text-sm font-medium text-charcoal leading-snug">
+                            Q. 「新規様10分無料延長」はどのように適用されますか？
+                        </span>
+                        <span id="faqIcon1" class="text-bronze font-serifEn text-xl shrink-0">+</span>
+                    </button>
+                    <div id="faqContent1" class="hidden px-5 pb-5 text-xs text-taupe leading-[1.9] border-t border-sand/50 pt-3">
+                        当サイトのWEB予約（Square）または公式LINE・お電話・メールからご予約いただいたご新規様は、お選びいただいたコース（60分・90分・120分）に＋10分無料で延長させていただきます。ご予約時またはご来店時に「ホームページを見た」とお伝えいただくか、予約メモにご記入ください。
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-sand overflow-hidden">
+                    <button onclick="toggleFaq(2)" class="w-full p-5 text-left flex items-center justify-between gap-3">
+                        <span class="font-serifJp text-sm font-medium text-charcoal leading-snug">
+                            Q. 早朝（8:00〜）や深夜（〜27:00）でも追加料金はかかりませんか？
+                        </span>
+                        <span id="faqIcon2" class="text-bronze font-serifEn text-xl shrink-0">+</span>
+                    </button>
+                    <div id="faqContent2" class="hidden px-5 pb-5 text-xs text-taupe leading-[1.9] border-t border-sand/50 pt-3">
+                        はい、深夜割増や早朝料金などは一切いただいておりません。朝のお時間からお仕事帰りの深夜まで、すべて表示通りの同一料金（60分 4,290円 / 90分 6,630円 / 120分 8,970円）でご利用いただけます。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 07 — ACCESS & INFORMATION -->
+    <section id="access" class="py-16 sm:py-24 px-4 sm:px-6 bg-alabaster">
+        <div class="max-w-xl lg:max-w-3xl mx-auto space-y-8 reveal">
+            <div class="text-center space-y-2">
+                <p class="font-serifEn text-xs tracking-[0.28em] text-bronze uppercase">
+                    07 — ACCESS & INFORMATION
+                </p>
+                <h2 class="font-serifJp text-[22px] sm:text-3xl text-charcoal">
+                    サロン所在地・お問い合わせ
+                </h2>
+            </div>
+
+            <div class="bg-white rounded-3xl border border-sand overflow-hidden shadow-sm">
+                <div class="bg-champagne border-b border-sand aspect-[16/10] relative overflow-hidden">
+                    <img 
+                        src="https://kusatsu-aroma.com/_emdash/api/media/file/01M66439HS2P00AXAMFW2GFVV6.01M6643A7WFV4DT84KNP7PM17P.jpg" 
+                        onerror="this.src='https://placehold.co/800x500/EDE7DF/8E735B?text=Access+Map'" 
+                        alt="La Chouette サロンアクセス・外観イメージ" 
+                        class="w-full h-full object-cover"
+                    >
+                </div>
+
+                <div class="p-6 sm:p-8 space-y-5">
+                    <div class="border-b border-sand pb-4">
+                        <p class="font-serifEn text-[11px] tracking-[0.2em] text-bronze">SALON NAME</p>
+                        <p class="font-serifJp text-base sm:text-lg text-charcoal mt-1 font-medium">
+                            La Chouette（ラ・シュエット）
+                        </p>
+                        <p class="text-xs text-taupe mt-0.5">
+                            男性セラピストによる女性専用アロマオイルマッサージサロン
+                        </p>
+                    </div>
+
+                    <div class="border-b border-sand pb-4">
+                        <div class="flex items-center justify-between">
+                            <p class="font-serifEn text-[11px] tracking-[0.2em] text-bronze">ADDRESS</p>
+                            <button onclick="copySalonAddress()" class="text-[11px] px-3 py-1 rounded-full bg-champagne hover:bg-sand text-charcoal transition-colors">
+                                住所をコピー
+                            </button>
+                        </div>
+                        <p class="font-serifJp text-sm sm:text-base text-charcoal mt-1.5 leading-relaxed">
+                            〒525-0032<br>
+                            滋賀県草津市大路2丁目16-21<br>
+                            XYZ Court草津大路301
+                        </p>
+                        <p class="text-xs text-taupe mt-2 leading-relaxed">
+                            ・JR琵琶湖線「草津駅」東口より徒歩圏内<br>
+                            ・ご到着時は建物インターホンにて「<strong>301</strong>」をお呼び出しください。
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-b border-sand pb-4">
+                        <div>
+                            <p class="font-serifEn text-[11px] tracking-[0.2em] text-bronze">HOURS</p>
+                            <p class="font-serifEn text-xl text-charcoal mt-0.5">8:00 — 27:00</p>
+                            <p class="text-[11px] text-taupe">（翌3:00迄営業 / 完全予約制・不定休）</p>
+                        </div>
+                        <div>
+                            <p class="font-serifEn text-[11px] tracking-[0.2em] text-bronze">CONTACT</p>
+                            <div class="text-xs text-charcoal mt-1 space-y-1">
+                                <p>TEL：<a href="tel:08062193290" class="underline hover:text-bronze">080-6219-3290</a></p>
+                                <p>MAIL：<a href="mailto:kusatsu.chouette@gmail.com" class="underline hover:text-bronze">kusatsu.chouette@gmail.com</a></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                        <a href="https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start" target="_blank" rel="noopener noreferrer" class="w-full py-4 rounded-full bg-charcoal text-alabaster text-xs tracking-[0.18em] hover:bg-bronze transition-colors text-center font-medium">
+                            WEB予約サイト（Square）へ
+                        </a>
+                        <a href="https://lin.ee/uqQK27J" target="_blank" rel="noopener noreferrer" class="w-full py-4 rounded-full bg-lineGreen text-white text-xs tracking-[0.16em] hover:opacity-90 transition-opacity text-center font-medium">
+                            公式LINEで予約・お問い合わせ
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 管理画面（EmDash）で記事やテキストが追加された場合の出力エリア -->
+    {page?.data?.content && page.data.content.length > 0 && (
+        <section class="py-12 px-4 max-w-xl lg:max-w-3xl mx-auto border-t border-sand/70">
+            <PortableText value={page.data.content} />
+        </section>
+    )}
+
+    <!-- FOOTER -->
+    <footer class="bg-charcoal text-champagne py-12 px-4 border-t border-white/10 text-center">
+        <div class="max-w-xl mx-auto space-y-3">
+            <div class="inline-flex items-center font-serifEn text-xl tracking-[0.2em] text-white">
+                <span>La Chouette</span>
+                <span class="em-dash bg-bronze"></span>
+                <span class="text-xs text-bronze font-serifJp">ラ・シュエット</span>
+            </div>
+            <p class="text-[11px] text-sand/75 leading-relaxed">
+                滋賀県草津市大路2丁目16-21 XYZ Court草津大路301<br>
+                TEL：<a href="tel:08062193290" class="underline">080-6219-3290</a> ｜ MAIL：<a href="mailto:kusatsu.chouette@gmail.com" class="underline">kusatsu.chouette@gmail.com</a><br>
+                OPEN 8:00 — 27:00 ｜ 女性専用・完全個室プライベートサロン
+            </p>
+            <p class="text-[10px] text-sand/50 pt-4">
+                © 2026 La Chouette（ラ・シュエット）. All Rights Reserved. （当店はリラクゼーションサロンであり、医療行為は一切行いません）
+            </p>
+        </div>
+    </footer>
+
+    <!-- BOOKING HUB MODAL -->
+    <div id="bookingModal" class="portal-modal-overlay" onclick="closeBookingModal()">
+        <div class="portal-modal-card rounded-[1.5rem] bg-[#F7F4EF] border border-[#DCD3C6] p-6 shadow-2xl relative" style="max-width: 480px; max-height: 85vh; max-height: 85dvh; overflow-y: auto;" onclick="event.stopPropagation()">
+            <button onclick="closeBookingModal()" aria-label="閉じる" class="absolute top-4 right-4 sm:top-5 sm:right-5 w-8 h-8 rounded-full bg-champagne flex items-center justify-center text-charcoal hover:bg-sand transition-colors">
+                ✕
+            </button>
+
+            <div class="space-y-1.5 pr-8">
+                <p class="font-serifEn text-xs tracking-[0.22em] text-bronze">RESERVATION & CONTACT</p>
+                <h3 class="font-serifJp text-lg sm:text-xl text-charcoal">ご予約・お問い合わせ — La Chouette</h3>
+                <p class="text-[11px] text-taupe">営業時間 8:00〜27:00 ｜ 女性専用・完全個室（草津市大路）</p>
+            </div>
+
+            <div class="mt-4 p-3.5 sm:p-4 rounded-2xl bg-champagne/80 border border-bronze/40 space-y-1">
+                <p class="text-xs font-medium text-bronzeDark">
+                    🎁 当サイト限定特典：ご新規様は【10分無料延長】
+                </p>
+                <p id="selectedCourseDisplay" class="text-xs text-charcoal font-medium">
+                    ご希望コース：アロマオイルトリートメント（60分 ¥4,290 / 90分 ¥6,630 / 120分 ¥8,970）
+                </p>
+            </div>
+
+            <div class="space-y-3 mt-4 sm:mt-5">
+                <a href="https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start" target="_blank" rel="noopener noreferrer" class="block w-full p-4 rounded-2xl bg-charcoal text-alabaster hover:bg-bronze transition-colors text-center shadow-md">
+                    <span class="block text-xs tracking-[0.18em] font-medium">WEB予約サイト（Square）へ進む</span>
+                    <span class="block text-[10px] text-sand mt-1">24時間いつでも空き状況の確認・即時予約が可能です</span>
+                </a>
+
+                <a href="https://lin.ee/uqQK27J" target="_blank" rel="noopener noreferrer" class="block w-full p-4 rounded-2xl bg-lineGreen text-white hover:opacity-90 transition-opacity text-center shadow-sm">
+                    <span class="block text-xs tracking-[0.18em] font-medium">公式LINEで予約・相談する</span>
+                    <span class="block text-[10px] text-white/90 mt-1">トーク画面からご希望日時やご質問をお気軽にお送りください</span>
+                </a>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                    <a href="tel:08062193290" class="block p-3.5 rounded-2xl bg-white border border-sand hover:border-bronze text-center transition-colors">
+                        <span class="block text-[10px] text-bronze font-serifEn tracking-widest">PHONE</span>
+                        <span class="block text-xs font-medium text-charcoal mt-0.5">080-6219-3290</span>
+                        <span class="block text-[10px] text-taupe mt-0.5">タップして電話をかける</span>
+                    </a>
+                    <a href="mailto:kusatsu.chouette@gmail.com?subject=%E3%80%90La%20Chouette%E3%80%91%E3%81%94%E4%BA%88%E7%B4%84%E3%83%BB%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B" class="block p-3.5 rounded-2xl bg-white border border-sand hover:border-bronze text-center transition-colors">
+                        <span class="block text-[10px] text-bronze font-serifEn tracking-widest">EMAIL</span>
+                        <span class="block text-xs font-medium text-charcoal mt-0.5">メールで問い合わせ</span>
+                        <span class="block text-[10px] text-taupe mt-0.5">kusatsu.chouette@gmail.com</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- REVIEW IMAGE MODAL -->
+    <div id="reviewModal" class="portal-modal-overlay" onclick="closeReviewModal()">
+        <div class="portal-modal-card rounded-[1.25rem] bg-white border border-[#DCD3C6] p-4 shadow-2xl relative flex flex-col items-center" style="max-width: 520px; max-height: 85vh; max-height: 85dvh; overflow-y: auto;" onclick="event.stopPropagation()">
+            <button onclick="closeReviewModal()" aria-label="閉じる" class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-charcoal/80 text-alabaster flex items-center justify-center hover:bg-bronze transition-colors">
+                ✕
+            </button>
+            <div style="width: 100%; display: flex; justify-content: center; align-items: center; padding-top: 8px;">
+                <img id="reviewModalImg" src="" alt="口コミ原本画像" style="max-height: 60vh; max-height: 60dvh; max-width: 100%; width: auto; height: auto; object-fit: contain; border-radius: 8px;">
+            </div>
+            <p id="reviewModalCaption" class="text-center text-xs text-taupe mt-3 font-medium"></p>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toastMessage" class="fixed bottom-6 left-4 right-4 sm:left-auto sm:right-6 z-50 hidden sm:max-w-sm bg-charcoal text-alabaster px-5 py-4 rounded-2xl shadow-2xl border border-bronze text-xs leading-relaxed">
+        <p id="toastText"></p>
+    </div>
+
+    <!-- INTERACTION SCRIPTS -->
+    <script is:inline>
+        const SALON_CONFIG = {
+            name: 'La Chouette（ラ・シュエット）',
+            bookingUrl: 'https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start',
+            lineUrl: 'https://lin.ee/uqQK27J',
+            email: 'kusatsu.chouette@gmail.com',
+            phone: '08062193290',
+            address: '滋賀県草津市大路2丁目16-21 XYZ Court草津大路301'
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const reveals = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            reveals.forEach((el) => observer.observe(el));
+        });
+
+        const simState = {
+            concern: 'deep_relax',
+            pressure: 'deep',
+            timeband: 'day'
+        };
+
+        const simulatorDatabase = {
+            deep_relax: {
+                title: 'アロマオイルトリートメント 120分',
+                price: '¥8,970 <span class="text-xs font-sansJp text-sage font-medium">（ご新規様特典：+10分無料延長で計130分）</span>',
+                selectValue: 'アロマオイルトリートメント 120分（¥8,970 / 新規様10分無料延長）',
+                blend: '✦ おすすめポイント：全身を包み込む贅沢ロングコース',
+                desc: '時間に追われず、首・肩・背中から脚先、デコルテまで全身をじっくりとトリートメント。日常を忘れて深い癒やしに浸りたい日に最適です。',
+                badge: '一番人気・贅沢ケア'
+            },
+            standard: {
+                title: 'アロマオイルトリートメント 90分',
+                price: '¥6,630 <span class="text-xs font-sansJp text-sage font-medium">（ご新規様特典：+10分無料延長で計100分）</span>',
+                selectValue: 'アロマオイルトリートメント 90分（¥6,630 / 新規様10分無料延長）',
+                blend: '✦ おすすめポイント：全身バランスケアの定番コース',
+                desc: 'うつ伏せ・仰向けの全身をバランスよくトリートメント。男性特有の大きな手による密着ロングストロークの魅力をしっかりご体感いただけます。',
+                badge: '定番スタンダード'
+            },
+            sleep: {
+                title: 'アロマオイルトリートメント 120分',
+                price: '¥8,970 <span class="text-xs font-sansJp text-sage font-medium">（ご新規様特典：+10分無料延長で計130分）</span>',
+                selectValue: 'アロマオイルトリートメント 120分（¥8,970 / 新規様10分無料延長）',
+                blend: '✦ おすすめポイント：静寂と手のぬくもりで深いまどろみへ',
+                desc: 'ゆったりとした一定のリズムと温かい手のひらで、張り詰めた心身の緊張を解きほぐします。会話を控えめに静かに眠りたい夜にもおすすめです。',
+                badge: '深い休息・まどろみ'
+            },
+            trial: {
+                title: 'アロマオイルトリートメント 60分',
+                price: '¥4,290 <span class="text-xs font-sansJp text-sage font-medium">（ご新規様特典：+10分無料延長で計70分）</span>',
+                selectValue: 'アロマオイルトリートメント 60分（¥4,290 / 新規様10分無料延長）',
+                blend: '✦ おすすめポイント：初めての方にも安心のショートコース',
+                desc: '背面や特に気になる箇所を中心にトリートメント。ご新規様は無料で70分に延長されるため、お試しでも十分に心地よさを実感いただけます。',
+                badge: 'ご新規様お試しに最適'
+            }
+        };
+
+        window.selectSimulatorOption = function(type, value) {
+            simState[type] = value;
+
+            const selectorMap = {
+                concern: { className: '.sim-concern-btn', attr: 'data-concern' },
+                pressure: { className: '.sim-pressure-btn', attr: 'data-pressure' },
+                timeband: { className: '.sim-time-btn', attr: 'data-timeband' }
+            };
+
+            const group = selectorMap[type];
+            document.querySelectorAll(group.className).forEach((btn) => {
+                if (btn.getAttribute(group.attr) === value) {
+                    btn.classList.add('border-bronze', 'bg-champagne/70');
+                    btn.classList.remove('border-sand');
+                } else {
+                    btn.classList.remove('border-bronze', 'bg-champagne/70');
+                    btn.classList.add('border-sand');
+                }
+            });
+
+            updateSimulatorOutput();
+        };
+
+        function updateSimulatorOutput() {
+            const data = simulatorDatabase[simState.concern];
+            document.getElementById('simCourseTitle').textContent = data.title;
+            document.getElementById('simCoursePrice').innerHTML = data.price;
+            document.getElementById('simBlendName').textContent = data.blend;
+            document.getElementById('simBlendDesc').textContent = data.desc;
+            document.getElementById('simBadge').textContent = data.badge;
+
+            let pressureNote = '';
+            if (simState.pressure === 'deep') {
+                pressureNote = '「大きな掌の重みと温かさを活かし、心地よい密着圧で丁寧にトリートメントいたします。」';
+            } else if (simState.pressure === 'medium') {
+                pressureNote = '「強すぎず弱すぎない絶妙な力加減で、まどろみを妨げずに全身をゆったり流します。」';
+            } else {
+                pressureNote = '「温かい手のひら全体のロングストロークで、優しく包み込むように癒やします。」';
+            }
+
+            document.getElementById('simTherapistNote').textContent = pressureNote;
+        }
+
+        window.applySimulatorToBooking = function() {
+            const data = simulatorDatabase[simState.concern];
+            window.openBookingWithCourse(data.selectValue);
+        };
+
+        window.toggleFaq = function(index) {
+            const content = document.getElementById('faqContent' + index);
+            const icon = document.getElementById('faqIcon' + index);
+            if (!content || !icon) return;
+
+            const isHidden = content.classList.contains('hidden');
+            if (isHidden) {
+                content.classList.remove('hidden');
+                icon.textContent = '—';
+            } else {
+                content.classList.add('hidden');
+                icon.textContent = '+';
+            }
+        };
+
+        window.openBookingModal = function() {
+            const modal = document.getElementById('bookingModal');
+            if (!modal) return;
+            modal.classList.add('is-active');
+            document.documentElement.style.overflow = 'hidden';
+        };
+
+        window.openBookingWithCourse = function(courseName) {
+            const displayEl = document.getElementById('selectedCourseDisplay');
+            if (displayEl) {
+                displayEl.textContent = `選択中のコース：${courseName}`;
+            }
+            window.openBookingModal();
+        };
+
+        window.closeBookingModal = function() {
+            const modal = document.getElementById('bookingModal');
+            if (!modal) return;
+            modal.classList.remove('is-active');
+            document.documentElement.style.overflow = '';
+        };
+
+        window.openReviewModal = function(imgSrc, caption) {
+            const modal = document.getElementById('reviewModal');
+            const modalImg = document.getElementById('reviewModalImg');
+            const modalCaption = document.getElementById('reviewModalCaption');
+            if (!modal || !modalImg) return;
+
+            modalImg.src = imgSrc;
+            if (modalCaption) {
+                modalCaption.textContent = caption || 'ホットペッパービューティー掲載の口コミ原本';
+            }
+
+            modal.classList.add('is-active');
+            document.documentElement.style.overflow = 'hidden';
+        };
+
+        window.closeReviewModal = function() {
+            const modal = document.getElementById('reviewModal');
+            if (!modal) return;
+            modal.classList.remove('is-active');
+            document.documentElement.style.overflow = '';
+        };
+
+        window.copySalonAddress = function() {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(SALON_CONFIG.address).then(() => {
+                    showToast(`住所（${SALON_CONFIG.address}）をコピーしました。`);
+                });
+            } else {
+                const tempInput = document.createElement('textarea');
+                tempInput.value = SALON_CONFIG.address;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                showToast(`住所（${SALON_CONFIG.address}）をコピーしました。`);
+            }
+        };
+
+        function showToast(message) {
+            const toast = document.getElementById('toastMessage');
+            const toastText = document.getElementById('toastText');
+            if (!toast || !toastText) return;
+
+            toastText.textContent = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 5000);
+        }
+    </script>
+</body>
 </html>
