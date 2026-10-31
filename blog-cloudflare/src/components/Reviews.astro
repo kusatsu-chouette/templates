@@ -1,0 +1,168 @@
+---
+// src/components/Reviews.astro
+---
+
+<section id="reviews" class="py-16 sm:py-24 px-4 sm:px-6 border-b border-sand/70">
+  <div class="max-w-xl lg:max-w-4xl mx-auto space-y-10">
+    <div class="space-y-3 text-center reveal">
+      <p class="font-serifEn text-xs tracking-[0.28em] text-bronze uppercase">
+        03 — CUSTOMER REVIEWS
+      </p>
+      <h2 class="font-serifJp text-[22px] sm:text-3xl text-charcoal">
+        お客様から届いた温かいお声
+      </h2>
+      <p class="text-xs sm:text-sm text-taupe leading-relaxed max-w-xl mx-auto">
+        「男性の施術は初めてで不安だった」というお客様からも、たくさんの安心と満足のお声をいただいております。実際の口コミ投稿の一部をご紹介します。
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+      <!-- 口コミ 1 -->
+      <div class="bg-white rounded-3xl border border-sand p-6 shadow-sm flex flex-col justify-between space-y-4 reveal">
+        <div class="space-y-3">
+          <div class="flex items-center justify-between border-b border-sand pb-3">
+            <div>
+              <div class="flex items-center gap-1.5 text-bronze text-sm">
+                <span>★★★★★</span>
+                <span class="text-xs font-serifEn font-medium text-charcoal ml-1">5.0</span>
+              </div>
+              <p class="text-xs font-medium text-charcoal mt-1">のんさん <span class="text-[11px] text-taupe font-normal">（女性 / 30代前半 / 会社員）</span></p>
+            </div>
+            <span class="text-[10px] px-2.5 py-1 rounded-full bg-champagne text-bronzeDark font-medium">通う価値あり</span>
+          </div>
+          <h3 class="font-serifJp text-sm sm:text-base font-medium text-charcoal leading-snug">
+            「同性より緊張しない、とても良い雰囲気。この上手さでこの料金は格安です」
+          </h3>
+          <p class="text-xs text-taupe leading-relaxed">
+            車で20分ほどかかりますが通う価値があります。安心して快適な時間を過ごせるように工夫・気遣いされており、ママ友の輪の中に1人入っていても違和感なく話せるようなお人柄です。
+          </p>
+        </div>
+        <div class="pt-2">
+          <div onclick="openReviewModal('https://kusatsu-aroma.com/_emdash/api/media/file/01M67NSZDXRB6ZYBHVG7RHBN7V.01M67NT0MCF82ZRYYBPZ4FMQ2D.jpg', 'のん様 口コミ原本')" class="cursor-pointer group relative rounded-xl overflow-hidden border border-sand bg-alabaster aspect-[16/9] flex items-center justify-center">
+            <img src="https://kusatsu-aroma.com/_emdash/api/media/file/01M67NSZDXRB6ZYBHVG7RHBN7V.01M67NT0MCF82ZRYYBPZ4FMQ2D.jpg" onerror="this.src='https://placehold.co/800x450/EDE7DF/8E735B?text=Tap+to+View+Original+Review'" alt="のん様の実際の口コミ画像" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            <div class="absolute inset-0 bg-charcoal/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <span class="px-3 py-1.5 rounded-full bg-charcoal/80 text-alabaster text-[11px] tracking-wider backdrop-blur-sm">🔍 タップで原本を拡大</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 口コミ 2 -->
+      <div class="bg-white rounded-3xl border border-sand p-6 shadow-sm flex flex-col justify-between space-y-4 reveal">
+        <div class="space-y-3">
+          <div class="flex items-center justify-between border-b border-sand pb-3">
+            <div>
+              <div class="flex items-center gap-1.5 text-bronze text-sm">
+                <span>★★★★★</span>
+                <span class="text-xs font-serifEn font-medium text-charcoal ml-1">5.0</span>
+              </div>
+              <p class="text-xs font-medium text-charcoal mt-1">くろちゃんさん <span class="text-[11px] text-taupe font-normal">（女性 / 30代後半 / 会社員）</span></p>
+            </div>
+            <span class="text-[10px] px-2.5 py-1 rounded-full bg-champagne text-bronzeDark font-medium">完璧なタオルさばき</span>
+          </div>
+          <h3 class="font-serifJp text-sm sm:text-base font-medium text-charcoal leading-snug">
+            「男性の施術に抵抗がありましたが、女性の方の施術より丁寧で気遣いがありました」
+          </h3>
+          <p class="text-xs text-taupe leading-relaxed">
+            所々、気を遣ってもらいながら完璧なタオルさばきで安心でした。的確にこっている場所をマッサージしてくださり揉み返しもなく、手の暖かさや柔らかさが絶妙でその日の晩もグッスリ眠れました。
+          </p>
+        </div>
+        <div class="pt-2">
+          <div onclick="openReviewModal('https://kusatsu-aroma.com/_emdash/api/media/file/01M67NV4788B37TSKZ8HCC67XE.01M67NV5AF3CZWNKCNNSCJX0PR.jpg', 'くろちゃん様 口コミ原本')" class="cursor-pointer group relative rounded-xl overflow-hidden border border-sand bg-alabaster aspect-[16/9] flex items-center justify-center">
+            <img src="https://kusatsu-aroma.com/_emdash/api/media/file/01M67NV4788B37TSKZ8HCC67XE.01M67NV5AF3CZWNKCNNSCJX0PR.jpg" onerror="this.src='https://placehold.co/800x450/EDE7DF/8E735B?text=Tap+to+View+Original+Review'" alt="くろちゃん様の実際の口コミ画像" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            <div class="absolute inset-0 bg-charcoal/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <span class="px-3 py-1.5 rounded-full bg-charcoal/80 text-alabaster text-[11px] tracking-wider backdrop-blur-sm">🔍 タップで原本を拡大</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 口コミ 3 -->
+      <div class="bg-white rounded-3xl border border-sand p-6 shadow-sm flex flex-col justify-between space-y-4 reveal">
+        <div class="space-y-3">
+          <div class="flex items-center justify-between border-b border-sand pb-3">
+            <div>
+              <div class="flex items-center gap-1.5 text-bronze text-sm">
+                <span>★★★★★</span>
+                <span class="text-xs font-serifEn font-medium text-charcoal ml-1">5.0</span>
+              </div>
+              <p class="text-xs font-medium text-charcoal mt-1">momoさん <span class="text-[11px] text-taupe font-normal">（女性 / 30代後半 / その他）</span></p>
+            </div>
+            <span class="text-[10px] px-2.5 py-1 rounded-full bg-sageLight text-sage font-medium">通って2年の常連様</span>
+          </div>
+          <h3 class="font-serifJp text-sm sm:text-base font-medium text-charcoal leading-snug">
+            「男性ならではの大きくて温かい手、力強いのに優しい手に包まれる毎月の楽しみに」
+          </h3>
+          <p class="text-xs text-taupe leading-relaxed">
+            聞き上手なセラピストさんでいつもたくさん話を聴いてくださり、会話も楽しくて毎日の活力になっています。このサロンとセラピストさんに出会えて本当に良かったと思っています。
+          </p>
+        </div>
+        <div class="pt-2">
+          <div onclick="openReviewModal('https://kusatsu-aroma.com/_emdash/api/media/file/01M67NV60F3YXM52PJ80Z9GP46.01M67NV70NV0Y7FHKRW9PBVE00.jpg', 'momo様 口コミ原本')" class="cursor-pointer group relative rounded-xl overflow-hidden border border-sand bg-alabaster aspect-[16/9] flex items-center justify-center">
+            <img src="https://kusatsu-aroma.com/_emdash/api/media/file/01M67NV60F3YXM52PJ80Z9GP46.01M67NV70NV0Y7FHKRW9PBVE00.jpg" onerror="this.src='https://placehold.co/800x450/EDE7DF/8E735B?text=Tap+to+View+Original+Review'" alt="momo様の実際の口コミ画像" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            <div class="absolute inset-0 bg-charcoal/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <span class="px-3 py-1.5 rounded-full bg-charcoal/80 text-alabaster text-[11px] tracking-wider backdrop-blur-sm">🔍 タップで原本を拡大</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 口コミ 4 -->
+      <div class="bg-white rounded-3xl border border-sand p-6 shadow-sm flex flex-col justify-between space-y-4 reveal">
+        <div class="space-y-3">
+          <div class="flex items-center justify-between border-b border-sand pb-3">
+            <div>
+              <div class="flex items-center gap-1.5 text-bronze text-sm">
+                <span>★★★★★</span>
+                <span class="text-xs font-serifEn font-medium text-charcoal ml-1">5.0</span>
+              </div>
+              <p class="text-xs font-medium text-charcoal mt-1">にちゃんさん <span class="text-[11px] text-taupe font-normal">（女性 / 20代前半 / パート）</span></p>
+            </div>
+            <span class="text-[10px] px-2.5 py-1 rounded-full bg-champagne text-bronzeDark font-medium">オイルデビュー</span>
+          </div>
+          <h3 class="font-serifJp text-sm sm:text-base font-medium text-charcoal leading-snug">
+            「男性と聞いて不安な方も全然安心。施術後は身体が芯からポカポカでした」
+          </h3>
+          <p class="text-xs text-taupe leading-relaxed">
+            初めてのオイルマッサージで緊張していましたが、フレンドリーで話しやすかったです。『癒やされるってこういうことだったのか』と気付かされました。気遣いも完璧でした。
+          </p>
+        </div>
+        <div class="pt-2">
+          <div onclick="openReviewModal('https://kusatsu-aroma.com/_emdash/api/media/file/01M67NT62YXM3D4Q95HDXNJ1XF.01M67NT84MRYX2VZMWNF9ZX59Y.jpg', 'にちゃん様 口コミ原本')" class="cursor-pointer group relative rounded-xl overflow-hidden border border-sand bg-alabaster aspect-[16/9] flex items-center justify-center">
+            <img src="https://kusatsu-aroma.com/_emdash/api/media/file/01M67NT62YXM3D4Q95HDXNJ1XF.01M67NT84MRYX2VZMWNF9ZX59Y.jpg" onerror="this.src='https://placehold.co/800x450/EDE7DF/8E735B?text=Tap+to+View+Original+Review'" alt="にちゃん様の実際の口コミ画像" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            <div class="absolute inset-0 bg-charcoal/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <span class="px-3 py-1.5 rounded-full bg-charcoal/80 text-alabaster text-[11px] tracking-wider backdrop-blur-sm">🔍 タップで原本を拡大</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 口コミ 5 (横幅フル) -->
+      <div class="md:col-span-2 bg-champagne/40 rounded-3xl border border-sand p-6 sm:p-8 shadow-sm flex flex-col md:flex-row gap-6 items-center justify-between reveal">
+        <div class="space-y-3 max-w-xl">
+          <div class="flex items-center gap-2">
+            <div class="flex items-center gap-1 text-bronze text-sm">
+              <span>★★★★☆</span>
+              <span class="text-xs font-serifEn font-medium text-charcoal ml-1">4.0</span>
+            </div>
+            <span class="text-xs font-medium text-charcoal">まちゃらさん <span class="text-[11px] text-taupe font-normal">（女性 / 20代前半 / 会社員）</span></span>
+          </div>
+          <h3 class="font-serifJp text-base sm:text-lg font-medium text-charcoal leading-snug">
+            「施術者が男性ということで触られて嫌じゃないかなど丁寧に確認があり、本当に女性のことを考えて施術されているのだと感じました」
+          </h3>
+          <p class="text-xs text-taupe leading-relaxed">
+            家の前まで出迎えてくださって安心しました。足湯の際も楽しくお話を聞いてくださり、足のだるさもスッキリ無くなって軽くなりました。
+          </p>
+        </div>
+        <div class="w-full md:w-72 shrink-0">
+          <div onclick="openReviewModal('https://kusatsu-aroma.com/_emdash/api/media/file/01M67NXKTR16R1GCC8JWYFSH5Q.01M67NXMVTK7Y9SW3D8NCT0D90.jpg', 'まちゃら様 口コミ原本')" class="cursor-pointer group relative rounded-xl overflow-hidden border border-sand bg-white aspect-[16/9] flex items-center justify-center">
+            <img src="https://kusatsu-aroma.com/_emdash/api/media/file/01M67NXKTR16R1GCC8JWYFSH5Q.01M67NXMVTK7Y9SW3D8NCT0D90.jpg" onerror="this.src='https://placehold.co/800x450/EDE7DF/8E735B?text=Tap+to+View+Original+Review'" alt="まちゃら様の実際の口コミ画像" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            <div class="absolute inset-0 bg-charcoal/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <span class="px-3 py-1.5 rounded-full bg-charcoal/80 text-alabaster text-[11px] tracking-wider backdrop-blur-sm">🔍 タップで原本を拡大</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
