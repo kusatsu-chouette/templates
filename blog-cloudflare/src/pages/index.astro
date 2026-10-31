@@ -7,6 +7,7 @@ import {
 import { PortableText } from "emdash/ui";
 import { resolveBlogSiteIdentity } from "../utils/site-identity";
 import BookingModal from "../components/BookingModal.astro";
+import Hero from "../components/Hero.astro";
 
 // 1. 管理画面の「Pages」からスラッグ「home」のデータを取得
 const { entry: page, cacheHint } = await getEmDashEntry("pages", "home");
@@ -35,7 +36,6 @@ const seo = getSeoMeta(page, {
     {seo.description && <meta name="description" content={seo.description} />}
     {seo.canonical && <link rel="canonical" href={seo.canonical} />}
     
-    {/* 余計な余白や枠組みを排除するベース設定 */}
     <style>
       *, *::before, *::after {
         box-sizing: border-box;
@@ -50,8 +50,10 @@ const seo = getSeoMeta(page, {
   </head>
   <body>
     <main>
+      {/* 1. ファーストビュー（Heroセクション） */}
+      <Hero />
 
-      {/* 管理画面の「ホーム」に入力した文章や画像データを出力 */}
+      {/* 2. 管理画面の「ホーム」に入力した文章や画像データを出力 */}
       <PortableText value={page.data.content} />
     </main>
 
