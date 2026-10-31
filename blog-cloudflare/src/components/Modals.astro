@@ -1,0 +1,271 @@
+---
+// src/components/Modals.astro
+---
+
+<!-- 1. BOOKING HUB MODAL -->
+<div id="bookingModal" class="portal-modal-overlay" onclick="closeBookingModal()">
+  <div class="portal-modal-card rounded-[1.5rem] bg-[#F7F4EF] border border-[#DCD3C6] p-6 shadow-2xl relative" style="max-width: 480px; max-height: 85vh; max-height: 85dvh; overflow-y: auto;" onclick="event.stopPropagation()">
+    <button onclick="closeBookingModal()" aria-label="閉じる" class="absolute top-4 right-4 sm:top-5 sm:right-5 w-8 h-8 rounded-full bg-champagne flex items-center justify-center text-charcoal hover:bg-sand transition-colors">
+      ✕
+    </button>
+
+    <div class="space-y-1.5 pr-8">
+      <p class="font-serifEn text-xs tracking-[0.22em] text-bronze">RESERVATION & CONTACT</p>
+      <h3 class="font-serifJp text-lg sm:text-xl text-charcoal">ご予約・お問い合わせ — La Chouette</h3>
+      <p class="text-[11px] text-taupe">営業時間 8:00〜27:00 ｜ 女性専用・完全個室（草津市大路）</p>
+    </div>
+
+    <div class="mt-4 p-3.5 sm:p-4 rounded-2xl bg-champagne/80 border border-bronze/40 space-y-1">
+      <p class="text-xs font-medium text-bronzeDark">
+        🎁 当サイト限定特典：ご新規様は【10分無料延長】
+      </p>
+      <p id="selectedCourseDisplay" class="text-xs text-charcoal font-medium">
+        ご希望コース：アロマオイルトリートメント（60分 ¥4,290 / 90分 ¥6,630 / 120分 ¥8,970）
+      </p>
+    </div>
+
+    <div class="space-y-3 mt-4 sm:mt-5">
+      <a href="https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start" target="_blank" rel="noopener noreferrer" class="block w-full p-4 rounded-2xl bg-charcoal text-alabaster hover:bg-bronze transition-colors text-center shadow-md">
+        <span class="block text-xs tracking-[0.18em] font-medium">WEB予約サイト（Square）へ進む</span>
+        <span class="block text-[10px] text-sand mt-1">24時間いつでも空き状況の確認・即時予約が可能です</span>
+      </a>
+
+      <a href="https://lin.ee/uqQK27J" target="_blank" rel="noopener noreferrer" class="block w-full p-4 rounded-2xl bg-lineGreen text-white hover:opacity-90 transition-opacity text-center shadow-sm">
+        <span class="block text-xs tracking-[0.18em] font-medium">公式LINEで予約・相談する</span>
+        <span class="block text-[10px] text-white/90 mt-1">トーク画面からご希望日時やご質問をお気軽にお送りください</span>
+      </a>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+        <a href="tel:08062193290" class="block p-3.5 rounded-2xl bg-white border border-sand hover:border-bronze text-center transition-colors">
+          <span class="block text-[10px] text-bronze font-serifEn tracking-widest">PHONE</span>
+          <span class="block text-xs font-medium text-charcoal mt-0.5">080-6219-3290</span>
+          <span class="block text-[10px] text-taupe mt-0.5">タップして電話をかける</span>
+        </a>
+        <a href="mailto:kusatsu.chouette@gmail.com?subject=%E3%80%90La%20Chouette%E3%80%91%E3%81%94%E4%BA%88%E7%B4%84%E3%83%BB%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B" class="block p-3.5 rounded-2xl bg-white border border-sand hover:border-bronze text-center transition-colors">
+          <span class="block text-[10px] text-bronze font-serifEn tracking-widest">EMAIL</span>
+          <span class="block text-xs font-medium text-charcoal mt-0.5">メールで問い合わせ</span>
+          <span class="block text-[10px] text-taupe mt-0.5">kusatsu.chouette@gmail.com</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. REVIEW IMAGE MODAL（文字が読めるよう最大780px・縦スクロール対応に拡張） -->
+<div id="reviewModal" class="portal-modal-overlay" onclick="closeReviewModal()">
+  <div class="portal-modal-card rounded-[1.25rem] bg-white border border-[#DCD3C6] p-4 sm:p-6 shadow-2xl relative flex flex-col items-center" style="max-width: 780px; width: 95vw; max-height: 90vh; max-height: 90dvh; overflow-y: auto;" onclick="event.stopPropagation()">
+    <button onclick="closeReviewModal()" aria-label="閉じる" class="sticky top-0 self-end z-20 w-8 h-8 rounded-full bg-charcoal/80 text-alabaster flex items-center justify-center hover:bg-bronze transition-colors shadow-md">
+      ✕
+    </button>
+    <div style="width: 100%; display: flex; justify-content: center; align-items: flex-start; padding-top: 4px;">
+      <img id="reviewModalImg" src="" alt="口コミ原本画像" style="width: 100%; height: auto; max-width: 100%; object-fit: contain; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.06);">
+    </div>
+    <p id="reviewModalCaption" class="text-center text-xs text-taupe mt-3 font-medium"></p>
+  </div>
+</div>
+
+<!-- 3. TOAST NOTIFICATION -->
+<div id="toastMessage" class="fixed bottom-6 left-4 right-4 sm:left-auto sm:right-6 z-50 hidden sm:max-w-sm bg-charcoal text-alabaster px-5 py-4 rounded-2xl shadow-2xl border border-bronze text-xs leading-relaxed">
+  <p id="toastText"></p>
+</div>
+
+<!-- INTERACTION SCRIPTS -->
+<script is:inline>
+  const SALON_CONFIG = {
+    name: 'La Chouette（ラ・シュエット）',
+    bookingUrl: 'https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start',
+    lineUrl: 'https://lin.ee/uqQK27J',
+    email: 'kusatsu.chouette@gmail.com',
+    phone: '08062193290',
+    address: '滋賀県草津市大路2丁目16-21 XYZ Court草津大路301'
+  };
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    reveals.forEach((el) => observer.observe(el));
+  });
+
+  const simState = {
+    concern: 'deep_relax',
+    pressure: 'deep',
+    timeband: 'day'
+  };
+
+  const simulatorDatabase = {
+    deep_relax: {
+      title: 'アロマオイルトリートメント 120分',
+      price: '¥8,970 <span class="text-xs font-sansJp text-sage font-medium">（ご新規様特典：+10分無料延長で計130分）</span>',
+      selectValue: 'アロマオイルトリートメント 120分（¥8,970 / 新規様10分無料延長）',
+      blend: '✦ おすすめポイント：全身を包み込む贅沢ロングコース',
+      desc: '時間に追われず、首・肩・背中から脚先、デコルテまで全身をじっくりとトリートメント。日常を忘れて深い癒やしに浸りたい日に最適です。',
+      badge: '一番人気・贅沢ケア'
+    },
+    standard: {
+      title: 'アロマオイルトリートメント 90分',
+      price: '¥6,630 <span class="text-xs font-sansJp text-sage font-medium">（ご新規様特典：+10分無料延長で計100分）</span>',
+      selectValue: 'アロマオイルトリートメント 90分（¥6,630 / 新規様10分無料延長）',
+      blend: '✦ おすすめポイント：全身バランスケアの定番コース',
+      desc: 'うつ伏せ・仰向けの全身をバランスよくトリートメント。男性特有の大きな手による密着ロングストロークの魅力をしっかりご体感いただけます。',
+      badge: '定番スタンダード'
+    },
+    sleep: {
+      title: 'アロマオイルトリートメント 120分',
+      price: '¥8,970 <span class="text-xs font-sansJp text-sage font-medium">（ご新規様特典：+10分無料延長で計130分）</span>',
+      selectValue: 'アロマオイルトリートメント 120分（¥8,970 / 新規様10分無料延長）',
+      blend: '✦ おすすめポイント：静寂と手のぬくもりで深いまどろみへ',
+      desc: 'ゆったりとした一定のリズムと温かい手のひらで、張り詰めた心身の緊張を解きほぐします。会話を控えめに静かに眠りたい夜にもおすすめです。',
+      badge: '深い休息・まどろみ'
+    },
+    trial: {
+      title: 'アロマオイルトリートメント 60分',
+      price: '¥4,290 <span class="text-xs font-sansJp text-sage font-medium">（ご新規様特典：+10分無料延長で計70分）</span>',
+      selectValue: 'アロマオイルトリートメント 60分（¥4,290 / 新規様10分無料延長）',
+      blend: '✦ おすすめポイント：初めての方にも安心のショートコース',
+      desc: '背面や特に気になる箇所を中心にトリートメント。ご新規様は無料で70分に延長されるため、お試しでも十分に心地よさを実感いただけます。',
+      badge: 'ご新規様お試しに最適'
+    }
+  };
+
+  window.selectSimulatorOption = function(type, value) {
+    simState[type] = value;
+
+    const selectorMap = {
+      concern: { className: '.sim-concern-btn', attr: 'data-concern' },
+      pressure: { className: '.sim-pressure-btn', attr: 'data-pressure' },
+      timeband: { className: '.sim-time-btn', attr: 'data-timeband' }
+    };
+
+    const group = selectorMap[type];
+    document.querySelectorAll(group.className).forEach((btn) => {
+      if (btn.getAttribute(group.attr) === value) {
+        btn.classList.add('border-bronze', 'bg-champagne/70');
+        btn.classList.remove('border-sand');
+      } else {
+        btn.classList.remove('border-bronze', 'bg-champagne/70');
+        btn.classList.add('border-sand');
+      }
+    });
+
+    updateSimulatorOutput();
+  };
+
+  function updateSimulatorOutput() {
+    const data = simulatorDatabase[simState.concern];
+    document.getElementById('simCourseTitle').textContent = data.title;
+    document.getElementById('simCoursePrice').innerHTML = data.price;
+    document.getElementById('simBlendName').textContent = data.blend;
+    document.getElementById('simBlendDesc').textContent = data.desc;
+    document.getElementById('simBadge').textContent = data.badge;
+
+    let pressureNote = '';
+    if (simState.pressure === 'deep') {
+      pressureNote = '「大きな掌の重みと温かさを活かし、心地よい密着圧で丁寧にトリートメントいたします。」';
+    } else if (simState.pressure === 'medium') {
+      pressureNote = '「強すぎず弱すぎない絶妙な力加減で、まどろみを妨げずに全身をゆったり流します。」';
+    } else {
+      pressureNote = '「温かい手のひら全体のロングストロークで、優しく包み込むように癒やします。」';
+    }
+
+    document.getElementById('simTherapistNote').textContent = pressureNote;
+  }
+
+  window.applySimulatorToBooking = function() {
+    const data = simulatorDatabase[simState.concern];
+    window.openBookingWithCourse(data.selectValue);
+  };
+
+  window.toggleFaq = function(index) {
+    const content = document.getElementById('faqContent' + index);
+    const icon = document.getElementById('faqIcon' + index);
+    if (!content || !icon) return;
+
+    const isHidden = content.classList.contains('hidden');
+    if (isHidden) {
+      content.classList.remove('hidden');
+      icon.textContent = '—';
+    } else {
+      content.classList.add('hidden');
+      icon.textContent = '+';
+    }
+  };
+
+  window.openBookingModal = function() {
+    const modal = document.getElementById('bookingModal');
+    if (!modal) return;
+    modal.classList.add('is-active');
+    document.documentElement.style.overflow = 'hidden';
+  };
+
+  window.openBookingWithCourse = function(courseName) {
+    const displayEl = document.getElementById('selectedCourseDisplay');
+    if (displayEl) {
+      displayEl.textContent = `選択中のコース：${courseName}`;
+    }
+    window.openBookingModal();
+  };
+
+  window.closeBookingModal = function() {
+    const modal = document.getElementById('bookingModal');
+    if (!modal) return;
+    modal.classList.remove('is-active');
+    document.documentElement.style.overflow = '';
+  };
+
+  window.openReviewModal = function(imgSrc, caption) {
+    const modal = document.getElementById('reviewModal');
+    const modalImg = document.getElementById('reviewModalImg');
+    const modalCaption = document.getElementById('reviewModalCaption');
+    if (!modal || !modalImg) return;
+
+    modalImg.src = imgSrc;
+    if (modalCaption) {
+      modalCaption.textContent = caption || 'ホットペッパービューティー掲載の口コミ原本';
+    }
+
+    modal.classList.add('is-active');
+    document.documentElement.style.overflow = 'hidden';
+  };
+
+  window.closeReviewModal = function() {
+    const modal = document.getElementById('reviewModal');
+    if (!modal) return;
+    modal.classList.remove('is-active');
+    document.documentElement.style.overflow = '';
+  };
+
+  window.copySalonAddress = function() {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(SALON_CONFIG.address).then(() => {
+        showToast(`住所（${SALON_CONFIG.address}）をコピーしました。`);
+      });
+    } else {
+      const tempInput = document.createElement('textarea');
+      tempInput.value = SALON_CONFIG.address;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+      showToast(`住所（${SALON_CONFIG.address}）をコピーしました。`);
+    }
+  };
+
+  function showToast(message) {
+    const toast = document.getElementById('toastMessage');
+    const toastText = document.getElementById('toastText');
+    if (!toast || !toastText) return;
+
+    toastText.textContent = message;
+    toast.classList.remove('hidden');
+    setTimeout(() => {
+      toast.classList.add('hidden');
+    }, 5000);
+  }
+</script>
