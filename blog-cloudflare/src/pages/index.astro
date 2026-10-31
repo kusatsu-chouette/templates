@@ -50,12 +50,6 @@ const seo = getSeoMeta(page, {
   </head>
   <body>
     <main>
-      {/* 画面に直接配置する予約ボタン（隔離枠を通さないため確実に動作します） */}
-      <div style="padding: 24px; text-align: left;">
-        <button type="button" class="js-open-booking" style="padding: 12px 28px; font-size: 16px; background-color: #5c4b43; color: #ffffff; border: none; border-radius: 6px; cursor: pointer;">
-          ご予約はこちら（本番テスト）
-        </button>
-      </div>
 
       {/* 管理画面の「ホーム」に入力した文章や画像データを出力 */}
       <PortableText value={page.data.content} />
