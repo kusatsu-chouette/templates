@@ -1,0 +1,115 @@
+---
+// src/components/Hero.astro
+---
+
+<section class="hero-section">
+  <div class="hero-content">
+    <p class="hero-sub">滋賀・草津の完全プライベート空間</p>
+    <h1 class="hero-title">
+      心と体がほどける、<br class="sp-only" />極上のオイルトリートメント
+    </h1>
+    <p class="hero-text">
+      日常の慌ただしさを忘れ、深い安らぎへと導く女性専用サロン。<br />
+      熟練の手技と上質なオイルで、至福のひとときをお届けします。
+    </p>
+    <div class="hero-action">
+      <button type="button" class="hero-btn js-open-booking">
+        空き状況の確認・ご予約はこちら
+      </button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-section {
+    position: relative;
+    min-height: 65vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(rgba(45, 36, 32, 0.55), rgba(45, 36, 32, 0.55)),
+      #443831; /* 画像設定前のアーストーン背景 */
+    background-size: cover;
+    background-position: center;
+    color: #ffffff;
+    text-align: center;
+    padding: 4rem 1.5rem;
+    box-sizing: border-box;
+  }
+
+  .hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .hero-sub {
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+    margin: 0 0 1.25rem;
+    color: #ebdcd0;
+  }
+
+  .hero-title {
+    font-size: 2.2rem;
+    line-height: 1.45;
+    font-weight: 500;
+    margin: 0 0 1.5rem;
+    letter-spacing: 0.05em;
+  }
+
+  .hero-text {
+    font-size: 1.05rem;
+    line-height: 1.85;
+    margin: 0 0 2.5rem;
+    color: #f2ebe4;
+  }
+
+  .hero-action {
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero-btn {
+    background-color: #9c7a59;
+    color: #ffffff;
+    border: none;
+    border-radius: 9999px;
+    padding: 1.1rem 2.75rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    transition: background-color 0.25s, transform 0.2s;
+  }
+
+  .hero-btn:hover {
+    background-color: #886847;
+    transform: translateY(-2px);
+  }
+
+  .sp-only {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .hero-section {
+      min-height: 55vh;
+      padding: 3.5rem 1.25rem;
+    }
+    .hero-title {
+      font-size: 1.6rem;
+    }
+    .hero-text {
+      font-size: 0.95rem;
+    }
+    .sp-only {
+      display: inline;
+    }
+    .hero-btn {
+      width: 100%;
+      max-width: 320px;
+      padding: 1rem 1.5rem;
+    }
+  }
+</style>
