@@ -2,141 +2,91 @@
 // src/components/Concept.astro
 ---
 
-<section class="concept-section">
-  <div class="container">
-    <div class="section-header">
-      <span class="sub-title">CONCEPT</span>
-      <h2 class="main-title">日々の疲れをリセットする、静かな隠れ家</h2>
-      <p class="lead-text">
-        慌ただしい日常から少しだけ離れて、ご自身をいたわる時間を。<br />
-        ラ・シュエットは、深い安らぎと癒やしをお届けする女性専用オイルマッサージサロンです。
+<section class="py-16 sm:py-24 px-4 sm:px-6 border-b border-sand/70">
+  <div class="max-w-xl lg:max-w-3xl mx-auto space-y-10">
+    <div class="space-y-4 text-center reveal">
+      <p class="font-serifEn text-xs tracking-[0.28em] text-bronze uppercase">
+        01 — CONCEPT
       </p>
+      <h2 class="font-serifJp text-[22px] sm:text-3xl leading-[1.6] text-charcoal">
+        「頑張り続ける私」と「素顔の私」のあいだに、<br class="hidden sm:inline">
+        美しい余白（—）を引く場所。
+      </h2>
     </div>
 
-    <div class="feature-grid">
-      <!-- 特徴1 -->
-      <div class="feature-card">
-        <div class="feature-num">01</div>
-        <h3 class="feature-title">完全個室のプライベート空間</h3>
-        <p class="feature-desc">
-          他のお客様と顔を合わせることのないプライベート空間。周りを気にせず、ゆったりと心からリラックスしていただけます。
+    <div class="bg-white rounded-3xl border border-sand p-6 sm:p-10 space-y-6 shadow-sm reveal">
+      <p class="text-xs sm:text-sm text-taupe leading-[2.0]">
+        仕事での責任、家庭での役割、周囲への気配り。<br>
+        大人になるほど、自分の身体の疲れや心の緊張は「後回し」になりがちです。
+      </p>
+      <p class="text-xs sm:text-sm text-taupe leading-[2.0]">
+        欧文で静かな間（ま）を表す記号「<strong>—（エムダッシュ）</strong>」のように、日常の延長線上でありながら、ここに入った瞬間だけは誰のためでもない「あなた自身の呼吸」を取り戻していただきたい——。<br>
+        そんな想いから、滋賀県草津市大路の静かなマンションの一室に、女性専用の隠れ家サロン <strong>La Chouette（ラ・シュエット）</strong> をオープンしました。
+      </p>
+
+      <div class="pt-2">
+        <div class="rounded-2xl overflow-hidden border border-sand bg-champagne aspect-[16/10] relative">
+          <img 
+            src="https://kusatsu-aroma.com/_emdash/api/media/file/01M663G82G76N15632FGEAFFDQ.01M663G8V8YN760HHG2SY037ZA.jpg" 
+            onerror="this.src='https://placehold.co/800x500/EDE7DF/8E735B?text=Salon+Interior'" 
+            alt="清潔なリネンを整えた完全個室の施術ルーム" 
+            class="w-full h-full object-cover"
+          >
+        </div>
+        <p class="text-[11px] text-taupe mt-2.5 text-center">
+          周りを気にせずゆったりとお寛ぎいただける、清潔感あふれる完全個室空間をご用意しております。
         </p>
       </div>
+    </div>
 
-      <!-- 特徴2 -->
-      <div class="feature-card">
-        <div class="feature-num">02</div>
-        <h3 class="feature-title">心地よい圧と丁寧な手技</h3>
-        <p class="feature-desc">
-          厳選した上質なオイルを使用し、全身を包み込むようなロングストロークでコリや緊張をじっくり解きほぐします。
-        </p>
+    <div class="space-y-4 reveal">
+      <div class="text-center space-y-2">
+        <p class="text-xs tracking-[0.2em] text-bronze font-serifEn">WHY MALE THERAPIST</p>
+        <h3 class="font-serifJp text-lg sm:text-2xl text-charcoal">
+          シュエットのオイルマッサージが<br class="sm:hidden">選ばれる3つの理由
+        </h3>
       </div>
 
-      <!-- 特徴3 -->
-      <div class="feature-card">
-        <div class="feature-num">03</div>
-        <h3 class="feature-title">深夜27時まで営業</h3>
-        <p class="feature-desc">
-          お仕事帰りやお出かけの後でも気軽にお立ち寄りいただけるよう、深夜帯まで営業。夜遅くの疲れたお体もサポートします。
-        </p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+        <div class="bg-champagne/60 rounded-2xl border border-sand p-5 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-serifEn text-xl text-bronze">01 —</span>
+            <span class="text-[11px] text-taupe">LONG STROKE</span>
+          </div>
+          <h4 class="font-serifJp text-base font-medium text-charcoal">
+            大きな掌で包み込む密着感
+          </h4>
+          <p class="text-xs text-taupe leading-relaxed">
+            男性特有の大きな手を使い、手のひら全体で肌に吸い付くような密着感のあるロングストロークを行います。
+          </p>
+        </div>
+
+        <div class="bg-champagne/60 rounded-2xl border border-sand p-5 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-serifEn text-xl text-bronze">02 —</span>
+            <span class="text-[11px] text-taupe">WARMTH & PEACE</span>
+          </div>
+          <h4 class="font-serifJp text-base font-medium text-charcoal">
+            温かい手と穏やかな時間
+          </h4>
+          <p class="text-xs text-taupe leading-relaxed">
+            じんわりと伝わる手のぬくもりと一定のゆったりしたリズムが、張り詰めた心と身体を深い癒しへと導きます。
+          </p>
+        </div>
+
+        <div class="bg-champagne/60 rounded-2xl border border-sand p-5 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-serifEn text-xl text-bronze">03 —</span>
+            <span class="text-[11px] text-taupe">CAREFUL MANNER</span>
+          </div>
+          <h4 class="font-serifJp text-base font-medium text-charcoal">
+            徹底したタオルワークと配慮
+          </h4>
+          <p class="text-xs text-taupe leading-relaxed">
+            施術部位以外は常にタオルで丁寧に保護。女性専用サロンならではの細やかな気配りとプライバシー保護を徹底しています。
+          </p>
+        </div>
       </div>
     </div>
   </div>
 </section>
-
-<style>
-  .concept-section {
-    padding: 5rem 1.5rem;
-    background-color: #fbf9f6;
-    color: #3b322c;
-  }
-
-  .container {
-    max-width: 1040px;
-    margin: 0 auto;
-  }
-
-  .section-header {
-    text-align: center;
-    margin-bottom: 3.5rem;
-  }
-
-  .sub-title {
-    display: inline-block;
-    font-size: 0.85rem;
-    letter-spacing: 0.2em;
-    color: #9c7a59;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-  }
-
-  .main-title {
-    font-size: 1.8rem;
-    font-weight: 600;
-    line-height: 1.5;
-    margin: 0 0 1.25rem;
-    color: #332a24;
-  }
-
-  .lead-text {
-    font-size: 1rem;
-    line-height: 1.8;
-    color: #6b5e55;
-    margin: 0 auto;
-    max-width: 680px;
-  }
-
-  .feature-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-  }
-
-  .feature-card {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 2.25rem 1.75rem;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
-    border: 1px solid #ede7e1;
-    position: relative;
-    box-sizing: border-box;
-  }
-
-  .feature-num {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #e5ded7;
-    margin-bottom: 0.75rem;
-    line-height: 1;
-  }
-
-  .feature-title {
-    font-size: 1.15rem;
-    font-weight: 600;
-    margin: 0 0 1rem;
-    color: #332a24;
-    line-height: 1.45;
-  }
-
-  .feature-desc {
-    font-size: 0.95rem;
-    line-height: 1.75;
-    color: #6b5e55;
-    margin: 0;
-  }
-
-  @media (max-width: 820px) {
-    .feature-grid {
-      grid-template-columns: 1fr;
-      gap: 1.25rem;
-    }
-
-    .concept-section {
-      padding: 3.5rem 1.25rem;
-    }
-
-    .main-title {
-      font-size: 1.45rem;
-    }
-  }
-</style>
