@@ -1,0 +1,54 @@
+---
+// src/components/Faq.astro
+---
+
+<section id="faq" class="py-16 sm:py-24 px-4 sm:px-6 border-b border-sand/70">
+  <div class="max-w-xl lg:max-w-3xl mx-auto space-y-8 reveal">
+    <div class="text-center space-y-2">
+      <p class="font-serifEn text-xs tracking-[0.28em] text-bronze uppercase">
+        06 — FOR FIRST-TIME GUESTS
+      </p>
+      <h2 class="font-serifJp text-[22px] sm:text-3xl text-charcoal">
+        初めての方へ — 安心のお約束
+      </h2>
+    </div>
+
+    <div class="space-y-3">
+      <div class="bg-white rounded-2xl border border-sand overflow-hidden">
+        <button onclick="toggleFaq(0)" class="w-full p-5 text-left flex items-center justify-between gap-3">
+          <span class="font-serifJp text-sm font-medium text-charcoal leading-snug">
+            Q. 男性セラピストの施術は初めてで緊張します。露出などは大丈夫ですか？
+          </span>
+          <span id="faqIcon0" class="text-bronze font-serifEn text-xl shrink-0">—</span>
+        </button>
+        <div id="faqContent0" class="px-5 pb-5 text-xs text-taupe leading-[1.9] border-t border-sand/50 pt-3">
+          ご安心ください。タオルワークやプライバシーには細心の注意を払い、施術している部位以外は常にタオルで丁寧に覆って露出を最小限に抑えております。女性専用サロンならではの細やかな気配りを徹底しておりますので、初めての方もリラックスしてお過ごしいただけます。
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-sand overflow-hidden">
+        <button onclick="toggleFaq(1)" class="w-full p-5 text-left flex items-center justify-between gap-3">
+          <span class="font-serifJp text-sm font-medium text-charcoal leading-snug">
+            Q. 「新規様10分無料延長」はどのように適用されますか？
+          </span>
+          <span id="faqIcon1" class="text-bronze font-serifEn text-xl shrink-0">+</span>
+        </button>
+        <div id="faqContent1" class="hidden px-5 pb-5 text-xs text-taupe leading-[1.9] border-t border-sand/50 pt-3">
+          当サイトのWEB予約（Square）または公式LINE・お電話・メールからご予約いただいたご新規様は、お選びいただいたコース（60分・90分・120分）に＋10分無料で延長させていただきます。ご予約時またはご来店時に「ホームページを見た」とお伝えいただくか、予約メモにご記入ください。
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-sand overflow-hidden">
+        <button onclick="toggleFaq(2)" class="w-full p-5 text-left flex items-center justify-between gap-3">
+          <span class="font-serifJp text-sm font-medium text-charcoal leading-snug">
+            Q. 早朝（8:00〜）や深夜（〜27:00）でも追加料金はかかりませんか？
+          </span>
+          <span id="faqIcon2" class="text-bronze font-serifEn text-xl shrink-0">+</span>
+        </button>
+        <div id="faqContent2" class="hidden px-5 pb-5 text-xs text-taupe leading-[1.9] border-t border-sand/50 pt-3">
+          はい、深夜割増や早朝料金などは一切いただいておりません。朝のお時間からお仕事帰りの深夜まで、すべて表示通りの同一料金（60分 4,290円 / 90分 6,630円 / 120分 8,970円）でご利用いただけます。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
