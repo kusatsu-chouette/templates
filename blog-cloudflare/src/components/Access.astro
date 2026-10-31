@@ -1,0 +1,81 @@
+---
+// src/components/Access.astro
+---
+
+<section id="access" class="py-16 sm:py-24 px-4 sm:px-6 bg-alabaster">
+  <div class="max-w-xl lg:max-w-3xl mx-auto space-y-8 reveal">
+    <div class="text-center space-y-2">
+      <p class="font-serifEn text-xs tracking-[0.28em] text-bronze uppercase">
+        07 — ACCESS & INFORMATION
+      </p>
+      <h2 class="font-serifJp text-[22px] sm:text-3xl text-charcoal">
+        サロン所在地・お問い合わせ
+      </h2>
+    </div>
+
+    <div class="bg-white rounded-3xl border border-sand overflow-hidden shadow-sm">
+      <div class="bg-champagne border-b border-sand aspect-[16/10] relative overflow-hidden">
+        <img 
+          src="https://kusatsu-aroma.com/_emdash/api/media/file/01M66439HS2P00AXAMFW2GFVV6.01M6643A7WFV4DT84KNP7PM17P.jpg" 
+          onerror="this.src='https://placehold.co/800x500/EDE7DF/8E735B?text=Access+Map'" 
+          alt="La Chouette サロンアクセス・外観イメージ" 
+          class="w-full h-full object-cover"
+        >
+      </div>
+
+      <div class="p-6 sm:p-8 space-y-5">
+        <div class="border-b border-sand pb-4">
+          <p class="font-serifEn text-[11px] tracking-[0.2em] text-bronze">SALON NAME</p>
+          <p class="font-serifJp text-base sm:text-lg text-charcoal mt-1 font-medium">
+            La Chouette（ラ・シュエット）
+          </p>
+          <p class="text-xs text-taupe mt-0.5">
+            男性セラピストによる女性専用アロマオイルマッサージサロン
+          </p>
+        </div>
+
+        <div class="border-b border-sand pb-4">
+          <div class="flex items-center justify-between">
+            <p class="font-serifEn text-[11px] tracking-[0.2em] text-bronze">ADDRESS</p>
+            <button onclick="copySalonAddress()" class="text-[11px] px-3 py-1 rounded-full bg-champagne hover:bg-sand text-charcoal transition-colors">
+              住所をコピー
+            </button>
+          </div>
+          <p class="font-serifJp text-sm sm:text-base text-charcoal mt-1.5 leading-relaxed">
+            〒525-0032<br>
+            滋賀県草津市大路2丁目16-21<br>
+            XYZ Court草津大路301
+          </p>
+          <p class="text-xs text-taupe mt-2 leading-relaxed">
+            ・JR琵琶湖線「草津駅」東口より徒歩圏内<br>
+            ・ご到着時は建物インターホンにて「<strong>301</strong>」をお呼び出しください。
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-b border-sand pb-4">
+          <div>
+            <p class="font-serifEn text-[11px] tracking-[0.2em] text-bronze">HOURS</p>
+            <p class="font-serifEn text-xl text-charcoal mt-0.5">8:00 — 27:00</p>
+            <p class="text-[11px] text-taupe">（翌3:00迄営業 / 完全予約制・不定休）</p>
+          </div>
+          <div>
+            <p class="font-serifEn text-[11px] tracking-[0.2em] text-bronze">CONTACT</p>
+            <div class="text-xs text-charcoal mt-1 space-y-1">
+              <p>TEL：<a href="tel:08062193290" class="underline hover:text-bronze">080-6219-3290</a></p>
+              <p>MAIL：<a href="mailto:kusatsu.chouette@gmail.com" class="underline hover:text-bronze">kusatsu.chouette@gmail.com</a></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+          <a href="https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start" target="_blank" rel="noopener noreferrer" class="w-full py-4 rounded-full bg-charcoal text-alabaster text-xs tracking-[0.18em] hover:bg-bronze transition-colors text-center font-medium">
+            WEB予約サイト（Square）へ
+          </a>
+          <a href="https://lin.ee/uqQK27J" target="_blank" rel="noopener noreferrer" class="w-full py-4 rounded-full bg-lineGreen text-white text-xs tracking-[0.16em] hover:opacity-90 transition-opacity text-center font-medium">
+            公式LINEで予約・お問い合わせ
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
