@@ -9,6 +9,7 @@ import { resolveBlogSiteIdentity } from "../utils/site-identity";
 import BookingModal from "../components/BookingModal.astro";
 import Hero from "../components/Hero.astro";
 import Concept from "../components/Concept.astro";
+import Menu from "../components/Menu.astro";
 
 // 1. 管理画面の「Pages」からスラッグ「home」のデータを取得
 const { entry: page, cacheHint } = await getEmDashEntry("pages", "home");
@@ -57,7 +58,10 @@ const seo = getSeoMeta(page, {
       {/* 2. サロンの特徴・こだわり */}
       <Concept />
 
-      {/* 3. 管理画面の「ホーム」に入力した文章や画像データを出力 */}
+      {/* 3. 施術メニュー・料金案内 */}
+      <Menu />
+
+      {/* 4. 管理画面の「ホーム」に入力した文章や画像データを出力 */}
       <PortableText value={page.data.content} />
     </main>
 
