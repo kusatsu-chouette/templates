@@ -51,16 +51,17 @@
   </div>
 </div>
 
-<!-- 2. REVIEW IMAGE MODAL（文字が読めるよう最大780px・縦スクロール対応に拡張） -->
+<!-- 2. REVIEW IMAGE MODAL（横幅最大化＋縦スクロール対応） -->
 <div id="reviewModal" class="portal-modal-overlay" onclick="closeReviewModal()">
-  <div class="portal-modal-card rounded-[1.25rem] bg-white border border-[#DCD3C6] p-4 sm:p-6 shadow-2xl relative flex flex-col items-center" style="max-width: 780px; width: 95vw; max-height: 90vh; max-height: 90dvh; overflow-y: auto;" onclick="event.stopPropagation()">
-    <button onclick="closeReviewModal()" aria-label="閉じる" class="sticky top-0 self-end z-20 w-8 h-8 rounded-full bg-charcoal/80 text-alabaster flex items-center justify-center hover:bg-bronze transition-colors shadow-md">
+  <div class="portal-modal-card rounded-[1.25rem] bg-white border border-[#DCD3C6] p-4 sm:p-6 shadow-2xl relative flex flex-col items-center" style="max-width: 860px; width: 96vw; max-height: 90vh; max-height: 90dvh; overflow-y: auto;" onclick="event.stopPropagation()">
+    <button onclick="closeReviewModal()" aria-label="閉じる" class="sticky top-0 self-end z-30 w-9 h-9 rounded-full bg-charcoal text-alabaster flex items-center justify-center hover:bg-bronze transition-colors shadow-md">
       ✕
     </button>
-    <div style="width: 100%; display: flex; justify-content: center; align-items: flex-start; padding-top: 4px;">
-      <img id="reviewModalImg" src="" alt="口コミ原本画像" style="width: 100%; height: auto; max-width: 100%; object-fit: contain; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.06);">
+    <div style="width: 100%; display: flex; justify-content: center; align-items: flex-start; padding-top: 8px;">
+      {/* 高さ制限を解除し、横幅いっぱいに広げて文字を大きく表示 */}
+      <img id="reviewModalImg" src="" alt="口コミ原本画像" style="width: 100%; height: auto; max-width: 800px; object-fit: contain; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.08);">
     </div>
-    <p id="reviewModalCaption" class="text-center text-xs text-taupe mt-3 font-medium"></p>
+    <p id="reviewModalCaption" class="text-center text-xs text-taupe mt-4 font-medium"></p>
   </div>
 </div>
 
