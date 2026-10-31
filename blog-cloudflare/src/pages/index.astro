@@ -6,6 +6,7 @@ import {
 } from "emdash";
 import { PortableText } from "emdash/ui";
 import { resolveBlogSiteIdentity } from "../utils/site-identity";
+import BookingModal from "../components/BookingModal.astro";
 
 // 1. 管理画面の「Pages」からスラッグ「home」のデータを取得
 const { entry: page, cacheHint } = await getEmDashEntry("pages", "home");
@@ -52,5 +53,8 @@ const seo = getSeoMeta(page, {
       {/* 管理画面の「ホーム」に入力したHTML/CSS/JSをそのまま全画面出力 */}
       <PortableText value={page.data.content} />
     </main>
+
+    {/* 画面中央に表示される予約モーダル */}
+    <BookingModal />
   </body>
 </html>
