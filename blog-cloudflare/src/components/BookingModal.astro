@@ -10,13 +10,45 @@
       <h3 class="modal-title">ご予約・お問い合わせ</h3>
       <p class="modal-desc">
         当サロンは完全予約制となっております。<br />
-        公式LINEまたはお電話よりお気軽にご連絡ください。
+        ご都合のよい方法よりお気軽にご連絡ください。
       </p>
 
       <div class="modal-action-list">
-        <!-- LINE予約リンク -->
-        <a href="https://lin.ee/7Iv05OE" target="_blank" rel="noopener noreferrer" class="action-btn btn-line">
-          公式LINEから予約する
+        <!-- 1. WEB即時予約（Square） -->
+        <a
+          href="https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="action-btn btn-web"
+        >
+          <span class="btn-sub">空き状況をカレンダーで確認</span>
+          WEB予約サイト（24時間受付）
+        </a>
+
+        <!-- 2. 公式LINE予約 -->
+        <a
+          href="https://lin.ee/Sv8oVDh"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="action-btn btn-line"
+        >
+          公式LINEから予約・相談する
+        </a>
+
+        <!-- 3. お電話（タップで発信） -->
+        <a
+          href="tel:08062193290"
+          class="action-btn btn-tel"
+        >
+          電話をかける（080-6219-3290）
+        </a>
+
+        <!-- 4. メール問い合わせ -->
+        <a
+          href="mailto:kusatsu.chouette@gmail.com"
+          class="action-btn btn-mail"
+        >
+          メールでお問い合わせ
         </a>
       </div>
     </div>
@@ -50,7 +82,7 @@
     width: 100%;
     max-width: 440px;
     border-radius: 12px;
-    padding: 2.5rem 1.5rem 2rem;
+    padding: 2.25rem 1.5rem 1.75rem;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     z-index: 1;
     box-sizing: border-box;
@@ -69,13 +101,13 @@
     padding: 0.25rem 0.5rem;
   }
   .modal-title {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     color: #332d29;
-    margin: 0 0 1rem;
-    font-weight: bold;
+    margin: 0 0 0.75rem;
+    font-weight: 700;
   }
   .modal-desc {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: #554e48;
     line-height: 1.6;
     margin: 0 0 1.5rem;
@@ -86,26 +118,57 @@
     gap: 0.75rem;
   }
   .action-btn {
-    display: block;
-    padding: 0.9rem 1rem;
-    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem 1rem;
+    border-radius: 8px;
     text-decoration: none;
-    font-weight: bold;
-    font-size: 1rem;
-    text-align: center;
-    transition: opacity 0.2s;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: opacity 0.2s, transform 0.15s;
+    box-sizing: border-box;
   }
   .action-btn:hover {
-    opacity: 0.85;
+    opacity: 0.9;
+    transform: translateY(-1px);
   }
+  .btn-sub {
+    font-size: 0.75rem;
+    font-weight: 400;
+    margin-bottom: 2px;
+    opacity: 0.9;
+  }
+
+  /* 予約サイト（Square）：メインカラー */
+  .btn-web {
+    background-color: #5c4b43;
+    color: #ffffff;
+  }
+
+  /* LINE：ブランドグリーン */
   .btn-line {
     background-color: #06c755;
     color: #ffffff;
   }
+
+  /* 電話：落ち着いたアーストーン */
+  .btn-tel {
+    background-color: #f7f4f1;
+    color: #4a3e37;
+    border: 1px solid #dcd4ce;
+  }
+
+  /* メール：シンプルな枠線ボタン */
+  .btn-mail {
+    background-color: #ffffff;
+    color: #665b53;
+    border: 1px solid #dcd4ce;
+  }
 </style>
 
 <script>
-  // ページ内の「js-open-booking」クラスがついたボタンをクリックした時にモーダルを開く
   const modal = document.getElementById('booking-modal');
   const closeBtn = document.getElementById('modal-close');
   const backdrop = document.getElementById('modal-backdrop');
