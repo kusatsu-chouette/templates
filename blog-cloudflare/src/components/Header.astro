@@ -4,6 +4,7 @@ const navItems = [
   { label: 'ホーム', href: '/' },
   { label: 'プロフィール', href: '/therapist' },
   { label: 'メニュー', href: '/menu' },
+  { label: '口コミ', href: '/reviews' },
   { label: 'アクセス', href: '/access' },
 ];
 ---
@@ -24,11 +25,11 @@ const navItems = [
 
     <!-- 店舗基本情報 -->
     <p class="text-[11px] text-taupe tracking-wider mt-1 font-light">
-      滋賀県草津市大路 ｜ OPEN 8:00 — 27:00（女性専用・完全個室）
+      滋賀県草津市大路 ｜ OPEN 8-00 — 27-00（女性専用・完全個室）
     </p>
 
     <!-- グローバルナビゲーション -->
-    <nav class="mt-4 flex items-center justify-center space-x-6 sm:space-x-8 text-xs tracking-widest text-charcoal font-medium">
+    <nav class="mt-4 flex flex-wrap items-center justify-center gap-x-5 sm:gap-x-8 gap-y-2 text-xs tracking-widest text-charcoal font-medium">
       {navItems.map((item) => (
         <a 
           href={item.href} 
