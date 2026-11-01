@@ -1,0 +1,265 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>お問い合わせ｜女性専用サロン La Chouette（ラ・シュエット）</title>
+  <meta name="description" content="滋賀県草津市の女性専用プライベートアロマサロン「La Chouette（ラ・シュエット）」のお問い合わせページです。公式LINE、お電話、メールフォームよりお気軽にご相談ください。" />
+
+  <!-- Tailwind CSS CDN (is:inline 必須) -->
+  <script is:inline src="https://cdn.tailwindcss.com"></script>
+  <script is:inline>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            alabaster: '#F7F4EF',
+            champagne: '#EDE7DF',
+            sand: '#DCD3C6',
+            bronze: '#8E735B',
+            charcoal: '#221F1D',
+            taupe: '#7D7571',
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+</head>
+<body class="bg-alabaster text-charcoal font-['Noto_Sans_JP',sans-serif] min-h-screen flex flex-col antialiased">
+  <Header />
+
+  <main class="flex-grow">
+    <!-- ヒーローセクション -->
+    <section class="py-16 md:py-24 bg-champagne border-b border-sand">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+        <span class="font-['Playfair_Display'] text-bronze tracking-widest text-sm uppercase block mb-3">Contact</span>
+        <h1 class="text-3xl md:text-4xl font-normal text-charcoal mb-6">お問い合わせ</h1>
+        <p class="text-taupe leading-relaxed text-sm md:text-base max-w-2xl mx-auto">
+          コース内容へのご質問、空き状況の確認、出張のご相談など、どのようなことでもお気軽にお問い合わせください。私が責任を持って丁寧にご案内いたします。
+        </p>
+      </div>
+    </section>
+
+    <!-- お問い合わせ方法（LINE / 電話 / Square予約） -->
+    <section class="py-16 md:py-20">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-2xl font-normal text-charcoal mb-3">選べるお問い合わせ方法</h2>
+          <p class="text-taupe text-sm">ご都合の良い方法をお選びください。公式LINEでのお問い合わせが最もスムーズです。</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          <!-- 公式LINE（推奨） -->
+          <div class="bg-white border border-sand rounded-xl p-8 flex flex-col justify-between shadow-sm hover:border-bronze transition-colors">
+            <div>
+              <div class="inline-block px-3 py-1 bg-champagne text-bronze text-xs font-medium rounded-full mb-4">おすすめ・返答スムーズ</div>
+              <h3 class="text-xl font-normal text-charcoal mb-3">公式LINE</h3>
+              <p class="text-taupe text-sm leading-relaxed mb-6">
+                24時間いつでもメッセージをお送りいただけます。空き日程の事前相談や、出張施術のご相談もLINEからお気軽にお問い合わせください。
+              </p>
+            </div>
+            <a
+              href="https://lin.ee/nzuEONf"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="block w-full text-center py-3.5 px-6 rounded-lg bg-bronze hover:bg-[#78614C] text-white font-medium text-sm transition-colors duration-200"
+            >
+              LINEで質問・相談する
+            </a>
+          </div>
+
+          <!-- お電話 -->
+          <div class="bg-white border border-sand rounded-xl p-8 flex flex-col justify-between shadow-sm hover:border-bronze transition-colors">
+            <div>
+              <div class="inline-block px-3 py-1 bg-champagne text-taupe text-xs font-medium rounded-full mb-4">お急ぎの方</div>
+              <h3 class="text-xl font-normal text-charcoal mb-3">お電話でのお問い合わせ</h3>
+              <p class="text-taupe text-sm leading-relaxed mb-4">
+                施術中はお電話に出られない場合がございます。その際は留守番電話にメッセージを残していただければ、終わり次第折り返しご連絡いたします。
+              </p>
+              <p class="text-charcoal font-semibold text-lg mb-6">080-6219-3290</p>
+            </div>
+            <a
+              href="tel:080-6219-3290"
+              class="block w-full text-center py-3.5 px-6 rounded-lg border border-bronze text-bronze hover:bg-champagne font-medium text-sm transition-colors duration-200"
+            >
+              電話をかける
+            </a>
+          </div>
+        </div>
+
+        <!-- サロン即時予約 & 出張サービスのご案内バナー -->
+        <div class="bg-champagne border border-sand rounded-xl p-6 md:p-8 mb-16">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div>
+              <h3 class="text-lg font-normal text-charcoal mb-2">サロン施術の即時予約をご希望の方</h3>
+              <p class="text-taupe text-sm leading-relaxed">
+                サロンでの施術日程がお決まりの場合は、Squareオンライン予約にて空き枠の確認・即時ご予約が可能です。
+              </p>
+              <p class="text-xs text-taupe mt-2">
+                ※出張サービスにつきましては、移動時間の事前調整が必要となるためSquare予約ではお受けしておりません。公式LINEまたはお電話にて直接ご相談ください。
+              </p>
+            </div>
+            <a
+              href="https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-block whitespace-nowrap text-center py-3 px-6 rounded-lg bg-bronze hover:bg-[#78614C] text-white text-sm font-medium transition-colors"
+            >
+              サロン予約（Square）
+            </a>
+          </div>
+        </div>
+
+        <!-- メールお問い合わせフォーム -->
+        <div class="bg-white border border-sand rounded-xl p-8 md:p-10 shadow-sm">
+          <div class="text-center max-w-xl mx-auto mb-8">
+            <h2 class="text-2xl font-normal text-charcoal mb-3">メールでのお問い合わせ</h2>
+            <p class="text-taupe text-sm leading-relaxed">
+              以下のフォームにご入力の上、「メールを作成する」ボタンを押してください。直接メール（kusatsu.chouette@gmail.com）でも受け付けております。
+            </p>
+          </div>
+
+          <form id="contact-form" class="max-w-2xl mx-auto space-y-6">
+            <div>
+              <label for="name" class="block text-sm font-medium text-charcoal mb-2">
+                お名前 <span class="text-bronze text-xs ml-1">必須</span>
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                placeholder="山田 花子"
+                class="w-full px-4 py-3 rounded-lg border border-sand bg-alabaster text-charcoal placeholder-taupe/60 focus:outline-none focus:border-bronze focus:bg-white text-sm transition-colors"
+              />
+            </div>
+
+            <div>
+              <label for="email" class="block text-sm font-medium text-charcoal mb-2">
+                メールアドレス <span class="text-bronze text-xs ml-1">必須</span>
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                placeholder="example@gmail.com"
+                class="w-full px-4 py-3 rounded-lg border border-sand bg-alabaster text-charcoal placeholder-taupe/60 focus:outline-none focus:border-bronze focus:bg-white text-sm transition-colors"
+              />
+            </div>
+
+            <div>
+              <label for="tel" class="block text-sm font-medium text-charcoal mb-2">
+                お電話番号 <span class="text-taupe text-xs ml-1 font-normal">任意</span>
+              </label>
+              <input
+                type="tel"
+                id="tel"
+                name="tel"
+                placeholder="090-0000-0000"
+                class="w-full px-4 py-3 rounded-lg border border-sand bg-alabaster text-charcoal placeholder-taupe/60 focus:outline-none focus:border-bronze focus:bg-white text-sm transition-colors"
+              />
+            </div>
+
+            <div>
+              <label for="category" class="block text-sm font-medium text-charcoal mb-2">
+                お問い合わせ項目 <span class="text-bronze text-xs ml-1">必須</span>
+              </label>
+              <select
+                id="category"
+                name="category"
+                required
+                class="w-full px-4 py-3 rounded-lg border border-sand bg-alabaster text-charcoal focus:outline-none focus:border-bronze focus:bg-white text-sm transition-colors"
+              >
+                <option value="施術メニュー・コースについて">施術メニュー・コースについて</option>
+                <option value="出張サービスのご相談">出張サービスのご相談</option>
+                <option value="空き状況・ご予約について">空き状況・ご予約について</option>
+                <option value="その他のお問い合わせ">その他のお問い合わせ</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="message" class="block text-sm font-medium text-charcoal mb-2">
+                お問い合わせ内容 <span class="text-bronze text-xs ml-1">必須</span>
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                rows="6"
+                required
+                placeholder="ご質問やご相談内容を詳しくご記入ください。"
+                class="w-full px-4 py-3 rounded-lg border border-sand bg-alabaster text-charcoal placeholder-taupe/60 focus:outline-none focus:border-bronze focus:bg-white text-sm transition-colors resize-y"
+              ></textarea>
+            </div>
+
+            <div class="pt-4 text-center">
+              <button
+                type="submit"
+                class="w-full sm:w-auto min-w-[240px] px-8 py-3.5 rounded-lg bg-bronze hover:bg-[#78614C] text-white font-medium text-sm transition-colors duration-200 shadow-sm cursor-pointer"
+              >
+                メールを作成・送信する
+              </button>
+              <p class="text-xs text-taupe mt-3">
+                ※ボタンを押すとお使いのメールソフトが起動します。
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- よくある質問へのリンク -->
+    <section class="py-12 bg-champagne border-t border-sand">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+        <h3 class="text-lg font-normal text-charcoal mb-2">よくあるご質問</h3>
+        <p class="text-taupe text-sm mb-6">施術前の不安やサロンの利用について、多くいただくご質問をまとめております。</p>
+        <a
+          href="/#faq"
+          class="inline-block py-2.5 px-6 rounded-lg border border-sand bg-alabaster text-charcoal hover:border-bronze text-sm transition-colors"
+        >
+          FAQを見る
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+
+  <!-- メールフォーム送信スクリプト (is:inline 必須) -->
+  <script is:inline>
+    const form = document.getElementById('contact-form');
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const tel = document.getElementById('tel').value || '未記入';
+        const category = document.getElementById('category').value;
+        const message = document.getElementById('message').value;
+
+        const subject = encodeURIComponent(`【お問い合わせ】${category}（${name}様）`);
+        const body = encodeURIComponent(
+          `【お名前】\n${name}\n\n` +
+          `【メールアドレス】\n${email}\n\n` +
+          `【お電話番号】\n${tel}\n\n` +
+          `【お問い合わせ項目】\n${category}\n\n` +
+          `【お問い合わせ内容】\n${message}\n\n` +
+          `-----------------------------------------\n` +
+          `女性専用プライベートアロマサロン La Chouette\n` +
+          `https://kusatsu-aroma.com`
+        );
+
+        window.location.href = `mailto:kusatsu.chouette@gmail.com?subject=${subject}&body=${body}`;
+      });
+    }
+  </script>
+</body>
+</html>
