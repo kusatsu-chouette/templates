@@ -1,27 +1,66 @@
 ---
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
+import {
+  getEmDashEntry,
+  getTermsForEntries,
+  getSeoMeta,
+  decodeSlug,
+  getSiteSettings,
+} from "emdash";
+import { Image, PortableText } from "emdash/ui";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import { formatDate } from "../../utils/locale";
+import { getReadingTime } from "../../utils/reading-time";
+import { resolveBlogSiteIdentity } from "../../utils/site-identity";
 
-// EmDash CMS からの記事データ取得処理
-const { slug } = Astro.params;
+const slug = decodeSlug(Astro.params.slug);
 
-let post = null;
-
-try {
-  // EmDash の API または内部エンドポイントから記事を取得
-  const response = await fetch(new URL(`/api/posts/${slug}`, Astro.url));
-  if (response.ok) {
-    post = await response.json();
-  }
-} catch (error) {
-  console.error('記事データの取得に失敗しました -', error);
+if (!slug) {
+  return Astro.rewrite("/404");
 }
 
-// 既存のEmDashテンプレートで post 取得ロジックがすでにある場合は、そちらの変数をそのままご使用いただけます
-const postTitle = post?.title || '記事タイトル';
-const postDate = post?.publishedAt ? new Date(post.publishedAt).toLocaleDateString('ja-JP') : '';
-const postContent = post?.content || '<p>記事の読み込み中、または記事が見つかりませんでした。</p>';
-const postCategory = post?.category?.name || 'サロン便り';
+const { entry: post, cacheHint } = await getEmDashEntry("posts", slug);
+
+if (!post) {
+  return Astro.rewrite("/404");
+}
+
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+// アイキャッチ画像のURL取得
+function getImageUrl(img: unknown): string | undefined {
+  if (!img || typeof img !== "object") return undefined;
+  const image = img as Record<string, unknown>;
+  if (typeof image.src === "string" && image.src) {
+    return image.src.startsWith("http")
+      ? image.src
+      : `${Astro.url.origin}${image.src}`;
+  }
+  const meta = image.meta as Record<string, unknown> | undefined;
+  const storageKey =
+    (typeof meta?.storageKey === "string" ? meta.storageKey : undefined) ||
+    (typeof image.id === "string" ? image.id : undefined);
+  if (storageKey) {
+    return `${Astro.url.origin}/_emdash/api/media/file/${storageKey}`;
+  }
+  return undefined;
+}
+
+const featuredImageUrl = getImageUrl(post.data.featured_image);
+const { siteTitle } = resolveBlogSiteIdentity(await getSiteSettings());
+
+// SEOメタ情報の生成
+const seo = getSeoMeta(post, {
+  siteTitle: siteTitle || "女性専用サロン La Chouette（ラ・シュエット）",
+  siteUrl: Astro.url.origin,
+  path: Astro.url.pathname.replace(/\/$/, ""),
+  defaultOgImage: featuredImageUrl,
+});
+
+const tags = post.data.terms?.tag ?? [];
+const readingTime = getReadingTime(post.data.content);
+const publishedAt = post.data.publishedAt ?? null;
+const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
 ---
 
 <!DOCTYPE html>
@@ -29,8 +68,8 @@ const postCategory = post?.category?.name || 'サロン便り';
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{postTitle} | 女性専用サロン La Chouette（ラ・シュエット）</title>
-  <meta name="description" content={`${postTitle} - 滋賀県草津市の女性専用完全個室リラクゼーションサロン「ラ・シュエット」の公式ブログです。`} />
+  <title>{seo.title || `${post.data.title} | 女性専用サロン La Chouette`}</title>
+  <meta name="description" content={seo.description || `${post.data.title} - 滋賀県草津市の女性専用完全個室サロン「ラ・シュエット」のブログです。`} />
 
   <!-- Tailwind CSS v3 CDN（is:inline 必須） -->
   <script is:inline src="https://cdn.tailwindcss.com"></script>
@@ -67,7 +106,7 @@ const postCategory = post?.category?.name || 'サロン便り';
     }
 
     /* ========================================================
-       La Chouette 大人女性向けブログ装飾ボックス（画像再現スタイル）
+       La Chouette 大人女性向けブログ装飾ボックス
        ======================================================== */
 
     /* 1. 付箋風ボックス（左ブロンズ太線・シャンパン背景） */
@@ -277,32 +316,54 @@ const postCategory = post?.category?.name || 'サロン便り';
   <Header />
 
   <main class="flex-grow pt-24 pb-20">
-    <!-- 記事ヘッダー -->
     <article class="max-w-3xl mx-auto px-5 sm:px-8">
+      <!-- 記事ヘッダー -->
       <header class="mb-10 text-center border-b border-sand pb-8">
-        <div class="inline-flex items-center gap-2 mb-4">
-          <span class="text-xs tracking-wider px-3 py-1 bg-champagne text-bronze rounded-full font-medium">
-            {postCategory}
-          </span>
-          {postDate && (
-            <time class="text-xs text-taupe tracking-wider">{postDate}</time>
+        <div class="inline-flex flex-wrap items-center justify-center gap-2 mb-4">
+          {tags.map((t) => (
+            <span class="text-xs tracking-wider px-3 py-1 bg-champagne text-bronze rounded-full font-medium">
+              {t.label}
+            </span>
+          ))}
+          {publishDate && (
+            <time class="text-xs text-taupe tracking-wider">{publishDate}</time>
+          )}
+          {readingTime && (
+            <span class="text-xs text-taupe tracking-wider">読了目安 {readingTime}分</span>
           )}
         </div>
         <h1 class="text-2xl sm:text-3xl font-mincho text-charcoal font-medium leading-relaxed sm:leading-relaxed">
-          {postTitle}
+          {post.data.title}
         </h1>
+        {post.data.excerpt && (
+          <p class="text-sm text-taupe mt-4 leading-relaxed max-w-xl mx-auto">
+            {post.data.excerpt}
+          </p>
+        )}
       </header>
 
-      <!-- 記事本文（マークダウンが流し込まれるコンテナ） -->
+      <!-- アイキャッチ画像 -->
+      {post.data.featured_image && (
+        <div class="mb-12 overflow-hidden rounded-2xl shadow-sm">
+          <Image
+            image={post.data.featured_image}
+            sizes="(min-width: 1024px) 768px, 92vw"
+            class="w-full h-auto object-cover max-h-[420px]"
+            priority
+          />
+        </div>
+      )}
+
+      <!-- 記事本文（EmDash PortableText レンダリング） -->
       <div class="entry-content">
-        <Fragment set:html={postContent} />
+        <PortableText value={post.data.content} />
       </div>
 
       <!-- 記事末尾 - ご案内＆予約導線（CTAコンポーネント） -->
       <section class="mt-16 pt-10 border-t border-sand">
         <div class="bg-champagne/60 rounded-2xl p-6 sm:p-8 border border-sand text-center">
           <p class="text-xs tracking-widest text-bronze uppercase font-medium mb-1">Reservation & Contact</p>
-          <h2 class="text-xl font-mincho text-charcoal font-medium mb-3">心と身体をゆるめる、あなただけの静かな時間</h2>
+          <h2 class="text-xl font-mincho text-charcoal font-medium mb-3">心と身体をゆるめる、静かな癒やしの時間</h2>
           <p class="text-sm text-taupe leading-relaxed max-w-lg mx-auto mb-6">
             草津市の完全個室サロン「ラ・シュエット」では、温かいホホバオイルを用いたオールハンドのトリートメントで、日々の緊張をほどくお手伝いをしております。
           </p>
@@ -335,13 +396,13 @@ const postCategory = post?.category?.name || 'サロン便り';
         </div>
       </section>
 
-      <!-- ブログ一覧へ戻る導線 -->
+      <!-- 記事一覧へ戻るリンク -->
       <div class="mt-12 text-center">
-        <a href="/blog" class="inline-flex items-center text-sm text-taupe hover:text-bronze transition">
+        <a href="/posts" class="inline-flex items-center text-sm text-taupe hover:text-bronze transition">
           <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
           </svg>
-          ブログ一覧へ戻る
+          記事一覧へ戻る
         </a>
       </div>
     </article>
