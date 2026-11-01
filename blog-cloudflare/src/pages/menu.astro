@@ -2,40 +2,36 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
-// ==========================================
-// メニュー・料金データ（プレースホルダー）
-// 実際のコース名・施術時間・料金に合わせて書き換えてください。
-// ==========================================
 const salonMenus = [
   {
-    name: "【コース名：スタンダード オイルトリートメント】",
-    duration: "【時間：90分】",
-    price: "【料金：¥6,630】",
-    description: "【コース説明：日常の緊張を解きほぐし、全身をゆったりとケアする標準的なリラクゼーションコースです。私がお一人おひとりの状態に合わせて丁寧に施術いたします。】",
+    name: "スタンダード オイルトリートメント",
+    duration: "90分",
+    price: "¥6,630",
+    description: "日常の緊張を解きほぐし、全身をゆったりとケアする標準的なリラクゼーションコースです。私がお一人おひとりの状態に合わせて丁寧に施術いたします。",
     recommend: true,
   },
   {
-    name: "【コース名：例 プレミアム オイルトリートメント】",
-    duration: "【時間：120分】",
-    price: "【料金：¥8,970】",
-    description: "【コース説明：お時間をかけて頭から足先まで贅沢に癒やすコースです。日々の喧騒を離れ、深い休息を求める方へ。】",
+    name: "プレミアム オイルトリートメント",
+    duration: "120分",
+    price: "¥8,970",
+    description: "お時間をかけて頭から足先まで贅沢に癒やすコースです。日々の喧騒を離れ、深い休息を求める方へ。",
     recommend: false,
   },
   {
-    name: "【コース名：例 ショート オイルトリートメント】",
-    duration: "【時間：60分】",
-    price: "【料金：¥4,290】",
-    description: "【コース説明：お忙しい合間にも心身の疲れをリセットしていただける、気軽なショートトリートメントです。】",
+    name: "ショート オイルトリートメント",
+    duration: "60分",
+    price: "¥4,290",
+    description: "お忙しい合間にも心身の疲れをリセットしていただける、気軽なショートトリートメントです。",
     recommend: false,
   }
 ];
 
 const visitMenus = [
   {
-    name: "【コース名：出張オイルトリートメントコース】",
-    duration: "【時間：90分〜】",
-    price: "【料金：¥9,000〜（出張費込/別途要確認）】",
-    description: "【コース説明：ご自宅や宿泊先のリラックス空間へお伺いし、サロン同様の心地よいトリートメントをお届けいたします。】",
+    name: "出張オイルトリートメントコース",
+    duration: "90分〜",
+    price: "¥9,000〜（出張費込/別途要確認）",
+    description: "ご自宅や宿泊先のリラックス空間へお伺いし、サロン同様の心地よいトリートメントをお届けいたします。",
     notes: "※出張サービスは移動時間の調整・確認が必要なため、Squareによるネット即時予約は受け付けておりません。公式LINEまたはお電話にて日程をご相談ください。"
   }
 ];
@@ -48,24 +44,6 @@ const visitMenus = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>メニュー・料金 | 女性専用サロン La Chouette（ラ・シュエット）</title>
     <meta name="description" content="滋賀県草津市の女性専用サロン La Chouette（ラ・シュエット）のメニュー・料金案内です。心地よいアロマオイルトリートメントで深い癒やしのひとときをお届けします。" />
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              alabaster: '#F7F4EF',
-              champagne: '#EDE7DF',
-              sand: '#DCD3C6',
-              bronze: '#8E735B',
-              charcoal: '#221F1D',
-              taupe: '#7D7571',
-            }
-          }
-        }
-      }
-    </script>
   </head>
   <body class="bg-[#F7F4EF] text-[#221F1D] font-sans antialiased selection:bg-[#DCD3C6] selection:text-[#221F1D]">
     <Header />
