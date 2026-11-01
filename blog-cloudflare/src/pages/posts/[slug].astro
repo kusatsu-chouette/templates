@@ -91,7 +91,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
   <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <style is:global>
@@ -104,11 +104,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       font-family: 'Shippori Mincho', serif;
     }
 
-    /* ========================================================
-       La Chouette 装飾ボックス フルセット（アースカラー仕様）
-       ======================================================== */
-
-    /* 1. 付箋風ボックス */
+    /* 装飾ボックス基本スタイル */
     .box-fusen {
       background-color: #EDE7DF;
       border-left: 5px solid #8E735B;
@@ -119,7 +115,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       line-height: 1.85;
     }
 
-    /* 2. POINT枠 */
     .box-point {
       position: relative;
       background-color: #FFFFFF;
@@ -143,7 +138,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       border-radius: 9999px;
     }
 
-    /* 3. CHECK枠 */
     .box-check {
       position: relative;
       background-color: #FFFFFF;
@@ -167,7 +161,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       border-radius: 9999px;
     }
 
-    /* 4. 窪み・カード枠 */
     .box-inset {
       background-color: #EDE7DF;
       box-shadow: inset 0 2px 4px rgba(34, 31, 29, 0.05);
@@ -178,7 +171,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       line-height: 1.85;
     }
 
-    /* 5. かぎ括弧枠 */
     .box-bracket {
       position: relative;
       background-color: #FFFFFF;
@@ -208,7 +200,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       border-right: 2px solid #8E735B;
     }
 
-    /* 6. 二重線ボックス */
     .box-double {
       background-color: #FFFFFF;
       border: 3px double #8E735B;
@@ -218,7 +209,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       line-height: 1.85;
     }
 
-    /* 7. スティッチ（点線）ボックス */
     .box-stitch {
       background-color: #FAF8F5;
       border: 1.5px dashed #DCD3C6;
@@ -228,7 +218,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       line-height: 1.85;
     }
 
-    /* 8. 角折りメモ風ボックス */
     .box-folded {
       position: relative;
       background-color: #EDE7DF;
@@ -236,22 +225,8 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       padding: 1.5rem 1.75rem;
       margin: 2rem 0;
       line-height: 1.85;
-      box-shadow: 0 2px 6px rgba(34, 31, 29, 0.04);
-    }
-    .box-folded::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 0;
-      height: 0;
-      border-style: solid;
-      border-width: 0 20px 20px 0;
-      border-color: transparent #DCD3C6 transparent transparent;
-      border-bottom-left-radius: 4px;
     }
 
-    /* 9. ストライプ背景ボックス */
     .box-stripe {
       background: repeating-linear-gradient(45deg, #FAF8F5, #FAF8F5 10px, #EDE7DF 10px, #EDE7DF 20px);
       border: 1px solid #DCD3C6;
@@ -261,7 +236,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       line-height: 1.85;
     }
 
-    /* 10. インフォ枠（iアイコン） */
     .box-info {
       position: relative;
       background-color: #FAF8F5;
@@ -289,7 +263,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       border-radius: 9999px;
     }
 
-    /* 11. はてな枠（?アイコン） */
     .box-question {
       position: relative;
       background-color: #FAF8F5;
@@ -316,7 +289,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       border-radius: 9999px;
     }
 
-    /* 12. アラート枠（!アイコン） */
     .box-alert {
       position: relative;
       background-color: #FAF8F5;
@@ -343,14 +315,12 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       border-radius: 9999px;
     }
 
-    /* 13. マーカーライン */
     .marker-bronze {
       background: linear-gradient(transparent 60%, rgba(142, 115, 91, 0.25) 60%);
       font-weight: 600;
       padding: 0 0.15rem;
     }
 
-    /* 14. 吹き出し（セラピスト視点） */
     .speech-therapist {
       display: flex;
       align-items: flex-start;
@@ -369,7 +339,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       font-size: 0.75rem;
       font-weight: 600;
       flex-shrink: 0;
-      box-shadow: 0 2px 4px rgba(34, 31, 29, 0.1);
     }
     .speech-therapist .bubble {
       position: relative;
@@ -383,7 +352,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       border: 1px solid #DCD3C6;
     }
 
-    /* 15. 吹き出し（お客様視点） */
     .speech-client {
       display: flex;
       flex-direction: row-reverse;
@@ -416,7 +384,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       border: 1px solid #DCD3C6;
     }
 
-    /* 見出しスタイル */
     .entry-content h2 {
       font-family: 'Shippori Mincho', serif;
       font-size: 1.35rem;
@@ -499,7 +466,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
         <PortableText value={post.data.content} />
       </div>
 
-      <!-- フルセット自動変換スクリプト -->
+      <!-- スクリプト構文干渉対策済み変換ロジック -->
       <script is:inline>
         (function() {
           const container = document.getElementById('post-content');
@@ -507,37 +474,37 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
 
           let html = container.innerHTML;
 
-          // 1. エスケープされた div タグの復元
-          html = html.replace(/&lt;div class="([^"]+)"&gt;([\s\S]*?)&lt;\/div&gt;/gi, '<div class="$1">$2</div>');
+          // エスケープされた div の復元
+          html = html.replace(/&lt;div class="([^"]+)"&gt;([\s\S]*?)&lt;\/div&gt;/gi, '<div class="$1">$2<' + '/div>');
 
-          // 2. 吹き出し変換
-          html = html.replace(/【(?:セラピスト|私)】([\s\S]*?)【\/(?:セラピスト|私)】/gi, '<div class="speech-therapist"><div class="avatar">私</div><div class="bubble">$1</div></div>');
-          html = html.replace(/【(?:お客様|相談)】([\s\S]*?)【\/(?:お客様|相談)】/gi, '<div class="speech-client"><div class="avatar">客</div><div class="bubble">$1</div></div>');
+          // 吹き出し
+          html = html.replace(/【(?:セラピスト|私)】([\s\S]*?)【\/(?:セラピスト|私)】/gi, '<div class="speech-therapist"><div class="avatar">私<' + '/div><div class="bubble">$1<' + '/div><' + '/div>');
+          html = html.replace(/【(?:お客様|相談)】([\s\S]*?)【\/(?:お客様|相談)】/gi, '<div class="speech-client"><div class="avatar">客<' + '/div><div class="bubble">$1<' + '/div><' + '/div>');
 
-          // 3. ボックス装飾の変換
-          html = html.replace(/【(?:POINT|ポイント)】([\s\S]*?)【\/(?:POINT|ポイント)】/gi, '<div class="box-point">$1</div>');
-          html = html.replace(/【(?:CHECK|チェック)】([\s\S]*?)【\/(?:CHECK|チェック)】/gi, '<div class="box-check">$1</div>');
-          html = html.replace(/【(?:付箋|つぶやき)】([\s\S]*?)【\/(?:付箋|つぶやき)】/gi, '<div class="box-fusen">$1</div>');
-          html = html.replace(/【(?:かぎ括弧|言葉)】([\s\S]*?)【\/(?:かぎ括弧|言葉)】/gi, '<div class="box-bracket">$1</div>');
-          html = html.replace(/【(?:カード|窪み)】([\s\S]*?)【\/(?:カード|窪み)】/gi, '<div class="box-inset">$1</div>');
-          html = html.replace(/【(?:二重線|ダブル)】([\s\S]*?)【\/(?:二重線|ダブル)】/gi, '<div class="box-double">$1</div>');
-          html = html.replace(/【(?:スティッチ|点線)】([\s\S]*?)【\/(?:スティッチ|点線)】/gi, '<div class="box-stitch">$1</div>');
-          html = html.replace(/【(?:角折り|メモ用紙)】([\s\S]*?)【\/(?:角折り|メモ用紙)】/gi, '<div class="box-folded">$1</div>');
-          html = html.replace(/【(?:ストライプ|斜線)】([\s\S]*?)【\/(?:ストライプ|斜線)】/gi, '<div class="box-stripe">$1</div>');
-          html = html.replace(/【(?:インフォ|info)】([\s\S]*?)【\/(?:インフォ|info)】/gi, '<div class="box-info">$1</div>');
-          html = html.replace(/【(?:はてな|疑問)】([\s\S]*?)【\/(?:はてな|疑問)】/gi, '<div class="box-question">$1</div>');
-          html = html.replace(/【(?:注意|アラート)】([\s\S]*?)【\/(?:注意|アラート)】/gi, '<div class="box-alert">$1</div>');
+          // 各種ボックス
+          html = html.replace(/【(?:POINT|ポイント)】([\s\S]*?)【\/(?:POINT|ポイント)】/gi, '<div class="box-point">$1<' + '/div>');
+          html = html.replace(/【(?:CHECK|チェック)】([\s\S]*?)【\/(?:CHECK|チェック)】/gi, '<div class="box-check">$1<' + '/div>');
+          html = html.replace(/【(?:付箋|つぶやき)】([\s\S]*?)【\/(?:付箋|つぶやき)】/gi, '<div class="box-fusen">$1<' + '/div>');
+          html = html.replace(/【(?:かぎ括弧|言葉)】([\s\S]*?)【\/(?:かぎ括弧|言葉)】/gi, '<div class="box-bracket">$1<' + '/div>');
+          html = html.replace(/【(?:カード|窪み)】([\s\S]*?)【\/(?:カード|窪み)】/gi, '<div class="box-inset">$1<' + '/div>');
+          html = html.replace(/【(?:二重線|ダブル)】([\s\S]*?)【\/(?:二重線|ダブル)】/gi, '<div class="box-double">$1<' + '/div>');
+          html = html.replace(/【(?:スティッチ|点線)】([\s\S]*?)【\/(?:スティッチ|点線)】/gi, '<div class="box-stitch">$1<' + '/div>');
+          html = html.replace(/【(?:角折り|メモ用紙)】([\s\S]*?)【\/(?:角折り|メモ用紙)】/gi, '<div class="box-folded">$1<' + '/div>');
+          html = html.replace(/【(?:ストライプ|斜線)】([\s\S]*?)【\/(?:ストライプ|斜線)】/gi, '<div class="box-stripe">$1<' + '/div>');
+          html = html.replace(/【(?:インフォ|info)】([\s\S]*?)【\/(?:インフォ|info)】/gi, '<div class="box-info">$1<' + '/div>');
+          html = html.replace(/【(?:はてな|疑問)】([\s\S]*?)【\/(?:はてな|疑問)】/gi, '<div class="box-question">$1<' + '/div>');
+          html = html.replace(/【(?:注意|アラート)】([\s\S]*?)【\/(?:注意|アラート)】/gi, '<div class="box-alert">$1<' + '/div>');
 
-          // 4. マーカー下線
-          html = html.replace(/【(?:マーカー|強調)】([\s\S]*?)【\/(?:マーカー|強調)】/gi, '<span class="marker-bronze">$1</span>');
+          // マーカー
+          html = html.replace(/【(?:マーカー|強調)】([\s\S]*?)【\/(?:マーカー|強調)】/gi, '<span class="marker-bronze">$1<' + '/span>');
 
-          // 5. 見出し変換（文字数の多い ### を先に変換）
-          html = html.replace(/<p>\s*###\s+(.*?)<\/p>/gi, '<h3>$1</h3>');
-          html = html.replace(/<p>\s*##\s+(.*?)<\/p>/gi, '<h2>$1</h2>');
-          html = html.replace(/###\s+([^<\n]+)/gi, '<h3>$1</h3>');
-          html = html.replace(/##\s+([^<\n]+)/gi, '<h2>$1</h2>');
+          // 見出し変換
+          html = html.replace(/<p>\s*###\s+(.*?)<\/p>/gi, '<h3>$1<' + '/h3>');
+          html = html.replace(/<p>\s*##\s+(.*?)<\/p>/gi, '<h2>$1<' + '/h2>');
+          html = html.replace(/###\s+([^<\n]+)/gi, '<h3>$1<' + '/h3>');
+          html = html.replace(/##\s+([^<\n]+)/gi, '<h2>$1<' + '/h2>');
 
-          // 6. 孤立した # を消去
+          // 孤立した # の消去
           html = html.replace(/<p>\s*#+\s*<\/p>/gi, '');
           html = html.replace(/(?:^|\n)\s*#+\s*(?=\n|$)/g, '');
 
