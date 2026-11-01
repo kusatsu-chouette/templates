@@ -1,0 +1,198 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>プライバシーポリシー | 女性専用リラクゼーションサロン ラ・シュエット</title>
+  <meta name="description" content="草津市の女性専用リラクゼーションサロン ラ・シュエットのプライバシーポリシー（個人情報保護方針）ページです。お客様からお預かりする個人情報の適切な保護と管理について定めています。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script is:inline src="https://cdn.tailwindcss.com"></script>
+  <script is:inline>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            alabaster: '#F7F4EF',
+            champagne: '#EDE7DF',
+            sand: '#DCD3C6',
+            bronze: '#8E735B',
+            charcoal: '#221F1D',
+            taupe: '#7D7571',
+          },
+          fontFamily: {
+            serif: ['"Shippori Mincho"', 'serif'],
+            sans: ['"Zen Kaku Gothic New"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-alabaster text-charcoal font-sans antialiased min-h-screen flex flex-col selection:bg-sand selection:text-charcoal">
+  <Header />
+
+  <main class="flex-grow pt-24 pb-20">
+    {/* ページヘッダー */}
+    <div class="bg-champagne/60 border-b border-sand py-12 md:py-16 mb-12">
+      <div class="max-w-4xl mx-auto px-4 text-center">
+        <p class="text-bronze text-xs md:text-sm tracking-[0.2em] font-serif uppercase mb-2">Privacy Policy</p>
+        <h1 class="text-2xl md:text-4xl font-serif text-charcoal font-normal tracking-wide">プライバシーポリシー</h1>
+        <p class="text-taupe text-sm mt-3 font-sans">
+          お客様の個人情報の適切な保護・管理に関する基本方針
+        </p>
+      </div>
+    </div>
+
+    {/* コンテンツ本文 */}
+    <div class="max-w-3xl mx-auto px-4 sm:px-6">
+      <div class="bg-white rounded-2xl p-6 sm:p-10 border border-sand/70 shadow-sm space-y-10">
+
+        {/* 前文 */}
+        <section class="border-b border-sand/40 pb-8">
+          <p class="text-charcoal text-sm sm:text-base leading-relaxed">
+            女性専用リラクゼーションサロン「ラ・シュエット」（以下「当サロン」といいます）は、お客様に安心して施術やサービスをご利用いただけるよう、個人情報の保護に関する法律（個人情報保護法）その他の関連法令・ガイドラインを遵守し、お客様からお預かりした個人情報の適切な管理と保護に万全を尽くします。
+          </p>
+        </section>
+
+        {/* 第1条 */}
+        <section class="space-y-3">
+          <h2 class="text-lg sm:text-xl font-serif text-charcoal flex items-center gap-2 border-l-2 border-bronze pl-3">
+            第1条（個人情報の定義）
+          </h2>
+          <div class="text-sm sm:text-base text-taupe leading-relaxed space-y-2">
+            <p>本プライバシーポリシーにおける「個人情報」とは、生存する個人に関する情報であって、氏名、生年月日、住所、電話番号、メールアドレスなど、特定の個人を識別できる情報（他の情報と容易に照合することができ、それにより特定の個人を識別できるものを含みます）を指します。</p>
+            <p>また、安心・安全な施術を提供するためにご記入いただくカウンセリングシート等の健康状態に関する情報も、重要な個人情報として厳重に取り扱います。</p>
+          </div>
+        </section>
+
+        {/* 第2条 */}
+        <section class="space-y-3">
+          <h2 class="text-lg sm:text-xl font-serif text-charcoal flex items-center gap-2 border-l-2 border-bronze pl-3">
+            第2条（個人情報の取得方法）
+          </h2>
+          <div class="text-sm sm:text-base text-taupe leading-relaxed space-y-2">
+            <p>当サロンは、適法かつ公正な手段によって個人情報を取得いたします。主に以下のような機会にお客様の情報を取得します。</p>
+            <ul class="list-disc list-inside space-y-1.5 pl-2 text-charcoal/90 pt-1">
+              <li>オンライン予約システム（Square予約）によるご予約時</li>
+              <li>公式ウェブサイトのお問い合わせフォームからの送信時</li>
+              <li>公式LINEアカウント、電子メール、またはお電話でのお問い合わせ時</li>
+              <li>サロンご来店時のカウンセリングシート（ヒアリングシート）のご記入時</li>
+            </ul>
+          </div>
+        </section>
+
+        {/* 第3条 */}
+        <section class="space-y-3">
+          <h2 class="text-lg sm:text-xl font-serif text-charcoal flex items-center gap-2 border-l-2 border-bronze pl-3">
+            第3条（個人情報の利用目的）
+          </h2>
+          <div class="text-sm sm:text-base text-taupe leading-relaxed space-y-2">
+            <p>当サロンが取得した個人情報は、以下の目的の範囲内でのみ適正に利用いたします。ご本人の同意なく目的外の利用を行うことはありません。</p>
+            <ul class="list-disc list-inside space-y-1.5 pl-2 text-charcoal/90 pt-1">
+              <li>ご予約の確認、日程調整、および緊急時のご連絡のため</li>
+              <li>お客様のお身体の状態やお好みに合わせた安全なリラクゼーション施術・サービスの提供のため</li>
+              <li>お客様からのお問い合わせ、ご相談に対する回答および資料送付のため</li>
+              <li>施術後のアフターフォローやサロンからのお知らせ（希望されたお客様に限る）の送付のため</li>
+              <li>サービス品質の向上、施術内容の改善に向けた分析のため（個人を特定できない統計処理を行った上で実施）</li>
+            </ul>
+          </div>
+        </section>
+
+        {/* 第4条 */}
+        <section class="space-y-3">
+          <h2 class="text-lg sm:text-xl font-serif text-charcoal flex items-center gap-2 border-l-2 border-bronze pl-3">
+            第4条（個人情報の第三者への開示・提供の禁止）
+          </h2>
+          <div class="text-sm sm:text-base text-taupe leading-relaxed space-y-2">
+            <p>当サロンは、お客様よりお預かりした個人情報を適切に管理し、次のいずれかに該当する場合を除き、個人情報を第三者に開示または提供いたしません。</p>
+            <ul class="list-disc list-inside space-y-1.5 pl-2 text-charcoal/90 pt-1">
+              <li>お客様ご本人の同意がある場合</li>
+              <li>法令に基づき裁判所、警察等の公的機関から開示を求められた場合</li>
+              <li>人の生命、身体または財産の保護のために必要があり、本人の同意を得ることが困難である場合</li>
+              <li>利用目的の達成に必要な範囲内において、業務委託先（予約システム提供会社、決済代行会社など）へ守秘義務を課した上で委託する場合</li>
+            </ul>
+          </div>
+        </section>
+
+        {/* 第5条 */}
+        <section class="space-y-3">
+          <h2 class="text-lg sm:text-xl font-serif text-charcoal flex items-center gap-2 border-l-2 border-bronze pl-3">
+            第5条（個人情報の安全管理措置）
+          </h2>
+          <div class="text-sm sm:text-base text-taupe leading-relaxed space-y-2">
+            <p>1. 当サロンは、個人情報の正確性を保ち、漏洩、滅失、毀損、不正アクセスなどを防止するため、適切な情報セキュリティ対策および厳重な物理的・電子的な管理措置を講じます。</p>
+            <p>2. カウンセリングシート等の紙媒体の書類につきましても、施錠可能な保管庫にて厳重に保管し、不要となった際はシュレッダー等により確実に破棄・消去いたします。</p>
+          </div>
+        </section>
+
+        {/* 第6条 */}
+        <section class="space-y-3">
+          <h2 class="text-lg sm:text-xl font-serif text-charcoal flex items-center gap-2 border-l-2 border-bronze pl-3">
+            第6条（アクセス解析ツールおよびCookieについて）
+          </h2>
+          <div class="text-sm sm:text-base text-taupe leading-relaxed space-y-2">
+            <p>1. 当サロンのウェブサイトでは、サイトの利用状況を把握し利便性を向上させる目的で、Cookie（クッキー）を使用することがあります。</p>
+            <p>2. Cookieを通じて収集されるデータには、お客様のお名前、ご住所、電話番号、メールアドレスなど、特定の個人を直接識別できる情報は一切含まれません。</p>
+            <p>3. お客様はブラウザの設定によりCookieの受け入れを拒否することが可能です。ただし、その場合サイトの一部機能が正常に動作しない可能性がございます。</p>
+          </div>
+        </section>
+
+        {/* 第7条 */}
+        <section class="space-y-3">
+          <h2 class="text-lg sm:text-xl font-serif text-charcoal flex items-center gap-2 border-l-2 border-bronze pl-3">
+            第7条（個人情報の開示・訂正・利用停止・削除）
+          </h2>
+          <div class="text-sm sm:text-base text-taupe leading-relaxed space-y-2">
+            <p>お客様ご本人から保有個人データの開示、内容の訂正、追加、利用停止、または削除のご請求をいただいた場合は、ご本人であることを厳格に確認させていただいた上で、法令の定めに従い遅滞なく対応いたします。</p>
+          </div>
+        </section>
+
+        {/* 第8条 */}
+        <section class="space-y-3">
+          <h2 class="text-lg sm:text-xl font-serif text-charcoal flex items-center gap-2 border-l-2 border-bronze pl-3">
+            第8条（プライバシーポリシーの改定）
+          </h2>
+          <div class="text-sm sm:text-base text-taupe leading-relaxed space-y-2">
+            <p>当サロンは、個人情報保護に関する法令や社会規範の変更、サロンサービスの改善に伴い、本プライバシーポリシーの内容を適宜見直し、改定することがあります。改定後のポリシーは本ウェブサイトに掲載された時点で効力を生じるものとします。</p>
+          </div>
+        </section>
+
+        {/* 制定日およびお問い合わせ窓口 */}
+        <div class="pt-8 border-t border-sand/40 text-xs sm:text-sm text-taupe space-y-2">
+          <p>制定日 - 2017年7月1日</p>
+          <p>最終改定日 - 2026年11月1日</p>
+          <div class="mt-4 pt-4 border-t border-dashed border-sand/40">
+            <p class="font-medium text-charcoal">【個人情報に関するお問い合わせ窓口】</p>
+            <p class="mt-1">女性専用リラクゼーションサロン ラ・シュエット</p>
+            <p>所在地 - 滋賀県草津市大路2丁目16-21 XYZ Court草津大路301号</p>
+            <p>代表者・個人情報管理責任者 - 高橋竜真</p>
+            <p>メールアドレス - kusatsu.chouette@gmail.com</p>
+            <p>電話番号 - 080-6219-3290</p>
+          </div>
+        </div>
+
+      </div>
+
+      {/* 関連リンク */}
+      <div class="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4 text-sm text-taupe">
+        <a href="/terms" class="hover:text-bronze transition-colors">
+          サロン利用規約はこちら →
+        </a>
+        <span class="hidden sm:inline text-sand">|</span>
+        <a href="/" class="hover:text-bronze transition-colors">
+          ← トップページに戻る
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</body>
+</html>
