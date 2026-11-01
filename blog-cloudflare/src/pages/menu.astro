@@ -2,6 +2,7 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
+// サロン施術メニュー（各コース専用画像）
 const salonMenus = [
   {
     name: "スタンダード オイルトリートメント",
@@ -29,34 +30,16 @@ const salonMenus = [
   }
 ];
 
-// メニュー料金の下に配置するこだわり・おもてなしのデザイン要素
-const salonFeatures = [
-  {
-    title: "厳選アロマと温かなオイル",
-    description: "天然由来の上質なオイルを使用し、お一人おひとりの気分や体調に寄り添う心地よい香りで包み込みます。",
-    image: "https://kusatsu-aroma.com/_emdash/api/media/file/01M6AV6VAZEMN4TK3Y2KSF8W03.01M6AV6WC8476QG42D7M4G2BRZ.jpg",
-  },
-  {
-    title: "オールハンドの丁寧な施術",
-    description: "機械を使わず手のひらの温もりを通じて、日々の緊張でこわばったお身体をじっくりと解きほぐします。",
-    image: "https://kusatsu-aroma.com/_emdash/api/media/file/01M6AV6V67J0ZDRVM57H3XM9VC.01M6AV6W9Y8TXA8BECK1FVXTTT.jpg",
-  },
-  {
-    title: "安心の女性専用プライベート空間",
-    description: "他のお客様と重なることのない完全個室で、心置きなくリラックスしていただける時間をお届けします。",
-    image: "https://kusatsu-aroma.com/_emdash/api/media/file/01M6AV6VC8MA2BW09N3G3ZJDJH.01M6AV6WE1CMQGVKKN2QYX2FVG.jpg",
-  }
-];
-
-const visitMenus = [
-  {
-    name: "出張オイルトリートメントコース",
-    duration: "90分〜",
-    price: "¥9,000〜（出張費込/別途要確認）",
-    description: "ご自宅や宿泊先のリラックス空間へお伺いし、サロン同様の心地よいトリートメントをお届けいたします。",
-    notes: "※出張サービスは移動時間の調整・確認が必要なため、Squareによるネット即時予約は受け付けておりません。公式LINEまたはお電話にて日程をご相談ください。"
-  }
-];
+// 出張トリートメント
+const visitMenu = {
+  name: "出張オイルトリートメントコース",
+  duration: "90分〜",
+  price: "¥9,000〜",
+  priceNote: "（出張費込 / エリア等要確認）",
+  description: "サロンへお越しいただくのが難しい日や、施術後にそのまま眠りにつきたい夜に。ご自宅や宿泊先へお伺いし、サロン同様の心地よいトリートメントをお届けいたします。",
+  image: "https://kusatsu-aroma.com/_emdash/api/media/file/01M6AV6VC8MA2BW09N3G3ZJDJH.01M6AV6WE1CMQGVKKN2QYX2FVG.jpg",
+  notes: "※出張サービスは移動時間の調整・確認が必要なため、Squareによるネット即時予約は受け付けておりません。公式LINEまたはお電話にて日程をご相談ください。"
+};
 ---
 
 <!DOCTYPE html>
@@ -125,7 +108,7 @@ const visitMenus = [
                   <span class="text-xs text-[#7D7571]">/ {item.duration}</span>
                 </div>
 
-                <!-- メニュー名と料金の直下に画像を配置 -->
+                <!-- メニュー料金直下の画像 -->
                 <div class="overflow-hidden rounded-lg aspect-[16/10] bg-[#DCD3C6] mb-4 shadow-inner">
                   <img
                     src={item.image}
@@ -156,97 +139,144 @@ const visitMenus = [
         </div>
       </section>
 
-      <!-- メニュー料金下のデザインセクション（サロンのこだわり・おもてなし） -->
+      <!-- メニュー料金下のデザインセクション（その他画像2枚を活用したビジュアル紹介） -->
       <section class="py-16 md:py-20 bg-[#EDE7DF] border-t border-[#DCD3C6] px-4 sm:px-6">
         <div class="max-w-5xl mx-auto">
           <div class="text-center mb-12">
-            <span class="text-xs font-semibold tracking-wider text-[#8E735B] uppercase block mb-1">OUR COMMITMENT</span>
-            <h2 class="text-xl md:text-3xl font-serif text-[#221F1D]">心地よい時間をお届けするために</h2>
+            <span class="text-xs font-semibold tracking-wider text-[#8E735B] uppercase block mb-1">TREATMENT EXPERIENCE</span>
+            <h2 class="text-xl md:text-3xl font-serif text-[#221F1D]">温もりと静寂に包まれるひととき</h2>
             <p class="text-xs md:text-sm text-[#7D7571] mt-2">
-              安心してお身体を預けていただけるよう、ひとつひとつの時間に真心を込めてお迎えいたします
+              慌ただしい日常のスイッチをオフにして、心と身体が深く息を吹き返す時間を
             </p>
           </div>
 
-          <div class="grid gap-8 md:grid-cols-3">
-            {salonFeatures.map((feature) => (
-              <div class="bg-[#F7F4EF] rounded-xl overflow-hidden border border-[#DCD3C6] shadow-sm flex flex-col transition-all duration-300 hover:shadow-md">
-                <div class="aspect-[16/10] overflow-hidden bg-[#DCD3C6]">
-                  <img
-                    src={feature.image}
-                    alt={feature.title}
-                    class="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105"
-                    loading="lazy"
-                  />
-                </div>
-                <div class="p-6 flex-1 flex flex-col justify-between">
-                  <div>
-                    <h3 class="text-base font-bold text-[#221F1D] mb-2">{feature.title}</h3>
-                    <p class="text-xs md:text-sm text-[#7D7571] leading-relaxed">
-                      {feature.description}
-                    </p>
-                  </div>
+          <div class="grid gap-8 md:grid-cols-2">
+            <!-- カード1: オイルトリートメントの心地よさ -->
+            <div class="bg-[#F7F4EF] rounded-2xl overflow-hidden border border-[#DCD3C6] shadow-sm flex flex-col group">
+              <div class="aspect-[16/10] overflow-hidden bg-[#DCD3C6]">
+                <img
+                  src="https://kusatsu-aroma.com/_emdash/api/media/file/01M6AV6VAZEMN4TK3Y2KSF8W03.01M6AV6WC8476QG42D7M4G2BRZ.jpg"
+                  alt="厳選したアロマオイルで行うトリートメント"
+                  class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                />
+              </div>
+              <div class="p-6 md:p-8 flex-1 flex flex-col justify-between">
+                <div>
+                  <span class="text-[11px] font-semibold tracking-widest text-[#8E735B] uppercase block mb-1">AROMA & OIL</span>
+                  <h3 class="text-base md:text-lg font-bold text-[#221F1D] mb-2">
+                    お肌になじむ温かなオイルと優しい香り
+                  </h3>
+                  <p class="text-xs md:text-sm text-[#7D7571] leading-relaxed">
+                    厳選した天然由来の上質なオイルを贅沢に使用。お好みの心地よい香りに包まれながら、手のひらから伝わる適度な圧と温もりで、こわばった緊張をなめらかに解き放ちます。
+                  </p>
                 </div>
               </div>
-            ))}
+            </div>
+
+            <!-- カード2: オールハンドの贅沢なケア -->
+            <div class="bg-[#F7F4EF] rounded-2xl overflow-hidden border border-[#DCD3C6] shadow-sm flex flex-col group">
+              <div class="aspect-[16/10] overflow-hidden bg-[#DCD3C6]">
+                <img
+                  src="https://kusatsu-aroma.com/_emdash/api/media/file/01M6AV6V67J0ZDRVM57H3XM9VC.01M6AV6W9Y8TXA8BECK1FVXTTT.jpg"
+                  alt="オールハンドで行う丁寧なオイルトリートメント"
+                  class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                />
+              </div>
+              <div class="p-6 md:p-8 flex-1 flex flex-col justify-between">
+                <div>
+                  <span class="text-[11px] font-semibold tracking-widest text-[#8E735B] uppercase block mb-1">ALL HAND CARE</span>
+                  <h3 class="text-base md:text-lg font-bold text-[#221F1D] mb-2">
+                    全身を包み込むオールハンドの丁寧な手技
+                  </h3>
+                  <p class="text-xs md:text-sm text-[#7D7571] leading-relaxed">
+                    機械に頼らず、私自身のオールハンドで指先・足先まで巡りを意識しながら施術いたします。呼吸に合わせたゆったりとしたストロークで、深いリラクゼーションへと導きます。
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- 出張トリートメントメニュー -->
-      <section class="py-16 md:py-20 bg-[#F7F4EF] border-b border-[#DCD3C6] px-4 sm:px-6">
-        <div class="max-w-4xl mx-auto">
-          <div class="text-center mb-10">
+      <!-- 出張トリートメントメニュー（その他画像1枚を組み込んだ洗練された2カラムデザイン） -->
+      <section class="py-16 md:py-24 bg-[#F7F4EF] border-t border-[#DCD3C6] px-4 sm:px-6">
+        <div class="max-w-5xl mx-auto">
+          <div class="text-center mb-12">
             <span class="text-xs font-semibold tracking-wider text-[#8E735B] uppercase block mb-1">VISIT TREATMENT</span>
             <h2 class="text-xl md:text-3xl font-serif text-[#221F1D]">出張トリートメント</h2>
             <p class="text-xs md:text-sm text-[#7D7571] mt-2">ご自宅やご滞在先で、移動の負担なく味わうリラクゼーション</p>
           </div>
 
-          <div class="space-y-6">
-            {visitMenus.map((item) => (
-              <div class="bg-[#EDE7DF] rounded-xl p-6 md:p-8 border border-[#DCD3C6]">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-                  <div>
-                    <h3 class="text-lg md:text-xl font-bold text-[#221F1D]">{item.name}</h3>
-                    <p class="text-xs md:text-sm text-[#7D7571] mt-1">{item.description}</p>
-                  </div>
-                  <div class="text-left md:text-right">
-                    <span class="text-2xl font-bold text-[#8E735B]">{item.price}</span>
-                    <span class="text-xs text-[#7D7571] block">所要目安: {item.duration}</span>
+          <div class="bg-[#EDE7DF] rounded-2xl border border-[#DCD3C6] overflow-hidden shadow-sm grid md:grid-cols-12 gap-0">
+            <!-- 左カラム：出張トリートメントのイメージ画像 -->
+            <div class="md:col-span-5 relative min-h-[260px] md:min-h-full bg-[#DCD3C6] overflow-hidden group">
+              <img
+                src={visitMenu.image}
+                alt="出張トリートメントのイメージ"
+                class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-[#221F1D]/40 via-transparent to-transparent md:hidden"></div>
+              <div class="absolute bottom-3 left-4 md:hidden text-white text-xs font-medium tracking-wide">
+                プライベート空間へ直接お届け
+              </div>
+            </div>
+
+            <!-- 右カラム：コース詳細＆ご相談導線 -->
+            <div class="md:col-span-7 p-6 sm:p-8 md:p-10 flex flex-col justify-between">
+              <div>
+                <div class="flex flex-wrap items-baseline justify-between gap-2 mb-3">
+                  <h3 class="text-xl font-bold text-[#221F1D]">{visitMenu.name}</h3>
+                  <div class="text-right">
+                    <span class="text-2xl font-bold text-[#8E735B]">{visitMenu.price}</span>
+                    <span class="text-xs text-[#7D7571] block sm:inline sm:ml-1">{visitMenu.priceNote}</span>
                   </div>
                 </div>
 
-                <div class="bg-[#F7F4EF] rounded-lg p-4 mb-6 border border-[#DCD3C6]">
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-[#F7F4EF] rounded-full text-xs text-[#7D7571] border border-[#DCD3C6] mb-4">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#8E735B]"></span>
+                  所要目安: {visitMenu.duration}
+                </div>
+
+                <p class="text-xs md:text-sm text-[#7D7571] leading-relaxed mb-6">
+                  {visitMenu.description}
+                </p>
+
+                <div class="bg-[#F7F4EF] rounded-xl p-4 mb-6 border border-[#DCD3C6]">
                   <p class="text-xs text-[#7D7571] leading-relaxed">
-                    {item.notes}
+                    {visitMenu.notes}
                   </p>
                 </div>
-
-                <div class="flex flex-col sm:flex-row gap-4">
-                  <a
-                    href="https://lin.ee/Sv8oVDh"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="出張トリートメントについて公式LINEで予約相談する"
-                    class="flex-1 inline-flex items-center justify-center bg-[#8E735B] hover:bg-[#78614C] text-white text-sm font-medium py-3 px-6 rounded-lg transition-colors duration-200"
-                  >
-                    公式LINEで日程を相談する
-                  </a>
-                  <a
-                    href="tel:080-6219-3290"
-                    aria-label="出張トリートメントについて電話で問い合わせる"
-                    class="inline-flex items-center justify-center border border-[#8E735B] text-[#8E735B] hover:bg-[#8E735B] hover:text-white text-sm font-medium py-3 px-6 rounded-lg transition-colors duration-200"
-                  >
-                    電話で問い合わせる
-                  </a>
-                </div>
               </div>
-            ))}
+
+              <!-- ご予約・ご相談アクションボタン -->
+              <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                <a
+                  href="https://lin.ee/Sv8oVDh"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="出張トリートメントについて公式LINEで日程を相談する"
+                  class="flex-1 inline-flex items-center justify-center bg-[#8E735B] hover:bg-[#78614C] text-white text-sm font-medium py-3.5 px-6 rounded-lg transition-colors duration-200 shadow-sm"
+                >
+                  公式LINEで日程を相談する
+                </a>
+                <a
+                  href="tel:080-6219-3290"
+                  aria-label="出張トリートメントについて電話で問い合わせる"
+                  class="inline-flex items-center justify-center border border-[#8E735B] text-[#8E735B] hover:bg-[#8E735B] hover:text-white text-sm font-medium py-3.5 px-6 rounded-lg transition-colors duration-200"
+                >
+                  電話で問い合わせる
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       <!-- 施術に関するご案内 -->
-      <section class="py-16 md:py-20 px-4 sm:px-6 max-w-4xl mx-auto">
+      <section class="py-16 md:py-20 px-4 sm:px-6 max-w-4xl mx-auto border-t border-[#DCD3C6]">
         <div class="text-center mb-10">
           <span class="text-xs font-semibold tracking-wider text-[#8E735B] uppercase block mb-1">GUIDE</span>
           <h2 class="text-xl md:text-3xl font-serif text-[#221F1D]">ご利用に関するご案内</h2>
@@ -269,7 +299,7 @@ const visitMenus = [
               お支払い方法・お問い合わせ
             </h3>
             <p class="text-xs md:text-sm text-[#7D7571] leading-relaxed">
-              Squareによる事前オンライン決済や各種カード決済に対応しております。ご不明点やご相談がございましたら、お気軽に公式LINEまたはお電話（080-6219-3290）にてお尋ねください。
+              各種カード決済、QRコード決済に対応しております。ご不明点やご相談がございましたら、お気軽に公式LINEまたはお電話（080-6219-3290）にてお尋ねください。
             </p>
           </div>
         </div>
