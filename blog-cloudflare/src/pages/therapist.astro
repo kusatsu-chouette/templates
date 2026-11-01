@@ -1,5 +1,6 @@
 ---
 // templates/blog-cloudflare/src/pages/therapist.astro
+import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
@@ -7,16 +8,10 @@ const pageTitle = "オーナープロフィール｜草津の女性専用アロ�
 const pageDescription = "滋賀県草津市にある女性専用アロマサロン「ラ・シュエット」のオーナーセラピスト高橋のプロフィール。飲食店の店長から突発性難聴を経てセラピストへ転身した経緯や、出張サービスから始めた歩みをお伝えします。";
 ---
 
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{pageTitle}</title>
-  <meta name="description" content={pageDescription} />
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
+<Layout title={pageTitle} description={pageDescription}>
+  <!-- Tailwind CSSのフォールバック設定 -->
+  <script is:inline src="https://cdn.tailwindcss.com"></script>
+  <script is:inline>
     tailwind.config = {
       theme: {
         extend: {
@@ -32,314 +27,314 @@ const pageDescription = "滋賀県草津市にある女性専用アロマサロ�
       }
     }
   </script>
-</head>
-<body class="bg-alabaster text-charcoal font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-champagne selection:text-bronze">
-  <Header />
 
-  <main class="flex-grow pt-10 pb-20">
-    <article class="max-w-2xl mx-auto px-4 sm:px-6">
+  <div class="bg-alabaster text-charcoal font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-champagne selection:text-bronze">
+    <Header />
 
-      <!-- ページヘッダー -->
-      <header class="text-center mb-10">
-        <p class="text-[11px] font-semibold tracking-[0.25em] text-bronze uppercase mb-1">
-          Owner Profile
-        </p>
-        <h1 class="text-2xl sm:text-3xl font-serif font-bold text-charcoal mb-3">
-          セラピスト 高橋 <span class="text-sm sm:text-base font-normal text-bronze block sm:inline sm:ml-2">/ TAKAHASHI</span>
-        </h1>
-        <div class="w-10 h-0.5 bg-bronze mx-auto"></div>
-      </header>
+    <main class="flex-grow pt-8 pb-20">
+      <article class="max-w-2xl mx-auto px-4 sm:px-6">
 
-      <!-- スペック紹介カード -->
-      <section class="bg-champagne rounded-2xl p-6 sm:p-7 mb-14 border border-sand shadow-sm">
-        <div class="flex flex-col sm:flex-row gap-6 items-center">
-          <div class="w-36 h-36 sm:w-40 sm:h-40 rounded-full overflow-hidden border-4 border-alabaster shadow shrink-0 bg-sand">
-            <img 
-              src="/images/therapist-portrait.jpg" 
-              alt="ラ・シュエット オーナーセラピスト 高橋" 
-              class="w-full h-full object-cover object-top"
-              onerror="this.src='https://placehold.co/400x400/EDE7DF/8E735B?text=Takahashi'"
-            />
-          </div>
+        <!-- ページヘッダー -->
+        <header class="text-center mb-10">
+          <p class="text-[11px] font-semibold tracking-[0.25em] text-bronze uppercase mb-1">
+            Owner Profile
+          </p>
+          <h1 class="text-2xl sm:text-3xl font-serif font-bold text-charcoal mb-3">
+            セラピスト 高橋 <span class="text-sm sm:text-base font-normal text-bronze block sm:inline sm:ml-2">/ TAKAHASHI</span>
+          </h1>
+          <div class="w-10 h-0.5 bg-bronze mx-auto"></div>
+        </header>
 
-          <div class="space-y-2.5 text-xs sm:text-sm leading-relaxed w-full">
-            <div class="pb-1 border-b border-sand/70 flex items-center justify-between">
-              <span class="font-bold text-charcoal">高橋（オーナーセラピスト）</span>
-              <span class="text-[11px] px-2.5 py-0.5 rounded-full bg-bronze text-white">施術歴15年 / 開業9年目</span>
+        <!-- スペック紹介カード -->
+        <section class="bg-champagne rounded-2xl p-6 sm:p-7 mb-14 border border-sand shadow-sm">
+          <div class="flex flex-col sm:flex-row gap-6 items-center">
+            <div class="w-36 h-36 sm:w-40 sm:h-40 rounded-full overflow-hidden border-4 border-alabaster shadow shrink-0 bg-sand">
+              <img 
+                src="/images/therapist-portrait.jpg" 
+                alt="ラ・シュエット オーナーセラピスト 高橋" 
+                class="w-full h-full object-cover object-top"
+                onerror="this.src='https://placehold.co/400x400/EDE7DF/8E735B?text=Takahashi'"
+              />
             </div>
-            <dl class="space-y-2 pt-1">
-              <div class="flex flex-col sm:flex-row sm:gap-2">
-                <dt class="font-bold text-bronze sm:w-24 shrink-0">施術実績</dt>
-                <dd class="text-charcoal">1,000名以上（女性専用・延べ人数）</dd>
+
+            <div class="space-y-2.5 text-xs sm:text-sm leading-relaxed w-full">
+              <div class="pb-1 border-b border-sand/70 flex items-center justify-between">
+                <span class="font-bold text-charcoal">高橋（オーナーセラピスト）</span>
+                <span class="text-[11px] px-2.5 py-0.5 rounded-full bg-bronze text-white">施術歴15年 / 開業9年目</span>
               </div>
-              <div class="flex flex-col sm:flex-row sm:gap-2">
-                <dt class="font-bold text-bronze sm:w-24 shrink-0">特徴</dt>
-                <dd class="text-charcoal">アラフィフ / 男性セラピスト</dd>
-              </div>
-              <div class="flex flex-col sm:flex-row sm:gap-2">
-                <dt class="font-bold text-bronze sm:w-24 shrink-0">得意な技術</dt>
-                <dd class="text-charcoal">男性特有の大きな手を使った、密着感のあるロングストロークのアロマオイルトリートメント</dd>
-              </div>
-              <div class="flex flex-col sm:flex-row sm:gap-2">
-                <dt class="font-bold text-bronze sm:w-24 shrink-0">性格</dt>
-                <dd class="text-charcoal">穏やか、聞き上手（とよく言われます）</dd>
-              </div>
-              <div class="flex flex-col sm:flex-row sm:gap-2">
-                <dt class="font-bold text-bronze sm:w-24 shrink-0">趣味</dt>
-                <dd class="text-charcoal">愛猫（レウ＆アメ）と遊ぶこと、ホームページ制作</dd>
-              </div>
-            </dl>
-          </div>
-        </div>
-
-        <div class="mt-5 pt-4 border-t border-sand text-xs text-charcoal/80 leading-relaxed bg-alabaster/70 p-3.5 rounded-xl">
-          「男性の施術は初めて」という方もご安心ください。タオルワークやプライバシーには細心の注意を払い、女性専用サロンならではの細やかな気配りを徹底しております。
-        </div>
-      </section>
-
-      <!-- ストーリー本文 -->
-      <section class="space-y-12 text-sm sm:text-base leading-relaxed text-charcoal">
-        
-        <!-- はじめに -->
-        <div class="bg-white/60 p-6 sm:p-7 rounded-2xl border border-sand">
-          <h2 class="text-base sm:text-lg font-bold font-serif text-charcoal mb-3">
-            はじめまして。
-          </h2>
-          <p class="mb-3">
-            滋賀県草津市にある女性専用アロマサロン「ラ・シュエット」のオーナーセラピスト、高橋です。
-          </p>
-          <p class="mb-3">
-            「女性専用のサロンなのに、男性セラピストってどんな人？」<br />
-            きっと、そんな不安や好奇心を持ってこのページを開いてくださったのだと思います。
-          </p>
-          <p>
-            私自身の人柄が少しでも伝わればと思い、これまでの歩みをありのままに書いてみました。少し長くなりますが、スマホをスクロールしながら、リラックスしてお付き合いいただけたら嬉しいです。
-          </p>
-        </div>
-
-        <!-- 第1章 -->
-        <div class="border-b border-sand pb-10">
-          <span class="text-[11px] font-bold text-bronze tracking-wider uppercase block mb-1">Chapter 01</span>
-          <h2 class="text-lg sm:text-xl font-serif font-bold text-charcoal mb-5">
-            【第1章】なぜリラクゼーション業界へ？ 〜37歳の決断〜
-          </h2>
-
-          <h3 class="text-base font-bold text-charcoal mb-2">心と体の限界、そして退職</h3>
-          <p class="mb-3">
-            かつての私は、全国展開する飲食店の店長として働いていました。いわゆる転勤族で、大阪から始まり、京都、愛知、静岡、岐阜……と各地を転々とし、最後にたどり着いたのがこの滋賀県草津市です。
-          </p>
-          <p class="mb-3">
-            退職の決定的な理由は、過度なストレスからくる「突発性難聴」でした。当時の会社は「休まず朝から晩まで働く店長が偉い！」という価値観。出勤しているのに帳簿上は「休み」。本当の休日でも、お店から電話がかかってくればすぐに出勤。「店長なら当たり前」と言われるかもしれませんが、私の心と体は悲鳴を上げていました。
-          </p>
-          <p class="mb-6">
-            約10年勤めた会社でしたが、37歳で思い切って退職を決意しました。
-          </p>
-
-          <h3 class="text-base font-bold text-charcoal mb-2">人生を変えた「Dさん」の一言</h3>
-          <p class="mb-3">
-            退職後は職業訓練所に通い始めました。やりたいこともなく、なんとなく機械加工の訓練を受けていたのですが、手先が不器用な私は周りの人に「これ、どうやるんっすか？」と聞いてばかり（笑）。でも、そこでおしゃべりをして仲良くなるのが楽しくて、すっかり学生気分でリハビリのような日々を過ごしていました。
-          </p>
-          <p class="mb-3">
-            そんなある日、仕事がバリバリできそうな年上の紳士、Dさんが私に1枚の求人票を差し出しました。
-          </p>
-
-          <div class="my-5 p-4 bg-champagne border-l-4 border-bronze rounded-r-xl">
-            <p class="font-bold text-bronze text-xs mb-1.5">💬 人生を変えたDさんとの会話</p>
-            <p class="text-xs sm:text-sm italic text-charcoal leading-relaxed">
-              「高橋くん、このリラクゼーションサロンの面接、行ってみたら？」<br />
-              「えっ？ 私、飲食業しかやったことないオジサンですよ！？」
-            </p>
-          </div>
-
-          <p class="mb-3">
-            最初は驚きましたが、よくよく調べてみると、技術さえ身につければ自分一人で自由に働ける世界だと知りました。「なんだか、すごく面白そう……！」と直感し、ダメ元で受けた面接でまさかの採用。お店から笑顔で帰っていくお客様の姿を見て、「私にも、こんな風に人を笑顔にできるだろうか」とワクワクしたのを覚えています。
-          </p>
-
-          <h3 class="text-base font-bold text-charcoal mb-2 mt-6">タバコとの別れ、そして覚悟</h3>
-          <p class="mb-3">
-            37歳、オジサン、未経験。おまけに施術は下手くそ。そして、何より「タバコ臭い」。これではお客様を癒やすことなんてできません。
-          </p>
-          <p class="mb-3">
-            私は17歳から20年間吸い続けてきたタバコと決別することを決めました。友人たちと語り明かした夜、失恋の悲しみを癒やしてくれた日々……。たくさんの思い出が詰まった1本のタバコを深く吸い込み、喫煙室のテーブルにライターと一緒に置いて、静かに部屋を出ました。
-          </p>
-          <p class="font-bold text-bronze">
-            「本気で、この業界で生きていくぞ」と誓った瞬間でした。
-          </p>
-        </div>
-
-        <!-- 第2章 -->
-        <div class="border-b border-sand pb-10">
-          <span class="text-[11px] font-bold text-bronze tracking-wider uppercase block mb-1">Chapter 02</span>
-          <h2 class="text-lg sm:text-xl font-serif font-bold text-charcoal mb-5">
-            【第2章】37歳オジサン新人の泥だらけ奮闘記
-          </h2>
-
-          <h3 class="text-base font-bold text-charcoal mb-2">年下の上司と、嫌われ者のポンコツ店長</h3>
-          <p class="mb-3">
-            配属されたのは、会社で一番忙しい店舗。店長も役員もみんな私より5つ下で、周りのセラピストは20代の女性ばかり。「えらいところに来てしまった……」というのが正直な感想でした。
-          </p>
-          <p class="mb-3">
-            冷たい言葉をかけられることもありましたが、優しい女性セラピストたちに助けられ、なんとか全てのメニューを習得。少しずつ自信がついてきた頃、会社で2番目に忙しい店舗の店長に抜擢されました。
-          </p>
-          <p class="mb-6">
-            しかし、私はまだまだ施術が下手くそなポンコツ店長。そこで、飲食店時代に学んだ「誰もが嫌がる仕事を率先してやる」ことを実践し、毎日ひたすらチラシ配りに走り回りました。
-          </p>
-
-          <h3 class="text-base font-bold text-charcoal mb-2">泥だらけの謝罪で知った「お客様の優しさ」</h3>
-          <p class="mb-3">
-            ある日、店舗の大ベテランスタッフの施術に対して「痛すぎた」というクレームが入りました。私はすぐさま原付バイクに飛び乗り、山奥にあるお客様のご自宅へ謝罪に向かいました。
-          </p>
-          <p class="mb-3">
-            しかし、焦っていた私は途中で溝にハマり、スーツは泥だらけに。そのままの情けない姿で必死に謝罪する私を見て、お客様はこう仰ってくれました。
-          </p>
-
-          <div class="my-5 p-4 bg-champagne border-l-4 border-bronze rounded-r-xl">
-            <p class="font-bold text-bronze text-xs mb-1.5">🌿 お客様からいただいた温かい言葉</p>
-            <p class="text-xs sm:text-sm italic text-charcoal leading-relaxed">
-              「もういいよ。あんたの誠意はしっかり受け取ったから。また予約するからね」
-            </p>
-          </div>
-
-          <p>
-            その優しい笑顔に、どれほど救われたか分かりません。セラピストとしての本当の責任と、覚悟を学んだ忘れられない出来事です。
-          </p>
-        </div>
-
-        <!-- 第3章 -->
-        <div class="border-b border-sand pb-10">
-          <span class="text-[11px] font-bold text-bronze tracking-wider uppercase block mb-1">Chapter 03</span>
-          <h2 class="text-lg sm:text-xl font-serif font-bold text-charcoal mb-5">
-            【第3章】なぜ「男性によるオイルマッサージ」なのか？
-          </h2>
-          <p class="mb-3">
-            揉みほぐしを専門にしていた私の運命を変えたのは、ある母娘のお客様でした。女性スタッフの手が空いておらず、お断りしようとした際、お母様が「男性セラピストでも大丈夫よ」と仰ったのです。
-          </p>
-          <p class="mb-3">
-            「男性でも、オイルマッサージを求めてくださる女性がいるんだ」と強い衝撃を受け、同僚にお願いして初めてオイルマッサージの施術を受けさせてもらいました。
-          </p>
-
-          <div class="my-5 p-4 bg-champagne rounded-xl border border-sand">
-            <p class="font-bold text-bronze text-xs mb-1.5">初めて体感したオイルトリートメントの感動</p>
-            <p class="text-xs sm:text-sm text-charcoal/90 leading-relaxed">
-              ゆったりとした施術、温かい手。途切れることなく、流れるような心地よいリズム。揉みほぐしとは全く違う、圧倒的な癒やし体験に私は完全に魅了されました。
-            </p>
-          </div>
-
-          <p>
-            男性特有の大きな手のひらと安定した温もりは、女性の深い疲れや緊張をほどくための素晴らしい強みになると確信した瞬間でした。
-          </p>
-        </div>
-
-        <!-- 第4章 -->
-        <div class="border-b border-sand pb-10">
-          <span class="text-[11px] font-bold text-bronze tracking-wider uppercase block mb-1">Chapter 04</span>
-          <h2 class="text-lg sm:text-xl font-serif font-bold text-charcoal mb-5">
-            【第4章】なぜ「女性専用」なのか？
-          </h2>
-          <p class="mb-3">
-            実は過去に、私のサロンで働いてくれていた女性スタッフが、一部の男性客からの心無い言葉や振る舞いで辞めてしまうという悔しい経験をしました。
-          </p>
-          <p class="mb-3">
-            また、横柄な男性客からの威圧的な電話口での言葉に、私自身が子どもの頃に大人から受けた嫌な記憶がフラッシュバックしたこともあります。
-          </p>
-
-          <div class="my-5 p-4 bg-champagne rounded-xl border border-sand">
-            <p class="font-bold text-bronze text-sm mb-1">【相手が嫌がっているのに、無理強いする人が大嫌い】</p>
-            <p class="text-xs sm:text-sm text-charcoal/90 leading-relaxed">
-              この強い思いから、私自身が安心して施術に集中でき、そして何よりお客様に絶対に嫌な思いをさせない、安全な空間を作ろうと覚悟を決め、「女性専用」に特化することにしました。
-            </p>
-          </div>
-        </div>
-
-        <!-- 第5章 -->
-        <div class="border-b border-sand pb-10">
-          <span class="text-[11px] font-bold text-bronze tracking-wider uppercase block mb-1">Chapter 05</span>
-          <h2 class="text-lg sm:text-xl font-serif font-bold text-charcoal mb-5">
-            【第5章】出張サービスからの小さなスタートと、現在へ
-          </h2>
-          <p class="mb-3">
-            「女性専用のサロンを作ろう」と決意したものの、最初から大きな店舗を借りる資金も余裕もありませんでした。そこで選んだのが、折りたたみベッドを車に積んでお客様のもとへ伺う「出張サービス」という、最もコストのかからないスモールスタートでした。
-          </p>
-          <p class="mb-3">
-            大きな固定費をかけずに始めたからこそ、無理な売り上げのプレッシャーに追われることなく、目の前のお一人おひとりのお客様とじっくり向き合うことができました。「最初から大きく背伸びをせず、できる最小単位から丁寧に始めること」。この経験は、今でも私のサロン経営の大切な原点となっています。
-          </p>
-          <p class="mb-3">
-            緊張で手が震える中でいただいた最初のご依頼。無我夢中で施術を終えた後にお客様からいただいた「気持ちよかったです、ありがとう」という言葉は、今でも忘れられません。
-          </p>
-          <p>
-            その後、エステ歴15年の大ベテランの師匠から「施術に100点はない。一生勉強だよ」と猛特訓を受け、2017年に実店舗『ラ・シュエット』をオープンしました。おかげさまで、現在までに1,000名を超えるお客様のお体と向き合わせていただいております。
-          </p>
-        </div>
-
-        <!-- 結び -->
-        <div class="pt-2">
-          <h2 class="text-lg sm:text-xl font-serif font-bold text-charcoal mb-4">
-            最後に、ここまで読んでくださったあなたへ 🐾
-          </h2>
-          <p class="mb-3">
-            長々とした昔話にお付き合いいただき、本当にありがとうございました。
-          </p>
-          <p class="mb-4">
-            ご覧の通り、私はキラキラしたイケメンでもなければ、SNS映えするようなお洒落な演出も苦手な、ただの「初老のオジサン」です。
-          </p>
-
-          <div class="my-5 p-5 bg-champagne rounded-2xl border border-sand">
-            <p class="font-bold text-bronze text-xs mb-2">💬 セラピストからのメッセージ</p>
-            <p class="text-xs sm:text-sm text-charcoal leading-relaxed">
-              でも、「大きな手から伝わる温もり」と、「お客様を絶対に不安にさせない誠実さ」だけは、誰にも負けない自信があります。かつての私自身やスタッフが経験したような「大切に扱われない悲しさ」は、うちのサロンでは絶対に感じさせません。
-            </p>
-          </div>
-
-          <ul class="space-y-2 mb-6 text-xs sm:text-sm">
-            <li class="flex items-start gap-2">
-              <span class="text-bronze font-bold">・</span>
-              <span>男性セラピストは初めてで不安……</span>
-            </li>
-            <li class="flex items-start gap-2">
-              <span class="text-bronze font-bold">・</span>
-              <span>昔、マッサージで痛い思いをして苦手になった……</span>
-            </li>
-          </ul>
-
-          <p class="mb-4">
-            そんな方にこそ、ぜひ一度、シュエットの扉を叩いてほしいと願っています。
-          </p>
-          <p class="mb-8">
-            あなたにお会いできる日を、心よりお待ちしております。<br />
-            今日も一日、本当にお疲れ様でした。温かいお茶でも飲んで、ホッと一息ついてくださいね。私もこれから家に帰って、愛する2匹の猫たちに思いっきり癒やされてこようと思います（笑）。🐾🐾🐾
-          </p>
-
-          <!-- 予約案内 -->
-          <div class="p-6 sm:p-8 bg-champagne rounded-2xl border border-bronze/30 text-center">
-            <h3 class="text-base sm:text-lg font-serif font-bold text-charcoal mb-1.5">
-              日々の疲れを癒やす、特別なひとときを
-            </h3>
-            <p class="text-xs text-taupe mb-5">
-              ご予約や空き状況の確認は、WEBまたは公式LINEよりお気軽にどうぞ
-            </p>
-            <div class="flex flex-col sm:flex-row justify-center gap-3">
-              <a 
-                href="/menu" 
-                class="inline-flex justify-center items-center px-6 py-3 rounded-full bg-bronze text-white text-xs sm:text-sm font-medium hover:opacity-90 transition shadow"
-              >
-                メニュー・料金を見る
-              </a>
-              <a 
-                href="https://line.me" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                class="inline-flex justify-center items-center px-6 py-3 rounded-full bg-charcoal text-white text-xs sm:text-sm font-medium hover:bg-black transition shadow"
-              >
-                公式LINEでお問い合わせ
-              </a>
+              <dl class="space-y-2 pt-1">
+                <div class="flex flex-col sm:flex-row sm:gap-2">
+                  <dt class="font-bold text-bronze sm:w-24 shrink-0">施術実績</dt>
+                  <dd class="text-charcoal">1,000名以上（女性専用・延べ人数）</dd>
+                </div>
+                <div class="flex flex-col sm:flex-row sm:gap-2">
+                  <dt class="font-bold text-bronze sm:w-24 shrink-0">特徴</dt>
+                  <dd class="text-charcoal">アラフィフ / 男性セラピスト</dd>
+                </div>
+                <div class="flex flex-col sm:flex-row sm:gap-2">
+                  <dt class="font-bold text-bronze sm:w-24 shrink-0">得意な技術</dt>
+                  <dd class="text-charcoal">男性特有の大きな手を使った、密着感のあるロングストロークのアロマオイルトリートメント</dd>
+                </div>
+                <div class="flex flex-col sm:flex-row sm:gap-2">
+                  <dt class="font-bold text-bronze sm:w-24 shrink-0">性格</dt>
+                  <dd class="text-charcoal">穏やか、聞き上手（とよく言われます）</dd>
+                </div>
+                <div class="flex flex-col sm:flex-row sm:gap-2">
+                  <dt class="font-bold text-bronze sm:w-24 shrink-0">趣味</dt>
+                  <dd class="text-charcoal">愛猫（レウ＆アメ）と遊ぶこと、ホームページ制作</dd>
+                </div>
+              </dl>
             </div>
           </div>
-        </div>
 
-      </section>
-    </article>
-  </main>
+          <div class="mt-5 pt-4 border-t border-sand text-xs text-charcoal/80 leading-relaxed bg-alabaster/70 p-3.5 rounded-xl">
+            「男性の施術は初めて」という方もご安心ください。タオルワークやプライバシーには細心の注意を払い、女性専用サロンならではの細やかな気配りを徹底しております。
+          </div>
+        </section>
 
-  <Footer />
-</body>
-</html>
+        <!-- ストーリー本文 -->
+        <section class="space-y-12 text-sm sm:text-base leading-relaxed text-charcoal">
+          
+          <!-- はじめに -->
+          <div class="bg-white/60 p-6 sm:p-7 rounded-2xl border border-sand">
+            <h2 class="text-base sm:text-lg font-bold font-serif text-charcoal mb-3">
+              はじめまして。
+            </h2>
+            <p class="mb-3">
+              滋賀県草津市にある女性専用アロマサロン「ラ・シュエット」のオーナーセラピスト、高橋です。
+            </p>
+            <p class="mb-3">
+              「女性専用のサロンなのに、男性セラピストってどんな人？」<br />
+              きっと、そんな不安や好奇心を持ってこのページを開いてくださったのだと思います。
+            </p>
+            <p>
+              私自身の人柄が少しでも伝わればと思い、これまでの歩みをありのままに書いてみました。少し長くなりますが、スマホをスクロールしながら、リラックスしてお付き合いいただけたら嬉しいです。
+            </p>
+          </div>
+
+          <!-- 第1章 -->
+          <div class="border-b border-sand pb-10">
+            <span class="text-[11px] font-bold text-bronze tracking-wider uppercase block mb-1">Chapter 01</span>
+            <h2 class="text-lg sm:text-xl font-serif font-bold text-charcoal mb-5">
+              【第1章】なぜリラクゼーション業界へ？ 〜37歳の決断〜
+            </h2>
+
+            <h3 class="text-base font-bold text-charcoal mb-2">心と体の限界、そして退職</h3>
+            <p class="mb-3">
+              かつての私は、全国展開する飲食店の店長として働いていました。いわゆる転勤族で、大阪から始まり、京都、愛知、静岡、岐阜……と各地を転々とし、最後にたどり着いたのがこの滋賀県草津市です。
+            </p>
+            <p class="mb-3">
+              退職の決定的な理由は、過度なストレスからくる「突発性難聴」でした。当時の会社は「休まず朝から晩まで働く店長が偉い！」という価値観。出勤しているのに帳簿上は「休み」。本当の休日でも、お店から電話がかかってくればすぐに出勤。「店長なら当たり前」と言われるかもしれませんが、私の心と体は悲鳴を上げていました。
+            </p>
+            <p class="mb-6">
+              約10年勤めた会社でしたが、37歳で思い切って退職を決意しました。
+            </p>
+
+            <h3 class="text-base font-bold text-charcoal mb-2">人生を変えた「Dさん」の一言</h3>
+            <p class="mb-3">
+              退職後は職業訓練所に通い始めました。やりたいこともなく、なんとなく機械加工の訓練を受けていたのですが、手先が不器用な私は周りの人に「これ、どうやるんっすか？」と聞いてばかり（笑）。でも、そこでおしゃべりをして仲良くなるのが楽しくて、すっかり学生気分でリハビリのような日々を過ごしていました。
+            </p>
+            <p class="mb-3">
+              そんなある日、仕事がバリバリできそうな年上の紳士、Dさんが私に1枚の求人票を差し出しました。
+            </p>
+
+            <div class="my-5 p-4 bg-champagne border-l-4 border-bronze rounded-r-xl">
+              <p class="font-bold text-bronze text-xs mb-1.5">💬 人生を変えたDさんとの会話</p>
+              <p class="text-xs sm:text-sm italic text-charcoal leading-relaxed">
+                「高橋くん、このリラクゼーションサロンの面接、行ってみたら？」<br />
+                「えっ？ 私、飲食業しかやったことないオジサンですよ！？」
+              </p>
+            </div>
+
+            <p class="mb-3">
+              最初は驚きましたが、よくよく調べてみると、技術さえ身につければ自分一人で自由に働ける世界だと知りました。「なんだか、すごく面白そう……！」と直感し、ダメ元で受けた面接でまさかの採用。お店から笑顔で帰っていくお客様の姿を見て、「私にも、こんな風に人を笑顔にできるだろうか」とワクワクしたのを覚えています。
+            </p>
+
+            <h3 class="text-base font-bold text-charcoal mb-2 mt-6">タバコとの別れ、そして覚悟</h3>
+            <p class="mb-3">
+              37歳、オジサン、未経験。おまけに施術は下手くそ。そして、何より「タバコ臭い」。これではお客様を癒やすことなんてできません。
+            </p>
+            <p class="mb-3">
+              私は17歳から20年間吸い続けてきたタバコと決別することを決めました。友人たちと語り明かした夜、失恋の悲しみを癒やしてくれた日々……。たくさんの思い出が詰まった1本のタバコを深く吸い込み、喫煙室のテーブルにライターと一緒に置いて、静かに部屋を出ました。
+            </p>
+            <p class="font-bold text-bronze">
+              「本気で、この業界で生きていくぞ」と誓った瞬間でした。
+            </p>
+          </div>
+
+          <!-- 第2章 -->
+          <div class="border-b border-sand pb-10">
+            <span class="text-[11px] font-bold text-bronze tracking-wider uppercase block mb-1">Chapter 02</span>
+            <h2 class="text-lg sm:text-xl font-serif font-bold text-charcoal mb-5">
+              【第2章】37歳オジサン新人の泥だらけ奮闘記
+            </h2>
+
+            <h3 class="text-base font-bold text-charcoal mb-2">年下の上司と、嫌われ者のポンコツ店長</h3>
+            <p class="mb-3">
+              配属されたのは、会社で一番忙しい店舗。店長も役員もみんな私より5つ下で、周りのセラピストは20代の女性ばかり。「えらいところに来てしまった……」というのが正直な感想でした。
+            </p>
+            <p class="mb-3">
+              冷たい言葉をかけられることもありましたが、優しい女性セラピストたちに助けられ、なんとか全てのメニューを習得。少しずつ自信がついてきた頃、会社で2番目に忙しい店舗の店長に抜擢されました。
+            </p>
+            <p class="mb-6">
+              しかし、私はまだまだ施術が下手くそなポンコツ店長。そこで、飲食店時代に学んだ「誰もが嫌がる仕事を率先してやる」ことを実践し、毎日ひたすらチラシ配りに走り回りました。
+            </p>
+
+            <h3 class="text-base font-bold text-charcoal mb-2">泥だらけの謝罪で知った「お客様の優しさ」</h3>
+            <p class="mb-3">
+              ある日、店舗の大ベテランスタッフの施術に対して「痛すぎた」というクレームが入りました。私はすぐさま原付バイクに飛び乗り、山奥にあるお客様のご自宅へ謝罪に向かいました。
+            </p>
+            <p class="mb-3">
+              しかし、焦っていた私は途中で溝にハマり、スーツは泥だらけに。そのままの情けない姿で必死に謝罪する私を見て、お客様はこう仰ってくれました。
+            </p>
+
+            <div class="my-5 p-4 bg-champagne border-l-4 border-bronze rounded-r-xl">
+              <p class="font-bold text-bronze text-xs mb-1.5">🌿 お客様からいただいた温かい言葉</p>
+              <p class="text-xs sm:text-sm italic text-charcoal leading-relaxed">
+                「もういいよ。あんたの誠意はしっかり受け取ったから。また予約するからね」
+              </p>
+            </div>
+
+            <p>
+              その優しい笑顔に、どれほど救われたか分かりません。セラピストとしての本当の責任と、覚悟を学んだ忘れられない出来事です。
+            </p>
+          </div>
+
+          <!-- 第3章 -->
+          <div class="border-b border-sand pb-10">
+            <span class="text-[11px] font-bold text-bronze tracking-wider uppercase block mb-1">Chapter 03</span>
+            <h2 class="text-lg sm:text-xl font-serif font-bold text-charcoal mb-5">
+              【第3章】なぜ「男性によるオイルマッサージ」なのか？
+            </h2>
+            <p class="mb-3">
+              揉みほぐしを専門にしていた私の運命を変えたのは、ある母娘のお客様でした。女性スタッフの手が空いておらず、お断りしようとした際、お母様が「男性セラピストでも大丈夫よ」と仰ったのです。
+            </p>
+            <p class="mb-3">
+              「男性でも、オイルマッサージを求めてくださる女性がいるんだ」と強い衝撃を受け、同僚にお願いして初めてオイルマッサージの施術を受けさせてもらいました。
+            </p>
+
+            <div class="my-5 p-4 bg-champagne rounded-xl border border-sand">
+              <p class="font-bold text-bronze text-xs mb-1.5">初めて体感したオイルトリートメントの感動</p>
+              <p class="text-xs sm:text-sm text-charcoal/90 leading-relaxed">
+                ゆったりとした施術、温かい手。途切れることなく、流れるような心地よいリズム。揉みほぐしとは全く違う、圧倒的な癒やし体験に私は完全に魅了されました。
+              </p>
+            </div>
+
+            <p>
+              男性特有の大きな手のひらと安定した温もりは、女性の深い疲れや緊張をほどくための素晴らしい強みになると確信した瞬間でした。
+            </p>
+          </div>
+
+          <!-- 第4章 -->
+          <div class="border-b border-sand pb-10">
+            <span class="text-[11px] font-bold text-bronze tracking-wider uppercase block mb-1">Chapter 04</span>
+            <h2 class="text-lg sm:text-xl font-serif font-bold text-charcoal mb-5">
+              【第4章】なぜ「女性専用」なのか？
+            </h2>
+            <p class="mb-3">
+              実は過去に、私のサロンで働いてくれていた女性スタッフが、一部の男性客からの心無い言葉や振る舞いで辞めてしまうという悔しい経験をしました。
+            </p>
+            <p class="mb-3">
+              また、横柄な男性客からの威圧的な電話口での言葉に、私自身が子どもの頃に大人から受けた嫌な記憶がフラッシュバックしたこともあります。
+            </p>
+
+            <div class="my-5 p-4 bg-champagne rounded-xl border border-sand">
+              <p class="font-bold text-bronze text-sm mb-1">【相手が嫌がっているのに、無理強いする人が大嫌い】</p>
+              <p class="text-xs sm:text-sm text-charcoal/90 leading-relaxed">
+                この強い思いから、私自身が安心して施術に集中でき、そして何よりお客様に絶対に嫌な思いをさせない、安全な空間を作ろうと覚悟を決め、「女性専用」に特化することにしました。
+              </p>
+            </div>
+          </div>
+
+          <!-- 第5章 -->
+          <div class="border-b border-sand pb-10">
+            <span class="text-[11px] font-bold text-bronze tracking-wider uppercase block mb-1">Chapter 05</span>
+            <h2 class="text-lg sm:text-xl font-serif font-bold text-charcoal mb-5">
+              【第5章】出張サービスからの小さなスタートと、現在へ
+            </h2>
+            <p class="mb-3">
+              「女性専用のサロンを作ろう」と決意したものの、最初から大きな店舗を借りる資金も余裕もありませんでした。そこで選んだのが、折りたたみベッドを車に積んでお客様のもとへ伺う「出張サービス」という、最もコストのかからないスモールスタートでした。
+            </p>
+            <p class="mb-3">
+              大きな固定費をかけずに始めたからこそ、無理な売り上げのプレッシャーに追われることなく、目の前のお一人おひとりのお客様とじっくり向き合うことができました。「最初から大きく背伸びをせず、できる最小単位から丁寧に始めること」。この経験は、今でも私のサロン経営の大切な原点となっています。
+            </p>
+            <p class="mb-3">
+              緊張で手が震える中でいただいた最初のご依頼。無我夢中で施術を終えた後にお客様からいただいた「気持ちよかったです、ありがとう」という言葉は、今でも忘れられません。
+            </p>
+            <p>
+              その後、エステ歴15年の大ベテランの師匠から「施術に100点はない。一生勉強だよ」と猛特訓を受け、2017年に実店舗『ラ・シュエット』をオープンしました。おかげさまで、現在までに1,000名を超えるお客様のお体と向き合わせていただいております。
+            </p>
+          </div>
+
+          <!-- 結び -->
+          <div class="pt-2">
+            <h2 class="text-lg sm:text-xl font-serif font-bold text-charcoal mb-4">
+              最後に、ここまで読んでくださったあなたへ 🐾
+            </h2>
+            <p class="mb-3">
+              長々とした昔話にお付き合いいただき、本当にありがとうございました。
+            </p>
+            <p class="mb-4">
+              ご覧の通り、私は決してSNS映えするような華やかなイケメンでもなければ、お洒落な演出が得意なわけでもない、ごく普通の「アラフィフの初老男性」です。
+            </p>
+
+            <div class="my-5 p-5 bg-champagne rounded-2xl border border-sand">
+              <p class="font-bold text-bronze text-xs mb-2">💬 セラピストからのメッセージ</p>
+              <p class="text-xs sm:text-sm text-charcoal leading-relaxed">
+                でも、「大きな手から伝わる温もり」と、「お客様を絶対に不安にさせない誠実さ」だけは、誰にも負けない自信があります。かつての私自身やスタッフが経験したような「大切に扱われない悲しさ」は、うちのサロンでは絶対に感じさせません。
+              </p>
+            </div>
+
+            <ul class="space-y-2 mb-6 text-xs sm:text-sm">
+              <li class="flex items-start gap-2">
+                <span class="text-bronze font-bold">・</span>
+                <span>男性セラピストは初めてで不安……</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-bronze font-bold">・</span>
+                <span>昔、マッサージで痛い思いをして苦手になった……</span>
+              </li>
+            </ul>
+
+            <p class="mb-4">
+              そんな方にこそ、ぜひ一度、シュエットの扉を叩いてほしいと願っています。
+            </p>
+            <p class="mb-8">
+              あなたにお会いできる日を、心よりお待ちしております。<br />
+              今日も一日、本当にお疲れ様でした。温かいお茶でも飲んで、ホッと一息ついてくださいね。私もこれから家に帰って、愛する2匹の猫たちに思いっきり癒やされてこようと思います（笑）。🐾🐾🐾
+            </p>
+
+            <!-- 予約案内 -->
+            <div class="p-6 sm:p-8 bg-champagne rounded-2xl border border-bronze/30 text-center">
+              <h3 class="text-base sm:text-lg font-serif font-bold text-charcoal mb-1.5">
+                日々の疲れを癒やす、特別なひとときを
+              </h3>
+              <p class="text-xs text-taupe mb-5">
+                ご予約や空き状況の確認は、WEBまたは公式LINEよりお気軽にどうぞ
+              </p>
+              <div class="flex flex-col sm:flex-row justify-center gap-3">
+                <a 
+                  href="/menu" 
+                  class="inline-flex justify-center items-center px-6 py-3 rounded-full bg-bronze text-white text-xs sm:text-sm font-medium hover:opacity-90 transition shadow"
+                >
+                  メニュー・料金を見る
+                </a>
+                <a 
+                  href="https://line.me" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="inline-flex justify-center items-center px-6 py-3 rounded-full bg-charcoal text-white text-xs sm:text-sm font-medium hover:bg-black transition shadow"
+                >
+                  公式LINEでお問い合わせ
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </section>
+      </article>
+    </main>
+
+    <Footer />
+  </div>
+</Layout>
