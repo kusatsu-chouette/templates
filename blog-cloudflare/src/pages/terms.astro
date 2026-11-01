@@ -1,0 +1,220 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>利用規約 | 女性専用リラクゼーションサロン ラ・シュエット</title>
+  <meta name="description" content="草津市の女性専用リラクゼーションサロン ラ・シュエットの利用規約ページです。施術方針、ご予約、注意事項などについて定めています。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script is:inline src="https://cdn.tailwindcss.com"></script>
+  <script is:inline>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            alabaster: '#F7F4EF',
+            champagne: '#EDE7DF',
+            sand: '#DCD3C6',
+            bronze: '#8E735B',
+            charcoal: '#221F1D',
+            taupe: '#7D7571',
+          },
+          fontFamily: {
+            serif: ['"Shippori Mincho"', 'serif'],
+            sans: ['"Zen Kaku Gothic New"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-alabaster text-charcoal font-sans antialiased min-h-screen flex flex-col selection:bg-sand selection:text-charcoal">
+  <Header />
+
+  <main class="flex-grow pt-24 pb-20">
+    {/* ページヘッダー */}
+    <div class="bg-champagne/60 border-b border-sand py-12 md:py-16 mb-12">
+      <div class="max-w-4xl mx-auto px-4 text-center">
+        <p class="text-bronze text-xs md:text-sm tracking-[0.2em] font-serif uppercase mb-2">Terms of Service</p>
+        <h1 class="text-2xl md:text-4xl font-serif text-charcoal font-normal tracking-wide">サロン利用規約</h1>
+        <p class="text-taupe text-sm mt-3 font-sans">
+          ラ・シュエットを安心して快適にご利用いただくためのご案内
+        </p>
+      </div>
+    </div>
+
+    {/* コンテンツ本文 */}
+    <div class="max-w-3xl mx-auto px-4 sm:px-6">
+      <div class="bg-white rounded-2xl p-6 sm:p-10 border border-sand/70 shadow-sm space-y-10">
+
+        {/* 前文 */}
+        <section class="border-b border-sand/40 pb-8">
+          <p class="text-charcoal text-sm sm:text-base leading-relaxed">
+            女性専用リラクゼーションサロン「ラ・シュエット」（以下「当サロン」といいます）では、お客様に心身ともに深く安らげるひとときを安心してお過ごしいただくため、以下の通り利用規約（以下「本規約」といいます）を定めております。当サロンのご予約および施術をご利用いただくにあたり、本規約に同意いただいたものとみなします。
+          </p>
+        </section>
+
+        {/* 第1条 */}
+        <section class="space-y-3">
+          <h2 class="text-lg sm:text-xl font-serif text-charcoal flex items-center gap-2 border-l-2 border-bronze pl-3">
+            第1条（サロンの趣旨および施術の性質）
+          </h2>
+          <div class="text-sm sm:text-base text-taupe leading-relaxed space-y-2">
+            <p>1. 当サロンは、日常の疲労を和らげ深い癒やしを提供することを目的とした女性専用リラクゼーションサロンです。</p>
+            <p>2. 当サロンが提供するアロマオイルトリートメントはリラクゼーションを目的とした施術であり、あん摩マッサージ指圧、はり・きゅう、柔道整復などの医療行為、医業類似行為、または特定の疾患の治療・治癒を目的とした施術ではありません。</p>
+            <p>3. 身体の不調の診断や病状の治療を必要とされる場合は、医療機関を受診されることをおすすめいたします。</p>
+          </div>
+        </section>
+
+        {/* 第2条 */}
+        <section class="space-y-3">
+          <h2 class="text-lg sm:text-xl font-serif text-charcoal flex items-center gap-2 border-l-2 border-bronze pl-3">
+            第2条（ご利用資格および運営体制）
+          </h2>
+          <div class="text-sm sm:text-base text-taupe leading-relaxed space-y-2">
+            <p>1. 当サロンは女性のお客様専用のプライベートサロンです。</p>
+            <p>2. 当サロンの施術および運営は、男性セラピスト（代表・高橋）が担当いたします。お客様にはこの点をご理解・ご了承いただいた上でご予約いただくものとします。</p>
+            <p>3. 安全なサロン運営とご本人確認のため、必要に応じて身元を確認できる公的証明書のご提示をお願いする場合がございます。</p>
+          </div>
+        </section>
+
+        {/* 第3条 */}
+        <section class="space-y-3">
+          <h2 class="text-lg sm:text-xl font-serif text-charcoal flex items-center gap-2 border-l-2 border-bronze pl-3">
+            第3条（施術をお受けいただけない状態 - 禁忌事項）
+          </h2>
+          <div class="text-sm sm:text-base text-taupe leading-relaxed space-y-2">
+            <p>お客様の健康と安全を最優先とするため、以下に該当する場合は施術をお断りするか、または施術内容の一部を変更・制限させていただく場合がございます。事前のご申告をお願いいたします。</p>
+            <ul class="list-disc list-inside space-y-1.5 pl-2 text-charcoal/90 pt-1">
+              <li>発熱のある方、または風邪の諸症状がある方</li>
+              <li>重度の皮膚炎、感染症、皮膚の炎症や傷口・やけどがある方</li>
+              <li>重篤な心臓疾患、高血圧症、血管障害、てんかんなどの持病をお持ちの方</li>
+              <li>骨折、脱臼、打撲など急性期の外傷を負っている方</li>
+              <li>半年以内に外科手術を受けられた方、または手術後の回復期にある方</li>
+              <li>妊娠中の方、または妊娠の可能性がある方（安定期であっても事前の医師の承諾がない場合）</li>
+              <li>アルコールを摂取されている方、または激しい二日酔いの方</li>
+              <li>アロマオイルや化粧品に対して重度のアレルギー反応や過敏症がある方</li>
+              <li>その他、セラピストが施術を行うことが適切でないと判断した場合</li>
+            </ul>
+          </div>
+        </section>
+
+        {/* 第4条 */}
+        <section class="space-y-3">
+          <h2 class="text-lg sm:text-xl font-serif text-charcoal flex items-center gap-2 border-l-2 border-bronze pl-3">
+            第4条（ご予約・日時の変更・キャンセル）
+          </h2>
+          <div class="text-sm sm:text-base text-taupe leading-relaxed space-y-2">
+            <p>1. 当サロンは完全予約制となっております。ご予約の確定、変更、キャンセルは指定の予約システム（Square予約）、公式LINE、またはお電話にて承ります。</p>
+            <p>2. ご予約日時のご変更やお取り消しがある場合は、他のお客様へのご案内の都合上、前日までのご連絡にご協力をお願い申し上げます。</p>
+            <p>3. ご予約時間より遅れてご来店された場合、次のお客様のご予約状況により施術時間を短縮させていただく場合がございます（その場合でも正規の料金を申し受けます）。</p>
+            <p>4. 事前連絡のない無断キャンセルや、悪質な直前キャンセルを繰り返された場合、以後のご予約をお断りする場合がございます。</p>
+          </div>
+        </section>
+
+        {/* 第5条 */}
+        <section class="space-y-3">
+          <h2 class="text-lg sm:text-xl font-serif text-charcoal flex items-center gap-2 border-l-2 border-bronze pl-3">
+            第5条（施術中のお願いおよびサービスの中止）
+          </h2>
+          <div class="text-sm sm:text-base text-taupe leading-relaxed space-y-2">
+            <p>当サロンでは、すべてのお客様が安全で心地よくお過ごしいただける環境作りに努めております。以下のような迷惑行為・危険行為が認められた場合、直ちに施術を中止しご退店いただきます。その際の施術料金は全額ご請求となり、返金には一切応じかねます。また、悪質な事案については警察への通報を含む然るべき法的措置を講じます。</p>
+            <ul class="list-disc list-inside space-y-1.5 pl-2 text-charcoal/90 pt-1">
+              <li>セラピストに対する暴力、脅迫、暴言、威圧的な言動</li>
+              <li>性的なサービスや接触を要求する言動、故意に体を触る行為、公序良俗に反する行為</li>
+              <li>店内の設備、備品、アメニティを故意に破損または持ち出す行為</li>
+              <li>サロン内での無断録音、無断撮影、隠しカメラ等の設置</li>
+              <li>反社会的勢力に属する方、またはこれに準ずる関係者のご利用</li>
+              <li>他のお客様や近隣住民に対する迷惑行為</li>
+              <li>その他、セラピストが安全かつ正常なサロン運営を継続できないと判断する行為</li>
+            </ul>
+          </div>
+        </section>
+
+        {/* 第6条 */}
+        <section class="space-y-3">
+          <h2 class="text-lg sm:text-xl font-serif text-charcoal flex items-center gap-2 border-l-2 border-bronze pl-3">
+            第6条（貴重品およびお荷物の管理）
+          </h2>
+          <div class="text-sm sm:text-base text-taupe leading-relaxed space-y-2">
+            <p>1. 貴重品および身の回りのお手荷物につきましては、お客様ご自身の責任において管理していただきますようお願い申し上げます。</p>
+            <p>2. 万一、店内において盗難、紛失、破損などの事故が発生した場合、当サロンに故意または重大な過失がある場合を除き、当サロンは一切の責任を負いかねます。</p>
+          </div>
+        </section>
+
+        {/* 第7条 */}
+        <section class="space-y-3">
+          <h2 class="text-lg sm:text-xl font-serif text-charcoal flex items-center gap-2 border-l-2 border-bronze pl-3">
+            第7条（免責事項）
+          </h2>
+          <div class="text-sm sm:text-base text-taupe leading-relaxed space-y-2">
+            <p>1. アロマオイルトリートメント後は血流の促進に伴い、一時的な倦怠感、筋肉の張り、眠気、好転反応と呼ばれる体調の変化が現れる場合がございます。施術後は十分な水分補給と安静をおすすめいたします。</p>
+            <p>2. お客様が虚偽の申告を行ったり、持病・既往歴・皮膚状態・妊娠等の重要な健康状態を事前に申告されなかったことに起因する体調悪化や肌トラブルにつきましては、当サロンは責任を負いかねます。</p>
+            <p>3. 天災地変、交通機関の大規模な乱れ、その他やむを得ない事情により、サロンの営業を休止または予約を変更させていただく場合がございます。</p>
+          </div>
+        </section>
+
+        {/* 第8条 */}
+        <section class="space-y-3">
+          <h2 class="text-lg sm:text-xl font-serif text-charcoal flex items-center gap-2 border-l-2 border-bronze pl-3">
+            第8条（個人情報の取り扱い）
+          </h2>
+          <div class="text-sm sm:text-base text-taupe leading-relaxed space-y-2">
+            <p>当サロンは、ご予約やカウンセリングを通じてお預かりしたお客様の個人情報を、別途定める「プライバシーポリシー」に基づき厳重に管理し、適切な利用と保護に努めます。</p>
+          </div>
+        </section>
+
+        {/* 第9条 */}
+        <section class="space-y-3">
+          <h2 class="text-lg sm:text-xl font-serif text-charcoal flex items-center gap-2 border-l-2 border-bronze pl-3">
+            第9条（知的財産権）
+          </h2>
+          <div class="text-sm sm:text-base text-taupe leading-relaxed space-y-2">
+            <p>当サロンの公式ウェブサイトに掲載されているすべての文章、画像、デザイン、ロゴ等の著作権および知的財産権は、当サロンまたは正当な権利者に帰属します。無断での複製、転載、公衆送信、改変等を固く禁じます。</p>
+          </div>
+        </section>
+
+        {/* 第10条 */}
+        <section class="space-y-3">
+          <h2 class="text-lg sm:text-xl font-serif text-charcoal flex items-center gap-2 border-l-2 border-bronze pl-3">
+            第10条（規約の改定および管轄裁判所）
+          </h2>
+          <div class="text-sm sm:text-base text-taupe leading-relaxed space-y-2">
+            <p>1. 当サロンは、法令の改正やサービス内容の見直しに伴い、本規約を予告なく改定することがあります。改定後の規約は本ウェブサイトに掲載した時点より効力を生じるものとします。</p>
+            <p>2. 本規約の準拠法は日本法とします。また、当サロンのサービスまたは本規約に関して紛争が生じた場合は、大津地方裁判所を第一審の専属的合意管轄裁判所とします。</p>
+          </div>
+        </section>
+
+        {/* 制定日および運営者情報 */}
+        <div class="pt-8 border-t border-sand/40 text-xs sm:text-sm text-taupe space-y-2">
+          <p>制定日 - 2017年7月1日</p>
+          <p>改定日 - 2026年11月1日</p>
+          <div class="mt-4 pt-4 border-t border-dashed border-sand/40">
+            <p class="font-medium text-charcoal">女性専用リラクゼーションサロン ラ・シュエット</p>
+            <p>滋賀県草津市大路2丁目16-21 XYZ Court草津大路301号</p>
+            <p>代表 - 高橋竜真</p>
+            <p>お問い合わせ - kusatsu.chouette@gmail.com / 080-6219-3290</p>
+          </div>
+        </div>
+
+      </div>
+
+      {/* トップへ戻るリンク */}
+      <div class="mt-8 text-center">
+        <a href="/" class="inline-flex items-center text-sm text-taupe hover:text-bronze transition-colors">
+          ← トップページに戻る
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</body>
+</html>
