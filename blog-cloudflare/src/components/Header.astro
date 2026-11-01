@@ -4,6 +4,7 @@ const navItems = [
   { label: 'ホーム', href: '/' },
   { label: 'プロフィール', href: '/therapist' },
   { label: 'メニュー', href: '/menu' },
+  { label: 'アクセス', href: '/access' },
 ];
 ---
 
@@ -27,7 +28,7 @@ const navItems = [
     </p>
 
     <!-- グローバルナビゲーション -->
-    <nav class="mt-4 flex items-center justify-center space-x-8 text-xs tracking-widest text-charcoal font-medium">
+    <nav class="mt-4 flex items-center justify-center space-x-6 sm:space-x-8 text-xs tracking-widest text-charcoal font-medium">
       {navItems.map((item) => (
         <a 
           href={item.href} 
