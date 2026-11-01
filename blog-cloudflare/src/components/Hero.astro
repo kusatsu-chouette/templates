@@ -11,12 +11,17 @@ const phoneTel = "tel:08062193290";
   <!-- メインヒーローバナー -->
   <div class="relative rounded-3xl overflow-hidden shadow-lg border border-sand/40 bg-charcoal min-h-[480px] sm:min-h-0 sm:aspect-[16/9] lg:aspect-[2/1] flex flex-col justify-between p-5 sm:p-10">
     
-    <!-- 背景写真 & グラデーションオーバーレイ -->
-    <img 
-      src="https://kusatsu-aroma.com/_emdash/api/media/file/01M63112AR4AJ7H9SMFBDYZDE8.01M6311348MM788S5PG8NN06NP.jpg" 
-      alt="La Chouette 施術風景" 
-      class="absolute inset-0 w-full h-full object-cover object-top sm:object-center z-0"
-    />
+    <!-- 背景動画 & フォールバック静止画 & グラデーションオーバーレイ -->
+    <video
+      autoplay
+      muted
+      loop
+      playsinline
+      poster="https://kusatsu-aroma.com/_emdash/api/media/file/01M63112AR4AJ7H9SMFBDYZDE8.01M6311348MM788S5PG8NN06NP.jpg"
+      class="absolute inset-0 w-full h-full object-cover object-center z-0"
+    >
+      <source src="https://kusatsu-aroma.com/_emdash/api/media/file/01M6B9CSGT2N73Q5ZHEREDG9S4.01M6B9CTB8TKN1K098SB14N3RZ.mp4" type="video/mp4" />
+    </video>
     <div class="absolute inset-0 bg-gradient-to-t from-charcoal/95 via-charcoal/60 to-charcoal/30 z-10"></div>
 
     <!-- 上部バッジエリア -->
