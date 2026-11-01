@@ -1,21 +1,38 @@
 ---
-// src/components/Footer.astro
+// templates/blog-cloudflare/src/components/Footer.astro
+const currentYear = new Date().getFullYear();
 ---
 
 <footer class="bg-charcoal text-champagne py-12 px-4 border-t border-white/10 text-center">
-  <div class="max-w-xl mx-auto space-y-3">
+  <div class="max-w-xl mx-auto space-y-4">
+    {/* ロゴ表記 */}
     <div class="inline-flex items-center font-serifEn text-xl tracking-[0.2em] text-white">
       <span>La Chouette</span>
       <span class="em-dash bg-bronze"></span>
       <span class="text-xs text-bronze font-serifJp">ラ・シュエット</span>
     </div>
+
+    {/* サロン情報・連絡先 */}
     <p class="text-[11px] text-sand/75 leading-relaxed">
       滋賀県草津市大路2丁目16-21 XYZ Court草津大路301<br>
-      TEL：<a href="tel:08062193290" class="underline">080-6219-3290</a> ｜ MAIL：<a href="mailto:kusatsu.chouette@gmail.com" class="underline">kusatsu.chouette@gmail.com</a><br>
-      OPEN 8:00 — 27:00 ｜ 女性専用・完全個室プライベートサロン
+      TEL - <a href="tel:08062193290" class="underline hover:text-white transition-colors">080-6219-3290</a> ｜ MAIL - <a href="mailto:kusatsu.chouette@gmail.com" class="underline hover:text-white transition-colors">kusatsu.chouette@gmail.com</a><br>
+      営業時間 - 8時〜27時 ｜ 女性専用・完全個室プライベートサロン
     </p>
-    <p class="text-[10px] text-sand/50 pt-4">
-      © 2026 La Chouette（ラ・シュエット）. All Rights Reserved. （当店はリラクゼーションサロンであり、医療行為は一切行いません）
+
+    {/* ページリンク・リーガルナビゲーション */}
+    <div class="pt-2 pb-1 flex flex-wrap justify-center items-center gap-x-5 gap-y-2 text-xs text-sand/85">
+      <a href="/" class="hover:text-white transition-colors">トップ</a>
+      <span class="text-white/20">/</span>
+      <a href="/contact" class="hover:text-white transition-colors">お問い合わせ</a>
+      <span class="text-white/20">/</span>
+      <a href="/terms" class="hover:text-white transition-colors">利用規約</a>
+      <span class="text-white/20">/</span>
+      <a href="/privacy" class="hover:text-white transition-colors">プライバシーポリシー</a>
+    </div>
+
+    {/* コピーライトおよびサロンの性質明記 */}
+    <p class="text-[10px] text-sand/50 pt-2 border-t border-white/5">
+      &copy; {currentYear} La Chouette（ラ・シュエット）. All Rights Reserved. （当店はリラクゼーションサロンであり、医療行為は一切行いません）
     </p>
   </div>
 </footer>
