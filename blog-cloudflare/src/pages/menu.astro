@@ -8,7 +8,7 @@ const salonMenus = [
     duration: "90分",
     price: "¥6,630",
     description: "日常の緊張を解きほぐし、全身をゆったりとケアする標準的なリラクゼーションコースです。私がお一人おひとりの状態に合わせて丁寧に施術いたします。",
-    image: "https://kusatsu-aroma.com/_emdash/api/media/file/01M6ATQMN2QSQ1TVSNF5MJMGK8.01M6ATQNK91DGFAVQEVT75PP3M.jpg",
+    image: "https://kusatsu-aroma.com/_emdash/api/media/file/01M6ATQMYVQBR0Q82M9J26Z8FJ.01M6ATQNKNPPXCSD126G272X6X.jpg",
     recommend: true,
   },
   {
@@ -29,18 +29,22 @@ const salonMenus = [
   }
 ];
 
-const sceneImages = [
+// メニュー料金の下に配置するこだわり・おもてなしのデザイン要素
+const salonFeatures = [
   {
-    url: "https://kusatsu-aroma.com/_emdash/api/media/file/01M6AV6VAZEMN4TK3Y2KSF8W03.01M6AV6WC8476QG42D7M4G2BRZ.jpg",
-    caption: "温かなオイルと心地よいアロマの香りで包み込むトリートメント"
+    title: "厳選アロマと温かなオイル",
+    description: "天然由来の上質なオイルを使用し、お一人おひとりの気分や体調に寄り添う心地よい香りで包み込みます。",
+    image: "https://kusatsu-aroma.com/_emdash/api/media/file/01M6AV6VAZEMN4TK3Y2KSF8W03.01M6AV6WC8476QG42D7M4G2BRZ.jpg",
   },
   {
-    url: "https://kusatsu-aroma.com/_emdash/api/media/file/01M6AV6V67J0ZDRVM57H3XM9VC.01M6AV6W9Y8TXA8BECK1FVXTTT.jpg",
-    caption: "日々の緊張をほどき、深呼吸できるオールハンドの丁寧なケア"
+    title: "オールハンドの丁寧な施術",
+    description: "機械を使わず手のひらの温もりを通じて、日々の緊張でこわばったお身体をじっくりと解きほぐします。",
+    image: "https://kusatsu-aroma.com/_emdash/api/media/file/01M6AV6V67J0ZDRVM57H3XM9VC.01M6AV6W9Y8TXA8BECK1FVXTTT.jpg",
   },
   {
-    url: "https://kusatsu-aroma.com/_emdash/api/media/file/01M6AV6VC8MA2BW09N3G3ZJDJH.01M6AV6WE1CMQGVKKN2QYX2FVG.jpg",
-    caption: "お一人おひとりの状態に寄り添い、深い休息をお届けいたします"
+    title: "安心の女性専用プライベート空間",
+    description: "他のお客様と重なることのない完全個室で、心置きなくリラックスしていただける時間をお届けします。",
+    image: "https://kusatsu-aroma.com/_emdash/api/media/file/01M6AV6VC8MA2BW09N3G3ZJDJH.01M6AV6WE1CMQGVKKN2QYX2FVG.jpg",
   }
 ];
 
@@ -107,7 +111,7 @@ const visitMenus = [
 
         <div class="grid gap-8 md:grid-cols-3">
           {salonMenus.map((item) => (
-            <div class={`rounded-xl flex flex-col justify-between border transition-all duration-300 hover:shadow-lg relative ${item.recommend ? 'bg-[#EDE7DF] border-[#8E735B] shadow-md' : 'bg-[#EDE7DF] border-[#DCD3C6]'}`}>
+            <div class={`rounded-xl p-6 md:p-7 flex flex-col justify-between border transition-all duration-300 hover:shadow-lg relative ${item.recommend ? 'bg-[#EDE7DF] border-[#8E735B] shadow-md' : 'bg-[#EDE7DF] border-[#DCD3C6]'}`}>
               {item.recommend && (
                 <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#8E735B] text-white text-xs px-3 py-1 rounded-full tracking-wide shadow-sm z-10 font-medium">
                   おすすめ
@@ -115,7 +119,14 @@ const visitMenus = [
               )}
               
               <div>
-                <div class="overflow-hidden rounded-t-xl aspect-[16/10] bg-[#DCD3C6]">
+                <h3 class="text-lg font-bold text-[#221F1D] mb-1">{item.name}</h3>
+                <div class="flex items-baseline gap-2 mb-4">
+                  <span class="text-2xl font-bold text-[#8E735B]">{item.price}</span>
+                  <span class="text-xs text-[#7D7571]">/ {item.duration}</span>
+                </div>
+
+                <!-- メニュー名と料金の直下に画像を配置 -->
+                <div class="overflow-hidden rounded-lg aspect-[16/10] bg-[#DCD3C6] mb-4 shadow-inner">
                   <img
                     src={item.image}
                     alt={`${item.name}の施術イメージ`}
@@ -124,19 +135,12 @@ const visitMenus = [
                   />
                 </div>
 
-                <div class="p-6">
-                  <h3 class="text-lg font-bold text-[#221F1D] mb-2">{item.name}</h3>
-                  <div class="flex items-baseline gap-2 mb-4">
-                    <span class="text-2xl font-bold text-[#8E735B]">{item.price}</span>
-                    <span class="text-xs text-[#7D7571]">/ {item.duration}</span>
-                  </div>
-                  <p class="text-xs md:text-sm text-[#7D7571] leading-relaxed">
-                    {item.description}
-                  </p>
-                </div>
+                <p class="text-xs md:text-sm text-[#7D7571] leading-relaxed mb-6">
+                  {item.description}
+                </p>
               </div>
 
-              <div class="p-6 pt-0">
+              <div>
                 <a
                   href="https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start"
                   target="_blank"
@@ -152,30 +156,35 @@ const visitMenus = [
         </div>
       </section>
 
-      <!-- 施術風景セクション -->
-      <section class="py-16 md:py-20 bg-[#F7F4EF] border-t border-[#DCD3C6] px-4 sm:px-6">
+      <!-- メニュー料金下のデザインセクション（サロンのこだわり・おもてなし） -->
+      <section class="py-16 md:py-20 bg-[#EDE7DF] border-t border-[#DCD3C6] px-4 sm:px-6">
         <div class="max-w-5xl mx-auto">
           <div class="text-center mb-12">
-            <span class="text-xs font-semibold tracking-wider text-[#8E735B] uppercase block mb-1">TREATMENT SCENE</span>
-            <h2 class="text-xl md:text-3xl font-serif text-[#221F1D]">施術風景</h2>
+            <span class="text-xs font-semibold tracking-wider text-[#8E735B] uppercase block mb-1">OUR COMMITMENT</span>
+            <h2 class="text-xl md:text-3xl font-serif text-[#221F1D]">心地よい時間をお届けするために</h2>
             <p class="text-xs md:text-sm text-[#7D7571] mt-2">
-              完全個室のプライベート空間で、私がお一人おひとりに寄り添い丁寧に施術いたします
+              安心してお身体を預けていただけるよう、ひとつひとつの時間に真心を込めてお迎えいたします
             </p>
           </div>
 
-          <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
-            {sceneImages.map((scene) => (
-              <div class="overflow-hidden rounded-xl bg-[#EDE7DF] border border-[#DCD3C6] shadow-sm flex flex-col">
-                <div class="aspect-[4/3] overflow-hidden bg-[#DCD3C6]">
+          <div class="grid gap-8 md:grid-cols-3">
+            {salonFeatures.map((feature) => (
+              <div class="bg-[#F7F4EF] rounded-xl overflow-hidden border border-[#DCD3C6] shadow-sm flex flex-col transition-all duration-300 hover:shadow-md">
+                <div class="aspect-[16/10] overflow-hidden bg-[#DCD3C6]">
                   <img
-                    src={scene.url}
-                    alt={scene.caption}
+                    src={feature.image}
+                    alt={feature.title}
                     class="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105"
                     loading="lazy"
                   />
                 </div>
-                <div class="p-4 text-center flex-1 flex items-center justify-center">
-                  <p class="text-xs text-[#7D7571] leading-relaxed">{scene.caption}</p>
+                <div class="p-6 flex-1 flex flex-col justify-between">
+                  <div>
+                    <h3 class="text-base font-bold text-[#221F1D] mb-2">{feature.title}</h3>
+                    <p class="text-xs md:text-sm text-[#7D7571] leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </div>
                 </div>
               </div>
             ))}
@@ -184,7 +193,7 @@ const visitMenus = [
       </section>
 
       <!-- 出張トリートメントメニュー -->
-      <section class="py-16 md:py-20 bg-[#EDE7DF] border-y border-[#DCD3C6] px-4 sm:px-6">
+      <section class="py-16 md:py-20 bg-[#F7F4EF] border-b border-[#DCD3C6] px-4 sm:px-6">
         <div class="max-w-4xl mx-auto">
           <div class="text-center mb-10">
             <span class="text-xs font-semibold tracking-wider text-[#8E735B] uppercase block mb-1">VISIT TREATMENT</span>
@@ -194,7 +203,7 @@ const visitMenus = [
 
           <div class="space-y-6">
             {visitMenus.map((item) => (
-              <div class="bg-[#F7F4EF] rounded-xl p-6 md:p-8 border border-[#DCD3C6]">
+              <div class="bg-[#EDE7DF] rounded-xl p-6 md:p-8 border border-[#DCD3C6]">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
                   <div>
                     <h3 class="text-lg md:text-xl font-bold text-[#221F1D]">{item.name}</h3>
@@ -206,7 +215,7 @@ const visitMenus = [
                   </div>
                 </div>
 
-                <div class="bg-[#EDE7DF] rounded-lg p-4 mb-6 border border-[#DCD3C6]">
+                <div class="bg-[#F7F4EF] rounded-lg p-4 mb-6 border border-[#DCD3C6]">
                   <p class="text-xs text-[#7D7571] leading-relaxed">
                     {item.notes}
                   </p>
