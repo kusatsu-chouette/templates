@@ -1,0 +1,214 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+// ==========================================
+// メニュー・料金データ（プレースホルダー）
+// 実際のコース名・施術時間・料金に合わせて書き換えてください。
+// ==========================================
+const salonMenus = [
+  {
+    name: "【コース名：スタンダード オイルトリートメント】",
+    duration: "【時間：90分】",
+    price: "【料金：¥6,630】",
+    description: "【コース説明：日常の緊張を解きほぐし、全身をゆったりとケアする標準的なリラクゼーションコースです。私がお一人おひとりの状態に合わせて丁寧に施術いたします。】",
+    recommend: true,
+  },
+  {
+    name: "【コース名：例 プレミアム オイルトリートメント】",
+    duration: "【時間：120分】",
+    price: "【料金：¥8,970】",
+    description: "【コース説明：お時間をかけて頭から足先まで贅沢に癒やすコースです。日々の喧騒を離れ、深い休息を求める方へ。】",
+    recommend: false,
+  },
+  {
+    name: "【コース名：例 ショート オイルトリートメント】",
+    duration: "【時間：60分】",
+    price: "【料金：¥4,290】",
+    description: "【コース説明：お忙しい合間にも心身の疲れをリセットしていただける、気軽なショートトリートメントです。】",
+    recommend: false,
+  }
+];
+
+const visitMenus = [
+  {
+    name: "【コース名：出張オイルトリートメントコース】",
+    duration: "【時間：90分〜】",
+    price: "【料金：¥9,000〜（出張費込/別途要確認）】",
+    description: "【コース説明：ご自宅や宿泊先のリラックス空間へお伺いし、サロン同様の心地よいトリートメントをお届けいたします。】",
+    notes: "※出張サービスは移動時間の調整・確認が必要なため、Squareによるネット即時予約は受け付けておりません。公式LINEまたはお電話にて日程をご相談ください。"
+  }
+];
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>メニュー・料金 | 女性専用サロン La Chouette（ラ・シュエット）</title>
+    <meta name="description" content="滋賀県草津市の女性専用サロン La Chouette（ラ・シュエット）のメニュー・料金案内です。心地よいアロマオイルトリートメントで深い癒やしのひとときをお届けします。" />
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              alabaster: '#F7F4EF',
+              champagne: '#EDE7DF',
+              sand: '#DCD3C6',
+              bronze: '#8E735B',
+              charcoal: '#221F1D',
+              taupe: '#7D7571',
+            }
+          }
+        }
+      }
+    </script>
+  </head>
+  <body class="bg-[#F7F4EF] text-[#221F1D] font-sans antialiased selection:bg-[#DCD3C6] selection:text-[#221F1D]">
+    <Header />
+
+    <main class="min-h-screen">
+      <!-- ページヘッダー -->
+      <section class="py-16 md:py-24 bg-[#EDE7DF] border-b border-[#DCD3C6]">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+          <span class="text-xs md:text-sm font-semibold tracking-widest text-[#8E735B] uppercase block mb-2">MENU & PRICE</span>
+          <h1 class="text-2xl md:text-4xl font-serif text-[#221F1D] mb-4">メニュー・料金</h1>
+          <p class="text-sm md:text-base text-[#7D7571] max-w-2xl mx-auto leading-relaxed">
+            日常の忙しさから離れ、心地よいアロマの香りと温かなオイルトリートメントで、心と身体が深くほどけるひとときを。私がお一人おひとりに寄り添い、丁寧におもてなしいたします。
+          </p>
+        </div>
+      </section>
+
+      <!-- サロン施術メニュー -->
+      <section class="py-16 md:py-20 px-4 sm:px-6 max-w-5xl mx-auto">
+        <div class="text-center mb-12">
+          <span class="text-xs font-semibold tracking-wider text-[#8E735B] uppercase block mb-1">SALON TREATMENT</span>
+          <h2 class="text-xl md:text-3xl font-serif text-[#221F1D]">サロン施術メニュー</h2>
+          <p class="text-xs md:text-sm text-[#7D7571] mt-2">完全プライベート空間で過ごす、深い癒やしのリラクゼーション</p>
+        </div>
+
+        <div class="grid gap-8 md:grid-cols-3">
+          {salonMenus.map((item) => (
+            <div class={`rounded-xl p-6 md:p-8 flex flex-col justify-between border transition-shadow duration-300 ${item.recommend ? 'bg-[#EDE7DF] border-[#8E735B] shadow-md relative' : 'bg-[#EDE7DF] border-[#DCD3C6]'}`}>
+              {item.recommend && (
+                <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#8E735B] text-white text-xs px-3 py-1 rounded-full tracking-wide">
+                  おすすめ
+                </div>
+              )}
+              <div>
+                <h3 class="text-lg font-bold text-[#221F1D] mb-2">{item.name}</h3>
+                <div class="flex items-baseline gap-2 mb-4">
+                  <span class="text-2xl font-bold text-[#8E735B]">{item.price}</span>
+                  <span class="text-xs text-[#7D7571]">/ {item.duration}</span>
+                </div>
+                <p class="text-xs md:text-sm text-[#7D7571] leading-relaxed mb-6">
+                  {item.description}
+                </p>
+              </div>
+
+              <div>
+                <a
+                  href="https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${item.name}をSquareでWeb予約する`}
+                  class="block w-full text-center bg-[#8E735B] hover:bg-[#78614C] text-white text-sm font-medium py-3 px-4 rounded-lg transition-colors duration-200"
+                >
+                  このコースをWeb予約
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- 出張トリートメントメニュー -->
+      <section class="py-16 md:py-20 bg-[#EDE7DF] border-y border-[#DCD3C6] px-4 sm:px-6">
+        <div class="max-w-4xl mx-auto">
+          <div class="text-center mb-10">
+            <span class="text-xs font-semibold tracking-wider text-[#8E735B] uppercase block mb-1">VISIT TREATMENT</span>
+            <h2 class="text-xl md:text-3xl font-serif text-[#221F1D]">出張トリートメント</h2>
+            <p class="text-xs md:text-sm text-[#7D7571] mt-2">ご自宅やご滞在先で、移動の負担なく味わうリラクゼーション</p>
+          </div>
+
+          <div class="space-y-6">
+            {visitMenus.map((item) => (
+              <div class="bg-[#F7F4EF] rounded-xl p-6 md:p-8 border border-[#DCD3C6]">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                  <div>
+                    <h3 class="text-lg md:text-xl font-bold text-[#221F1D]">{item.name}</h3>
+                    <p class="text-xs md:text-sm text-[#7D7571] mt-1">{item.description}</p>
+                  </div>
+                  <div class="text-left md:text-right">
+                    <span class="text-2xl font-bold text-[#8E735B]">{item.price}</span>
+                    <span class="text-xs text-[#7D7571] block">所要目安: {item.duration}</span>
+                  </div>
+                </div>
+
+                <div class="bg-[#EDE7DF] rounded-lg p-4 mb-6 border border-[#DCD3C6]">
+                  <p class="text-xs text-[#7D7571] leading-relaxed">
+                    {item.notes}
+                  </p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4">
+                  <a
+                    href="https://lin.ee/Sv8oVDh"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="出張トリートメントについて公式LINEで予約相談する"
+                    class="flex-1 inline-flex items-center justify-center bg-[#8E735B] hover:bg-[#78614C] text-white text-sm font-medium py-3 px-6 rounded-lg transition-colors duration-200"
+                  >
+                    公式LINEで日程を相談する
+                  </a>
+                  <a
+                    href="tel:080-6219-3290"
+                    aria-label="出張トリートメントについて電話で問い合わせる"
+                    class="inline-flex items-center justify-center border border-[#8E735B] text-[#8E735B] hover:bg-[#8E735B] hover:text-white text-sm font-medium py-3 px-6 rounded-lg transition-colors duration-200"
+                  >
+                    電話で問い合わせる
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <!-- 施術に関するご案内 -->
+      <section class="py-16 md:py-20 px-4 sm:px-6 max-w-4xl mx-auto">
+        <div class="text-center mb-10">
+          <span class="text-xs font-semibold tracking-wider text-[#8E735B] uppercase block mb-1">GUIDE</span>
+          <h2 class="text-xl md:text-3xl font-serif text-[#221F1D]">ご利用に関するご案内</h2>
+        </div>
+
+        <div class="grid gap-6 md:grid-cols-2">
+          <div class="bg-[#EDE7DF] rounded-xl p-6 border border-[#DCD3C6]">
+            <h3 class="text-base font-bold text-[#221F1D] mb-3 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-[#8E735B]"></span>
+              女性専用の安心できるプライベート空間
+            </h3>
+            <p class="text-xs md:text-sm text-[#7D7571] leading-relaxed">
+              当サロンは女性専用のリラクゼーションサロンです。日常から離れ、心置きなくリラックスしていただける落ち着いた環境を整えております。
+            </p>
+          </div>
+
+          <div class="bg-[#EDE7DF] rounded-xl p-6 border border-[#DCD3C6]">
+            <h3 class="text-base font-bold text-[#221F1D] mb-3 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-[#8E735B]"></span>
+              お支払い方法・お問い合わせ
+            </h3>
+            <p class="text-xs md:text-sm text-[#7D7571] leading-relaxed">
+              Squareによる事前オンライン決済や各種カード決済に対応しております。ご不明点やご相談がございましたら、お気軽に公式LINEまたはお電話（080-6219-3290）にてお尋ねください。
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+  </body>
+</html>
