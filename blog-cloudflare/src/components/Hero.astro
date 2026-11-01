@@ -8,8 +8,8 @@ const phoneTel = "tel:08062193290";
 ---
 
 <section class="max-w-5xl mx-auto px-4 sm:px-6 pt-6 pb-12">
-  <!-- メインヒーローバナー -->
-  <div class="relative rounded-3xl overflow-hidden shadow-lg border border-sand/40 bg-charcoal min-h-[440px] sm:min-h-0 sm:aspect-[16/9] lg:aspect-[2/1] flex flex-col justify-between p-5 sm:p-10">
+  <!-- メインヒーローバナー（スマホでもアスペクト比を動画に一致させ、両端の切れを防止） -->
+  <div class="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-sand/40 bg-charcoal aspect-video sm:aspect-[16/9] lg:aspect-[2/1] flex flex-col justify-between p-3.5 sm:p-10">
     
     <!-- 背景動画 & フォールバック静止画 & グラデーションオーバーレイ -->
     <video
@@ -22,38 +22,38 @@ const phoneTel = "tel:08062193290";
     >
       <source src="https://kusatsu-aroma.com/_emdash/api/media/file/01M6B9CSGT2N73Q5ZHEREDG9S4.01M6B9CTB8TKN1K098SB14N3RZ.mp4" type="video/mp4" />
     </video>
-    <div class="absolute inset-0 bg-gradient-to-t from-charcoal/90 via-charcoal/50 to-charcoal/20 z-10"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-charcoal/90 via-charcoal/40 to-charcoal/20 z-10"></div>
 
     <!-- 上部バッジエリア -->
-    <div class="relative z-20 flex flex-wrap items-center justify-between gap-2.5 sm:gap-3">
-      <div class="flex flex-wrap items-center gap-2">
-        <span class="inline-flex items-center px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-light tracking-wider bg-charcoal/60 backdrop-blur-md text-alabaster border border-white/10">
-          ✦ 女性専用・完全個室サロン
+    <div class="relative z-20 flex flex-wrap items-center justify-between gap-1.5 sm:gap-3">
+      <div class="flex flex-wrap items-center gap-1 sm:gap-2">
+        <span class="inline-flex items-center px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-light tracking-wider bg-charcoal/60 backdrop-blur-md text-alabaster border border-white/10">
+          ✦ 女性専用・完全個室
         </span>
-        <span class="inline-flex items-center px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-medium tracking-wider bg-bronze/90 backdrop-blur-md text-alabaster shadow-sm">
-          ✦ 施術歴15年 男性セラピスト専任
+        <span class="inline-flex items-center px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium tracking-wider bg-bronze/90 backdrop-blur-md text-alabaster shadow-sm">
+          ✦ 施術歴15年 男性専任
         </span>
       </div>
-      <span class="inline-flex items-center px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-light tracking-wider bg-charcoal/60 backdrop-blur-md text-alabaster border border-white/10">
+      <span class="inline-flex items-center px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-light tracking-wider bg-charcoal/60 backdrop-blur-md text-alabaster border border-white/10">
         8:00 — 27:00
       </span>
     </div>
 
     <!-- 下部メインメッセージエリア -->
-    <div class="relative z-20 max-w-2xl mt-auto pt-4 sm:pt-6">
+    <div class="relative z-20 max-w-2xl mt-auto pt-1 sm:pt-6">
       <!-- 英語キャッチ -->
-      <p class="text-xs sm:text-sm tracking-[0.2em] text-sand uppercase font-light mb-1">
+      <p class="text-[9px] sm:text-sm tracking-[0.2em] text-sand uppercase font-light mb-0.5 sm:mb-1">
         A Quiet Pause in Your Busy Days —
       </p>
 
       <!-- メイン見出し -->
-      <h2 class="text-xl sm:text-3xl lg:text-4xl font-serif text-alabaster tracking-wider leading-snug mb-2.5">
+      <h2 class="text-sm sm:text-3xl lg:text-4xl font-serif text-alabaster tracking-wider leading-snug mb-1 sm:mb-2.5">
         役割を脱ぎ捨て、<br />
         ただひとりの女性に還る「間 —」を。
       </h2>
 
-      <!-- リード文 -->
-      <p class="text-xs sm:text-sm text-sand/90 font-light leading-relaxed">
+      <!-- リード文（スマホ時は2行にスッキリ収めて映像を邪魔しない設計） -->
+      <p class="text-[10px] sm:text-sm text-sand/90 font-light leading-snug sm:leading-relaxed line-clamp-2 sm:line-clamp-none">
         誰にも気を使わない完全個室。施術歴15年のベテラン男性セラピストの大きな手による、密着感のある温かなロングストロークで深い非日常の癒やしへと導きます。
       </p>
     </div>
