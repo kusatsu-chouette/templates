@@ -1,0 +1,337 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>アクセス・サロン所在地 | 草津シュエット（女性専用オイルトリートメントサロン）</title>
+    <meta
+      name="description"
+      content="JR草津駅東口から徒歩9分。滋賀県草津市の女性専用プライベートアロマサロン「草津シュエット」のアクセス案内です。無料提携駐車場（de愛広場 東側駐車場）完備。施術時間分の駐車チケットをお渡しいたします。"
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS CDN & 設定 (is:inline 必須) -->
+    <script is:inline src="https://cdn.tailwindcss.com"></script>
+    <script is:inline>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              alabaster: '#F7F4EF',
+              champagne: '#EDE7DF',
+              sand: '#DCD3C6',
+              bronze: '#8E735B',
+              charcoal: '#221F1D',
+              taupe: '#7D7571',
+            },
+            fontFamily: {
+              serif: ['"Cormorant Garamond"', 'serif'],
+              sans: ['"Noto Sans JP"', 'sans-serif'],
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="bg-alabaster text-charcoal font-sans antialiased selection:bg-sand selection:text-charcoal min-h-screen flex flex-col justify-between">
+    <Header />
+
+    <main class="flex-grow pt-24 pb-20">
+      <!-- ページヘッダー -->
+      <section class="max-w-4xl mx-auto px-4 sm:px-6 text-center py-10 md:py-14">
+        <span class="inline-block text-bronze text-xs md:text-sm tracking-[0.25em] uppercase font-serif mb-3">
+          Location & Access
+        </span>
+        <h1 class="text-2xl sm:text-3xl md:text-4xl font-medium tracking-wider text-charcoal mb-4">
+          サロン所在地・アクセス
+        </h1>
+        <div class="w-12 h-[1px] bg-bronze mx-auto mb-6"></div>
+        <p class="text-taupe text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
+          JR草津駅東口より徒歩9分。完全予約制のプライベート空間にて、日々の緊張をほどく心地よい時間をお過ごしいただけるよう、サロンまでの道順とお車でお越しの方向けの提携無料駐車場をご案内いたします。
+        </p>
+      </section>
+
+      <!-- サロン基本情報カード -->
+      <section class="max-w-4xl mx-auto px-4 sm:px-6 mb-16">
+        <div class="bg-champagne/70 border border-sand rounded-2xl p-6 sm:p-8 md:p-10 shadow-sm backdrop-blur-sm">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-sand pb-6 mb-6">
+            <div>
+              <span class="text-xs tracking-widest text-bronze uppercase font-serif">Salon Information</span>
+              <h2 class="text-xl sm:text-2xl font-medium text-charcoal mt-1">草津シュエット（La Chouette）</h2>
+              <p class="text-taupe text-xs sm:text-sm mt-1">女性専用プライベートアロマサロン（完全予約制）</p>
+            </div>
+            <div class="flex flex-wrap gap-3">
+              <a
+                href="tel:08062193290"
+                class="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-bronze text-white text-xs sm:text-sm font-medium tracking-wider hover:bg-[#78614C] transition duration-200 shadow-sm"
+              >
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                お電話でのお問い合わせ
+              </a>
+              <a
+                href="https://maps.google.com/?q=滋賀県草津市大路2丁目16-21"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-alabaster border border-sand text-charcoal text-xs sm:text-sm font-medium tracking-wider hover:bg-sand/40 transition duration-200"
+              >
+                <svg class="w-4 h-4 mr-2 text-bronze" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                Googleマップで開く
+              </a>
+            </div>
+          </div>
+
+          <dl class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6 text-sm">
+            <div class="sm:col-span-2">
+              <dt class="text-taupe text-xs tracking-wider">所在地</dt>
+              <dd class="text-charcoal font-medium text-base mt-0.5">
+                〒525-0032 滋賀県草津市大路2丁目16-21 XYZ Court草津大路301
+              </dd>
+            </div>
+            <div>
+              <dt class="text-taupe text-xs tracking-wider">最寄り駅</dt>
+              <dd class="text-charcoal font-medium mt-0.5">JR東海道本線・草津線「草津駅」東口より徒歩9分</dd>
+            </div>
+            <div>
+              <dt class="text-taupe text-xs tracking-wider">電話番号</dt>
+              <dd class="text-charcoal font-medium mt-0.5">
+                <a href="tel:08062193290" class="hover:text-bronze transition">080-6219-3290</a>
+              </dd>
+            </div>
+            <div>
+              <dt class="text-taupe text-xs tracking-wider">営業時間</dt>
+              <dd class="text-charcoal font-medium mt-0.5">AM 8:00 〜（朝からの施術も承っております）</dd>
+            </div>
+            <div>
+              <dt class="text-taupe text-xs tracking-wider">駐車場</dt>
+              <dd class="text-charcoal font-medium mt-0.5">
+                提携無料駐車場あり（de愛広場 東側駐車場 / 施術時間分無料）
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- 電車・徒歩での道順案内 -->
+      <section class="max-w-4xl mx-auto px-4 sm:px-6 mb-16">
+        <div class="text-center mb-8">
+          <span class="text-xs tracking-[0.2em] text-bronze uppercase font-serif">Train Access</span>
+          <h2 class="text-xl sm:text-2xl font-medium text-charcoal mt-1">電車でお越しの方（JR草津駅より徒歩9分）</h2>
+          <div class="w-8 h-[1px] bg-bronze mx-auto mt-3"></div>
+        </div>
+
+        <div class="bg-champagne/40 border border-sand rounded-2xl p-6 sm:p-8">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-full bg-bronze text-white flex items-center justify-center font-serif text-lg font-medium flex-shrink-0">
+              1
+            </div>
+            <div>
+              <h3 class="text-base sm:text-lg font-medium text-charcoal mb-2">JR草津駅 東口からのルート</h3>
+              <p class="text-sm sm:text-base text-taupe leading-relaxed">
+                JR草津駅の改札を出られましたら、<strong class="text-charcoal font-medium">「東口」</strong>へお進みください。<br class="hidden sm:inline" />
+                ペデストリアンデッキを降り、大通り沿いの<strong class="text-charcoal font-medium">右側（歩道）を国道1号線方面へまっすぐ</strong>お進みください。徒歩約9分ほどで当サロンが入るマンション「XYZ Court草津大路」に到着いたします。
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 建物外観とインターフォン案内 -->
+      <section class="max-w-4xl mx-auto px-4 sm:px-6 mb-16">
+        <div class="text-center mb-8">
+          <span class="text-xs tracking-[0.2em] text-bronze uppercase font-serif">Entrance Guide</span>
+          <h2 class="text-xl sm:text-2xl font-medium text-charcoal mt-1">建物外観とインターフォンのご案内</h2>
+          <div class="w-8 h-[1px] bg-bronze mx-auto mt-3"></div>
+          <p class="text-xs sm:text-sm text-taupe mt-3">
+            当サロンは「XYZ Court草津大路」の3階（301号室）にございます。
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+          <!-- 外観画像 -->
+          <div class="bg-champagne/50 border border-sand rounded-2xl overflow-hidden shadow-sm flex flex-col">
+            <div class="aspect-[4/3] bg-sand/30 overflow-hidden relative">
+              <img
+                src="https://kusatsu-aroma.com/_emdash/api/media/file/01M6AXNVJNVQ2AGSRBWMKQVZ5K.01M6AXNWH9VMVY77G870NS9NP2.jpg"
+                alt="XYZ Court草津大路のマンション外観"
+                loading="lazy"
+                class="w-full h-full object-cover hover:scale-105 transition duration-500"
+              />
+            </div>
+            <div class="p-5 flex-grow flex flex-col justify-between">
+              <div>
+                <h3 class="font-medium text-base text-charcoal mb-1">マンション外観（XYZ Court草津大路）</h3>
+                <p class="text-xs sm:text-sm text-taupe leading-relaxed">
+                  大通り沿いに建つ、シックで落ち着いた外観のマンションです。1階エントランスよりお入りください。
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- インターフォン画像 -->
+          <div class="bg-champagne/50 border border-sand rounded-2xl overflow-hidden shadow-sm flex flex-col">
+            <div class="aspect-[4/3] bg-sand/30 overflow-hidden relative">
+              <img
+                src="https://kusatsu-aroma.com/_emdash/api/media/file/01M6AXNVWC7MKK8HQ6JSKETA5Y.01M6AXNWGW8XEPQ9XE2MAXSV6Z.jpg"
+                alt="エントランスのインターフォンの場所"
+                loading="lazy"
+                class="w-full h-full object-cover hover:scale-105 transition duration-500"
+              />
+            </div>
+            <div class="p-5 flex-grow flex flex-col justify-between">
+              <div>
+                <h3 class="font-medium text-base text-charcoal mb-1">エントランス・インターフォン</h3>
+                <p class="text-xs sm:text-sm text-taupe leading-relaxed">
+                  エントランスの集合インターフォンにて<strong class="text-charcoal font-medium">「301」</strong>をお呼び出しください。私が笑顔でお迎えいたします。
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 提携無料駐車場案内 -->
+      <section class="max-w-4xl mx-auto px-4 sm:px-6 mb-16">
+        <div class="text-center mb-8">
+          <span class="text-xs tracking-[0.2em] text-bronze uppercase font-serif">Parking Guide</span>
+          <h2 class="text-xl sm:text-2xl font-medium text-charcoal mt-1">お車でお越しの方（提携無料駐車場）</h2>
+          <div class="w-8 h-[1px] bg-bronze mx-auto mt-3"></div>
+        </div>
+
+        <!-- 駐車サービス概要 -->
+        <div class="bg-champagne/70 border border-sand rounded-2xl p-6 sm:p-8 mb-8">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="inline-block px-3 py-1 rounded-full bg-bronze text-white text-xs font-medium tracking-wider">
+              駐車サービス
+            </span>
+            <span class="text-charcoal font-medium text-base">施術時間分の駐車チケット進呈（実質無料）</span>
+          </div>
+          <p class="text-xs sm:text-sm text-taupe leading-relaxed mb-4">
+            お車でお越しのお客様には、サロン近くの「de愛広場 東側駐車場」をご案内しております。通常1時間無料の駐車場ですが、当サロンにて<strong class="text-charcoal font-medium">施術時間分の駐車チケットをお渡しいたしますので、実質無料でご利用いただけます</strong>。
+          </p>
+          <div class="bg-alabaster/80 border border-sand rounded-xl p-4 text-xs sm:text-sm text-charcoal">
+            <p class="font-medium mb-1">駐車場住所：</p>
+            <p class="text-taupe">滋賀県草津市大路2丁目5（de愛広場 東側駐車場）</p>
+          </div>
+        </div>
+
+        <!-- 駐車場写真 2枚 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+          <div class="bg-champagne/50 border border-sand rounded-2xl overflow-hidden shadow-sm">
+            <div class="aspect-[4/3] bg-sand/30 overflow-hidden relative">
+              <img
+                src="https://kusatsu-aroma.com/_emdash/api/media/file/01M6AXNVWJ894ZKHXCAEMP92PW.01M6AXNWHA4K9Z237VTEMP69M9.jpg"
+                alt="de愛広場 東側駐車場の入口案内"
+                loading="lazy"
+                class="w-full h-full object-cover hover:scale-105 transition duration-500"
+              />
+            </div>
+            <div class="p-4">
+              <h3 class="font-medium text-sm text-charcoal">de愛広場 東側駐車場（入口）</h3>
+              <p class="text-xs text-taupe mt-1">広々としており、お車の出入りがスムーズな駐車場です。</p>
+            </div>
+          </div>
+
+          <div class="bg-champagne/50 border border-sand rounded-2xl overflow-hidden shadow-sm">
+            <div class="aspect-[4/3] bg-sand/30 overflow-hidden relative">
+              <img
+                src="https://kusatsu-aroma.com/_emdash/api/media/file/01M6AXNZX6M53K6B4M7PK4B3ND.01M6AXP0HA69VTXX9VE9YSBYQT.jpg"
+                alt="de愛広場 東側駐車場の場内スペース"
+                loading="lazy"
+                class="w-full h-full object-cover hover:scale-105 transition duration-500"
+              />
+            </div>
+            <div class="p-4">
+              <h3 class="font-medium text-sm text-charcoal">de愛広場 東側駐車場（場内）</h3>
+              <p class="text-xs text-taupe mt-1">駐車スペースがゆったり確保されており、運転に不慣れな方でも安心です。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Googleマップ埋め込み -->
+      <section class="max-w-4xl mx-auto px-4 sm:px-6 mb-16">
+        <div class="text-center mb-8">
+          <span class="text-xs tracking-[0.2em] text-bronze uppercase font-serif">Google Map</span>
+          <h2 class="text-xl sm:text-2xl font-medium text-charcoal mt-1">周辺マップ</h2>
+          <div class="w-8 h-[1px] bg-bronze mx-auto mt-3"></div>
+        </div>
+
+        <div class="border border-sand rounded-2xl overflow-hidden shadow-sm bg-champagne/40">
+          <div class="aspect-[16/9] w-full">
+            <iframe
+              src="https://maps.google.com/maps?q=滋賀県草津市大路2丁目16-21&hl=ja&z=16&output=embed"
+              class="w-full h-full border-0"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="草津シュエット所在地マップ"
+            ></iframe>
+          </div>
+          <div class="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-champagne/60 border-t border-sand text-xs sm:text-sm">
+            <p class="text-taupe">
+              道に迷われた際や場所が分かりにくい場合は、お気軽に <strong class="text-charcoal font-medium">080-6219-3290</strong> までお電話ください。
+            </p>
+            <a
+              href="https://maps.google.com/?q=滋賀県草津市大路2丁目16-21"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center text-bronze font-medium hover:underline flex-shrink-0"
+            >
+              アプリでルートを確認する →
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- お問い合わせ・ご予約案内カード -->
+      <section class="max-w-4xl mx-auto px-4 sm:px-6">
+        <div class="bg-champagne/80 border border-sand rounded-2xl p-8 sm:p-10 text-center shadow-sm">
+          <span class="text-xs tracking-widest text-bronze uppercase font-serif">Contact & Reservation</span>
+          <h2 class="text-xl sm:text-2xl font-medium text-charcoal mt-2 mb-4">
+            ご不明な点はお気軽にご相談ください
+          </h2>
+          <p class="text-xs sm:text-sm text-taupe leading-relaxed max-w-xl mx-auto mb-6">
+            草津シュエットは、お客様お一人だけの時間を大切にする完全予約制サロンです。少し早めにご到着された場合や道順のご確認など、いつでもお気軽にお電話または公式LINEよりご連絡ください。
+          </p>
+          <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <a
+              href="tel:08062193290"
+              class="inline-flex items-center justify-center px-7 py-3 rounded-full bg-bronze text-white text-sm font-medium tracking-wider hover:bg-[#78614C] transition duration-200 shadow-sm"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+              </svg>
+              080-6219-3290 に電話する
+            </a>
+            <a
+              href="https://line.me"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center justify-center px-7 py-3 rounded-full bg-alabaster border border-sand text-charcoal text-sm font-medium tracking-wider hover:bg-sand/30 transition duration-200"
+            >
+              公式LINEで問い合わせる
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+  </body>
+</html>
