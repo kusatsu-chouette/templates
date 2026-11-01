@@ -109,7 +109,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
        La Chouette 大人女性向けブログ装飾ボックス
        ======================================================== */
 
-    /* 付箋風ボックス（左ブロンズ太線・シャンパン背景） */
     .box-fusen {
       background-color: #EDE7DF;
       border-left: 5px solid #8E735B;
@@ -120,7 +119,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       line-height: 1.85;
     }
 
-    /* ポイントボックス（上部POINTバッジ＋ブロンズ枠線） */
     .box-point {
       position: relative;
       background-color: #FFFFFF;
@@ -144,7 +142,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       border-radius: 9999px;
     }
 
-    /* チェックボックス（上部CHECKバッジ＋サンド枠線） */
     .box-check {
       position: relative;
       background-color: #FFFFFF;
@@ -168,7 +165,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       border-radius: 9999px;
     }
 
-    /* 窪み・カードボックス */
     .box-inset {
       background-color: #EDE7DF;
       box-shadow: inset 0 2px 4px rgba(34, 31, 29, 0.05);
@@ -179,7 +175,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       line-height: 1.85;
     }
 
-    /* かぎ括弧ボックス */
     .box-bracket {
       position: relative;
       background-color: #FFFFFF;
@@ -209,7 +204,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       border-right: 2px solid #8E735B;
     }
 
-    /* 記事本文スタイル */
+    /* 記事本文見出し */
     .entry-content h2 {
       font-family: 'Shippori Mincho', serif;
       font-size: 1.35rem;
@@ -252,7 +247,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
 
   <main class="flex-grow pt-24 pb-20">
     <article class="max-w-3xl mx-auto px-5 sm:px-8">
-      <!-- 記事ヘッダー -->
       <header class="mb-10 text-center border-b border-sand pb-8">
         <div class="inline-flex flex-wrap items-center justify-center gap-2 mb-4">
           {tags.map((t) => (
@@ -277,7 +271,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
         )}
       </header>
 
-      <!-- アイキャッチ画像 -->
       {post.data.featured_image && (
         <div class="mb-12 overflow-hidden rounded-2xl shadow-sm">
           <Image
@@ -294,7 +287,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
         <PortableText value={post.data.content} />
       </div>
 
-      <!-- 自動デザイン変換スクリプト（is:inline） -->
+      <!-- 自動デザイン変換スクリプト（# 取り残し修正版） -->
       <script is:inline>
         (function() {
           const container = document.getElementById('post-content');
@@ -302,7 +295,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
 
           let html = container.innerHTML;
 
-          // 1. エスケープされた div タグを復元（過去の投稿も救済）
+          // 1. エスケープされた div タグの復元
           html = html.replace(/&lt;div class="([^"]+)"&gt;([\s\S]*?)&lt;\/div&gt;/gi, '<div class="$1">$2</div>');
 
           // 2. 日本語タグを装飾ボックスへ自動変換
@@ -312,17 +305,21 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
           html = html.replace(/【(?:かぎ括弧|言葉)】([\s\S]*?)【\/(?:かぎ括弧|言葉)】/gi, '<div class="box-bracket">$1</div>');
           html = html.replace(/【(?:カード|窪み)】([\s\S]*?)【\/(?:カード|窪み)】/gi, '<div class="box-inset">$1</div>');
 
-          // 3. 見出し記号（## や ###）を自動で見出しデザインへ変換
-          html = html.replace(/<p>\s*##\s+(.*?)<\/p>/gi, '<h2>$1</h2>');
+          // 3. 見出し変換（必ず文字数の多い ### から先に判定・変換する）
           html = html.replace(/<p>\s*###\s+(.*?)<\/p>/gi, '<h3>$1</h3>');
-          html = html.replace(/##\s+([^<\n]+)/gi, '<h2>$1</h2>');
+          html = html.replace(/<p>\s*##\s+(.*?)<\/p>/gi, '<h2>$1</h2>');
           html = html.replace(/###\s+([^<\n]+)/gi, '<h3>$1</h3>');
+          html = html.replace(/##\s+([^<\n]+)/gi, '<h2>$1</h2>');
+
+          // 4. 万が一孤立して残った # を綺麗に消去
+          html = html.replace(/<p>\s*#+\s*<\/p>/gi, '');
+          html = html.replace(/(?:^|\n)\s*#+\s*(?=\n|$)/g, '');
 
           container.innerHTML = html;
         })();
       </script>
 
-      <!-- 記事末尾 - ご案内＆予約導線（CTAコンポーネント） -->
+      <!-- 予約・LINE導線CTA -->
       <section class="mt-16 pt-10 border-t border-sand">
         <div class="bg-champagne/60 rounded-2xl p-6 sm:p-8 border border-sand text-center">
           <p class="text-xs tracking-widest text-bronze uppercase font-medium mb-1">Reservation & Contact</p>
@@ -332,7 +329,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
           </p>
 
           <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <!-- Squareネット予約 -->
             <a
               href="https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start"
               target="_blank"
@@ -342,7 +338,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
               サロン施術の空き状況・ネット予約
             </a>
 
-            <!-- 公式LINE相談 -->
             <a
               href="https://lin.ee/nzuEONf"
               target="_blank"
@@ -359,7 +354,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
         </div>
       </section>
 
-      <!-- 記事一覧へ戻るリンク -->
       <div class="mt-12 text-center">
         <a href="/posts" class="inline-flex items-center text-sm text-taupe hover:text-bronze transition">
           <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
