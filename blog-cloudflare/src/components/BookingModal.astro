@@ -175,7 +175,7 @@
 
   document.addEventListener('click', (event) => {
     const target = event.target;
-    if (target && target.closest('.js-open-booking')) {
+    if (target instanceof Element && target.closest('.js-open-booking')) {
       event.preventDefault();
       modal?.classList.add('is-active');
     }
