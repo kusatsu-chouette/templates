@@ -1,13 +1,7 @@
 ---
-// templates/blog-cloudflare/src/components/Hero.astro
-
-// ==========================================
-// 【毎週の更新エリア】
-// 日付が変わったら以下のテキストを書き換えて保存してください
-// ==========================================
 const lateNightDate = "11月3日(火)";
 const lateNightHours = "8:00 — 27:00（深夜3時まで）";
-const lateNightStatus = "ご予約受付中"; // 
+const lateNightStatus = "ご予約受付中";
 const lateNightNote = "静まり返った夜の完全個室。一日のお疲れや緊張を、温かなロングストロークで解きほぐします。";
 ---
 
@@ -65,14 +59,12 @@ const lateNightNote = "静まり返った夜の完全個室。一日のお疲れ
     </div>
   </div>
 
-  <!-- 【NEW】リピーター様専用 クイック予約バー -->
+  <!-- リピーター様専用 クイック予約バー -->
   <div class="mt-4 rounded-2xl bg-champagne/80 border border-sand/70 p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-sm">
     <div class="flex items-center gap-3 text-center sm:text-left w-full sm:w-auto justify-center sm:justify-start">
-      <div class="w-9 h-9 rounded-full bg-bronze/10 text-bronze flex items-center justify-center shrink-0">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-        </svg>
-      </div>
+      <span class="w-8 h-8 rounded-full bg-bronze/15 text-bronze flex items-center justify-center shrink-0 text-sm font-serif">
+        ✦
+      </span>
       <div>
         <p class="text-[10px] tracking-[0.2em] text-taupe uppercase font-light">FOR REPEAT CLIENTS</p>
         <h3 class="text-sm sm:text-base font-serif text-charcoal tracking-wide font-medium">
@@ -82,17 +74,14 @@ const lateNightNote = "静まり返った夜の完全個室。一日のお疲れ
     </div>
     
     <div class="flex items-center gap-2.5 w-full sm:w-auto">
-      <!-- 1. Square予約サイトへダイレクト移動 -->
       <a
         href="https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start"
         target="_blank"
         rel="noopener noreferrer"
-        class="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-bronze hover:bg-[#78614C] text-alabaster text-xs tracking-wider transition-all duration-300 shadow-sm font-medium whitespace-nowrap text-center"
+        class="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-bronze hover:opacity-90 text-alabaster text-xs tracking-wider transition-all duration-300 shadow-sm font-medium whitespace-nowrap text-center"
       >
         WEB即時予約（空き枠確認）
       </a>
-
-      <!-- 2. BookingModal.astroを起動するボタン -->
       <button
         type="button"
         class="js-open-booking flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-alabaster hover:bg-white text-charcoal border border-sand text-xs tracking-wider transition-all duration-300 shadow-sm font-medium whitespace-nowrap text-center cursor-pointer"
@@ -102,10 +91,8 @@ const lateNightNote = "静まり返った夜の完全個室。一日のお疲れ
     </div>
   </div>
 
-  <!-- 近日の深夜営業日アナウンスバナー（毎週上部コードで日付更新） -->
-  <div class="mt-4 rounded-2xl bg-gradient-to-r from-charcoal via-[#2A2624] to-charcoal border border-sand/40 p-5 sm:p-6 shadow-md text-alabaster relative overflow-hidden">
-    <div class="absolute -right-8 -bottom-8 w-32 h-32 bg-bronze/10 rounded-full blur-2xl pointer-events-none"></div>
-
+  <!-- 近日の深夜営業日アナウンスバナー -->
+  <div class="mt-4 rounded-2xl bg-charcoal border border-sand/40 p-5 sm:p-6 shadow-md text-alabaster relative overflow-hidden">
     <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div class="space-y-1.5">
         <div class="flex items-center gap-2">
@@ -129,10 +116,9 @@ const lateNightNote = "静まり返った夜の完全個室。一日のお疲れ
       </div>
 
       <div class="flex items-center gap-3 pt-2 md:pt-0 shrink-0">
-        <!-- モーダル起動クラスを付与し、LINE・電話等から選べるように連動 -->
         <button 
           type="button"
-          class="js-open-booking inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-bronze hover:bg-[#78614C] text-alabaster text-xs tracking-wider transition-all duration-300 shadow-sm font-medium w-full md:w-auto text-center cursor-pointer"
+          class="js-open-booking inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-bronze hover:opacity-90 text-alabaster text-xs tracking-wider transition-all duration-300 shadow-sm font-medium w-full md:w-auto text-center cursor-pointer"
         >
           空き状況の確認・予約
         </button>
