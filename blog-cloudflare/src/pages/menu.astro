@@ -44,6 +44,25 @@ const visitMenus = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>メニュー・料金 | 女性専用サロン La Chouette（ラ・シュエット）</title>
     <meta name="description" content="滋賀県草津市の女性専用サロン La Chouette（ラ・シュエット）のメニュー・料金案内です。心地よいアロマオイルトリートメントで深い癒やしのひとときをお届けします。" />
+    
+    <!-- Astroのバンドル解析をスキップしブラウザで直接実行させるための is:inline -->
+    <script is:inline src="https://cdn.tailwindcss.com"></script>
+    <script is:inline>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              alabaster: '#F7F4EF',
+              champagne: '#EDE7DF',
+              sand: '#DCD3C6',
+              bronze: '#8E735B',
+              charcoal: '#221F1D',
+              taupe: '#7D7571',
+            }
+          }
+        }
+      }
+    </script>
   </head>
   <body class="bg-[#F7F4EF] text-[#221F1D] font-sans antialiased selection:bg-[#DCD3C6] selection:text-[#221F1D]">
     <Header />
