@@ -9,6 +9,25 @@ const pageDescription = "滋賀県草津市にある女性専用アロマサロ�
 ---
 
 <Base title={pageTitle} description={pageDescription}>
+  <!-- Tailwind CSS CDN とサロン専用アースカラーの設定 -->
+  <script is:inline src="https://cdn.tailwindcss.com"></script>
+  <script is:inline>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            alabaster: '#F7F4EF',
+            champagne: '#EDE7DF',
+            sand: '#DCD3C6',
+            bronze: '#8E735B',
+            charcoal: '#221F1D',
+            taupe: '#7D7571',
+          }
+        }
+      }
+    }
+  </script>
+
   <div class="bg-alabaster text-charcoal font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-champagne selection:text-bronze">
     <Header />
 
