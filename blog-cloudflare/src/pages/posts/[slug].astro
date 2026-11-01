@@ -1,7 +1,6 @@
 ---
 import {
   getEmDashEntry,
-  getTermsForEntries,
   getSeoMeta,
   decodeSlug,
   getSiteSettings,
@@ -92,7 +91,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
   <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <style is:global>
@@ -105,10 +104,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       font-family: 'Shippori Mincho', serif;
     }
 
-    /* ========================================================
-       La Chouette 大人女性向けブログ装飾ボックス
-       ======================================================== */
-
+    /* 大人女性向け装飾ボックス */
     .box-fusen {
       background-color: #EDE7DF;
       border-left: 5px solid #8E735B;
@@ -204,7 +200,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       border-right: 2px solid #8E735B;
     }
 
-    /* 記事本文見出し */
     .entry-content h2 {
       font-family: 'Shippori Mincho', serif;
       font-size: 1.35rem;
@@ -287,7 +282,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
         <PortableText value={post.data.content} />
       </div>
 
-      <!-- 自動デザイン変換スクリプト（# 取り残し修正版） -->
+      <!-- 自動デザイン変換スクリプト -->
       <script is:inline>
         (function() {
           const container = document.getElementById('post-content');
@@ -295,23 +290,23 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
 
           let html = container.innerHTML;
 
-          // 1. エスケープされた div タグの復元
+          // エスケープされた div タグの復元
           html = html.replace(/&lt;div class="([^"]+)"&gt;([\s\S]*?)&lt;\/div&gt;/gi, '<div class="$1">$2</div>');
 
-          // 2. 日本語タグを装飾ボックスへ自動変換
+          // 日本語タグを装飾ボックスへ自動変換
           html = html.replace(/【(?:POINT|ポイント)】([\s\S]*?)【\/(?:POINT|ポイント)】/gi, '<div class="box-point">$1</div>');
           html = html.replace(/【(?:CHECK|チェック)】([\s\S]*?)【\/(?:CHECK|チェック)】/gi, '<div class="box-check">$1</div>');
           html = html.replace(/【(?:付箋|つぶやき)】([\s\S]*?)【\/(?:付箋|つぶやき)】/gi, '<div class="box-fusen">$1</div>');
           html = html.replace(/【(?:かぎ括弧|言葉)】([\s\S]*?)【\/(?:かぎ括弧|言葉)】/gi, '<div class="box-bracket">$1</div>');
           html = html.replace(/【(?:カード|窪み)】([\s\S]*?)【\/(?:カード|窪み)】/gi, '<div class="box-inset">$1</div>');
 
-          // 3. 見出し変換（必ず文字数の多い ### から先に判定・変換する）
+          // 見出し変換
           html = html.replace(/<p>\s*###\s+(.*?)<\/p>/gi, '<h3>$1</h3>');
           html = html.replace(/<p>\s*##\s+(.*?)<\/p>/gi, '<h2>$1</h2>');
           html = html.replace(/###\s+([^<\n]+)/gi, '<h3>$1</h3>');
           html = html.replace(/##\s+([^<\n]+)/gi, '<h2>$1</h2>');
 
-          // 4. 万が一孤立して残った # を綺麗に消去
+          // 孤立した # の消去
           html = html.replace(/<p>\s*#+\s*<\/p>/gi, '');
           html = html.replace(/(?:^|\n)\s*#+\s*(?=\n|$)/g, '');
 
