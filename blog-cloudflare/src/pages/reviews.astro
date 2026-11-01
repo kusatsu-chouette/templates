@@ -1,0 +1,664 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+// 精査・重複排除済みの口コミデータ一覧（全34件）
+const reviews = [
+  {
+    id: 1,
+    name: "のんさん",
+    reviewerInfo: "女性 / 30代前半 / 会社員",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "【男性セラピスト高橋担当】ふわふわ手のひらアロマリンパケア60分",
+    content: "非常に上手でした！ 印象に残る施術でした。 この上手さでこの料金は格安かと思います。 車で20分ほどかかりますが通う価値があります。 安心して快適な時間を過ごせるように工夫、気遣いされておられます。 男性セラピストは初めてで、女性なら少し不安に思われる方もおられるかと思いますが、例えるなら、ママ友グループの輪の中に1人入っていても違和感なく井戸端会議できるようなお人柄で、同性より緊張しないとても良い雰囲気をお持ちなので、安心してお任せ出来ると思いますよ。",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NSZDXRB6ZYBHVG7RHBN7V.01M67NT0MCF82ZRYYBPZ4FMQ2D.jpg",
+    tags: ["安心・気遣い", "高コスパ", "初来店"]
+  },
+  {
+    id: 2,
+    name: "mさん",
+    reviewerInfo: "女性 / 20代後半 / 会社員",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "【ありがとう！開業5周年記念クーポン】組み合わせ自由90分コース",
+    content: "男性セラピストの方にオイルマッサージしてもらうのは初めてでしたが、力が強くゴリゴリほぐしてもらえて身体が楽になりました。鼠蹊部やデコルテの部分は施術前に動画を見せてもらいながら、どこら辺まで施術するか聞いてくださり安心して施術を受けられました。恋愛アドバイザーの資格もお持ちで、施術前後にいろんなお話もできて楽しかったです！他のところに比べてお値段もリーズナブルで、施術も満足、さらに恋愛相談もできて、とてもいい時間でした(笑)またお願いします！",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NSZWTTQHNX0NXEKZ3ZHWH.01M67NT0Y0TZVRJ1FYKSXC719P.jpg",
+    tags: ["しっかりほぐし", "丁寧な説明", "お話・相談"]
+  },
+  {
+    id: 3,
+    name: "harukaさん",
+    reviewerInfo: "女性 / 20代後半 / 会社員",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "【しっかり専用】アロマオイルトリートメント90分",
+    content: "明るく元気で親しみやすい方でとてもリラックスできました☆ 手が大きく温かいので包まれるような感触がして心地よく、身体もポカポカでスッキリ軽くなりました☆ 色んなお店行きましたが、今までで1番上手です！ またお願いします！",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NSZDCWM3HE1MVA46V552E.01M67NT0MB0TJK3GP2M66379K9.jpg",
+    tags: ["温かい手", "リラックス", "技術力"]
+  },
+  {
+    id: 4,
+    name: "にちゃんさん",
+    reviewerInfo: "女性 / 20代前半 / パート・アルバイト",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "【しっかり専用】アロマオイルトリートメント90分",
+    content: "初めてのオイルマッサージデビューに利用させて頂きました！ すごく緊張してたのですが、フレンドリーなセラピストさんだったので、話しやすかったです。 くだらない相談まで乗っていただいて、ありがとうございました（笑） 施術のほうは、とても心地よく『あー、癒されるってこういうことだったのかぁ…』と気付かされました。。 身体がほぐれて温まってくると気持ちよく寝てしまいそうだったので、勿体無いと感じる方は頑張って起きててください（笑） 施術が終わると身体が芯からポカポカでお風呂上がりみたいな感じでした！ 男性セラピストと聞いて不安な方もいらっしゃると思いますが、全然安心して大丈夫です！気遣いも完璧でした。 また予約して利用させて頂きたいと思います！",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NT62YXM3D4Q95HDXNJ1XF.01M67NT84MRYX2VZMWNF9ZX59Y.jpg",
+    tags: ["初来店", "安心・気遣い", "癒やし"]
+  },
+  {
+    id: 5,
+    name: "まゆこさん",
+    reviewerInfo: "女性 / 40代 / 会社員",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "【リラックス専用】アロマオイルマッサージ90分",
+    content: "何度もリピートしています。 疲れたなぁと思った時に大きな手でしっかりマッサージしてもらえて帰る時には身体がスッキリ元気になってます。 お部屋はいい雰囲気で色々楽しくお話しできるので 毎回心も癒されてます。 安心して続けて通えるサロンです。",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NT6BHNC2S7CQTX4FAZMET.01M67NT7CC6PGASDE1SVH6011H.jpg",
+    tags: ["リピーター", "温かい手", "安心・気遣い"]
+  },
+  {
+    id: 6,
+    name: "ベルリンさん",
+    reviewerInfo: "女性 / 40代 / 主婦",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "【当店人気】アロマオイルトリートメント90分",
+    content: "先日は、ありがとうございました^ ^ お店の雰囲気は、清潔感溢れ 落ち着いた照明で 居心地が良かったです。 お話上手、聞き上手でついつい喋りすぎそうになるくらい、リラックスしてました。 はじめに出して下さったお茶も、美味しくほっこりしてました。 足湯から始まりましたが、温度が高めで冷え切った私にはとても気持ちよかったです。 施術は、もう間違い無しです。 とても上手ですし、気配りが何より感じられ終始リラックスで、眠ってしまいました^_^; 施術中には、自分で気付いてない所の痛みを発見してびっくりしましたが、細部まで見て下さってくれてるような感じでした！ 良い場所見つけたーって感じです^-^ また、是非お願いします〜☆",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NTC5A1MTR0SSC80JSD4CD.01M67NTEXJ5GS65JJVVK3DSRMM.jpg",
+    tags: ["足湯・空間", "丁寧なケア", "リラックス"]
+  },
+  {
+    id: 7,
+    name: "なおさん",
+    reviewerInfo: "女性 / 40代 / 会社員",
+    rating: 5,
+    subRatings: "雰囲気 4 ｜ 接客サービス 4 ｜ 技術・仕上がり 5 ｜ メニュー・料金 4",
+    menu: "【当店人気】アロマオイルトリートメント60分",
+    content: "男性のセラピストさんと言う事でかなりの不安を抱きながら予約しました。 親切に外まで出てきて頂いて、道案内していただきました。 話しやすくて物腰柔らかな方だったので不安も消えました(笑) 丁寧なカウンセリングの後のアロママッサージはリラックス出来て至福の一時でした。 また行きたいと思いました。",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NTC5AYWQW43QGD13251A4.01M67NTD65FGD0HQ0KZW4XV1P5.jpg",
+    tags: ["不安解消", "丁寧な説明", "至福の時間"]
+  },
+  {
+    id: 8,
+    name: "さえさん",
+    reviewerInfo: "女性 / 40代",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "【首コリ肩こり膝下むくみケア】ほぐし&膝下オイル120分",
+    content: "2回目です。パニック障害を抱えており、「またご主人といらして下さい」と言っていただきましたが、前回の感じから1人でも大丈夫、と思い、1人で出向き、最初はまだ少し緊張がありましたが、帰る頃には幸せな気持ちで帰れました。使用するアロマは、たくさんある中から好みのものを選ばせていただけるのですが、香りの好み、そして効能一覧も見せていただけます。足のマッサージでは、施術後にオイルを拭いたのにもかかわらず、しっとりといい感じに。前回同様、頭マッサージでは落ちる寸前でした。アロママッサージデビューをしたいと思いつつ踏み込めないでいるのですが、質問には丁寧に答えていただけて不安のでないように私に合ったアドバイスもいただき有り難かったです。カチコチの体の私には男性セラピストさんが向いてるのかな、と。友達の家にきたような話しやすい人柄に助けてもらってます。また癒されに伺います。",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NTD68F66KPY5B66TDZ2B4.01M67NTE7PGK00AA38Q2WQJ0A0.jpg",
+    tags: ["安心・気遣い", "精油の選択", "頭マッサージ"]
+  },
+  {
+    id: 9,
+    name: "DDTさん",
+    reviewerInfo: "女性 / 40代 / その他",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "【肩こり・むくみ集中】ほぐし&膝下オイル140分",
+    content: "はじめて来店しましたが、他の方の口コミにあるように男性のスタッフさんですがたいへんあたりが良く、終始丁寧に接していただきました。施術は女性の方に比べると力も強く、手も温かいのでこちらの要望通りコリが酷くてガタガタだった身体をしっかりとほぐしていただきました。おかげで帰る際には肩、背中、腰、足がとっても軽くなりました。これからも、利用させていただきたいと思います！",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NTHZSAYBYV25QYJA2F7JJ.01M67NTK12DY12JQW0SY093QVE.jpg",
+    tags: ["しっかりほぐし", "温かい手", "丁寧な接客"]
+  },
+  {
+    id: 10,
+    name: "みなみさん",
+    reviewerInfo: "女性 / 20代後半 / 会社員",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "【しっかり専用】アロマオイルマッサージ60分",
+    content: "初めて行かせていただいたのになんだか居心地良い雰囲気で安心感がありました。しっかりマッサージしてもらって、帰りながら自然と肩や足が軽くなってるのに気づいた時は嬉しかったです♪色んな話もしやすくてぜひまた行きたいなと思います。",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NTK9BZW5CQ0SV7JXGSMKR.01M67NTMADBV82V8K29MJZ8F98.jpg",
+    tags: ["初来店", "心地よい空間", "肩・足が軽い"]
+  },
+  {
+    id: 11,
+    name: "アヤカさん",
+    reviewerInfo: "女性 / 40代 / 会社員",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 4",
+    menu: "【わがままオイルコース♪】アロマオイルトリートメント70分",
+    content: "2回目の訪問です。1回目の時は初めてだったので、緊張するはずが…すごくリラックスでき寝てしまってました。丁寧な説明、施術中の気遣い、トークなど女性のセラピストさん以上に気を使われていて、それが結果に出ていると思います。凝っている箇所は何も言わなくてもほぐしてもらってました。また行きたいお店です。いつも恋話聞いてもらって、ありがとうございます。",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NTNB1S7Q4GJ18QVM3B5J2.01M67NTPDZCB7J07BAN85QVVBK.jpg",
+    tags: ["リラックス", "安心・気遣い", "お話・相談"]
+  },
+  {
+    id: 12,
+    name: "まぁさん",
+    reviewerInfo: "女性 / 50代 / 会社員",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "サロン特別コース",
+    content: "至極な時をありがとうございました。深い眠りにつけ 翌日は身体がとっても軽かった。精神面でのフォローも とっても励みになります。疲れきった時 また伺います。疲れてなくても 伺うかもしれません（笑）",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NTQSTHQEZK6MSS3ZPH1MR.01M67NTSD585HFMB7KV6WSP8N7.jpg",
+    tags: ["深い眠り", "心と体のケア", "リフレッシュ"]
+  },
+  {
+    id: 13,
+    name: "あやさん",
+    reviewerInfo: "女性 / 20代後半 / 会社員",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "【当店人気】アロマオイルトリートメント90分",
+    content: "最初は男の人かぁ…と少し不安に思いながらも、他の方の良いクチコミを見て気になりお伺いしました。終始、細かい所まで気を使って頂き、セラピストの方が男性とゆう点で不安や不快な所は1つもなく、逆に勉強になりました。自分もあんな接客がしたいなぁ(*´ω`*) オイルの種類も沢山あって、マッサージもガッツリして頂き大満足でした！長々と話してしまってすいません(*'';) ありがとうございました！またお世話になります(^^)",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NTS3BP8HDN76VPBZSQARZ.01M67NTT5PC0MT304MTY4Q2BGW.jpg",
+    tags: ["不安解消", "細やかな気遣い", "ガッツリ施術"]
+  },
+  {
+    id: 14,
+    name: "むっちゃんさん",
+    reviewerInfo: "女性 / 20代後半 / 学生",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 4 ｜ メニュー・料金 5",
+    menu: "【わがままオイルコース】アロマオイルトリートメント60分",
+    content: "初めて来店しました。初めは男性セラピストさんで大丈夫なのかなと不安があったのですが、口コミにあったように接客やヒアリングもすごく丁寧で、触れて欲しくない箇所等も親身に聞いてくださいました。また使用するオイル（精油）の種類も豊富で、足湯に浸かりながら、好きなだけ匂いを嗅ぎ選ばさせてくれた時間は、私にとって至福の時間でもありました。私のガチガチに凝り固まった身体を「つらいですよね」「強さ加減大丈夫ですか」と気遣いながら丁寧に施術してくださり、大きくてあったかい手のぬくもりからも身体を楽にしてあげたいという想いが伝わってきました。これまで何度もオイルマッサージをいろいろな所で受けてきましたが、ここまで私の奥深くに眠っている凝りに向き合ってくださったセラピストさんは初めてでした。次の日少し揉み返しが少しきましたが、それも午前中で治り、その後はいつも以上に身体が軽く、楽になり、心も晴れやかになれました！丁寧に施術してくださって、ほんとうに感謝です。自分の身体へのご褒美として、できる限り毎月通いたいとおもいます！",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NWBDRY2M7ABDBHRN6MTR9.01M67NWCGEV9C0DNGSSQWWQ7PY.jpg",
+    tags: ["丁寧なヒアリング", "温かい手", "至福の時間"]
+  },
+  {
+    id: 15,
+    name: "たまさん",
+    reviewerInfo: "女性 / 40代 / 会社員",
+    rating: 4,
+    subRatings: "雰囲気 4 ｜ 接客サービス 4 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "【わがままオイルコース】アロマオイルトリートメント60分",
+    content: "男性が施術とあり緊張しましたが、口コミの通り話しやすい方で安心しました。肩・背中が痛いくらい凝っていたのですが、帰る際にはすっきり！翌日もいつもと違い体が軽く感じがしました。また、お願いします。",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NWWK4PNJ0EDMAM77D94N8.01M67NWXM1PCXZRE9XR6G0E8C5.jpg",
+    tags: ["不安解消", "肩・背中すっきり", "話しやすい"]
+  },
+  {
+    id: 16,
+    name: "ぱっちぞさん",
+    reviewerInfo: "女性 / 40代",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "【わがままオイルコース】アロマオイルトリートメント80分",
+    content: "仲良しの友達に紹介してもらいました♪ オイルマッサージは初めてで、マッサージ自体、人生で2度目だったので、最初は少し緊張していました。お話ししていると、とても優しくて、楽しくて、本当に安心してマッサージを受けられました！その日は、久しぶりに、夜ぐっすり眠ることができて嬉しかったです。また次回もよろしくお願いします(^^)",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NX5DKBRR7KX77A7QKAHKW.01M67NX6GKNZFX0ZF5QN7704K9.jpg",
+    tags: ["ご紹介", "安心・気遣い", "ぐっすり睡眠"]
+  },
+  {
+    id: 17,
+    name: "きつねうどんさん",
+    reviewerInfo: "女性 / 20代後半",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "【わがままオイルコース】アロマオイルトリートメント60分",
+    content: "先日はありがとうございました。マッサージ自体が久しぶりで、全体的にとてもリラックスできました。いろいろとお話もできて楽しかったです。また、ふらっと気が向いた時にお邪魔したいと思います！！",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NV0874M8NTP8Z45AJBDC3.01M67NV1AN895VJHCVC5W6NWBV.jpg",
+    tags: ["リラックス", "お話・相談", "気軽に来店"]
+  },
+  {
+    id: 18,
+    name: "シフォンさん",
+    reviewerInfo: "女性 / 40代 / その他",
+    rating: 5,
+    subRatings: "雰囲気 4 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "【当店人気NO1】アロマリンパケア90分",
+    content: "男性のセラピストで最初は、戸惑いましたが、このガチガチの肩、腰をどうにかして欲しくて行って見ました。お会いしてすぐに不安はなくなり、とても話しやすくて安心しました。今まで色んなマッサージ、アロマセラピーにいきましたが、ここは次の日も身体が楽でした！肩が軽い！また是非とも行きたいと思いました！ありがとうございました！",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NV3E7AMY5E3GFTKGJ0Q46.01M67NV4G6MFQ28BGS6DTC92TG.jpg",
+    tags: ["不安解消", "肩・腰の軽さ", "高い持続感"]
+  },
+  {
+    id: 19,
+    name: "くろちゃんさん",
+    reviewerInfo: "女性 / 30代後半 / 会社員",
+    rating: 5,
+    subRatings: "雰囲気 4 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "【当店人気NO1】アロマリンパケア90分",
+    content: "当初、アロママッサージで、男性の方の施術はかなり抵抗がありました。ここのレビューを見て皆様の評価が大変高いこと、清潔を心がけておられるとのことで勇気を出して行ってみました。カウンセリングも丁寧で、日頃の話も聴いてもらえリラックスできました。施術は素晴らしく、ゴリゴリの箇所はしっかり揉みほぐしてから流して貰えました。所々、気を遣ってもらいながら完璧なタオルさばきでアロママッサージをしてくださいました。女性の方の施術より丁寧で気遣いがあるとおもいます。技術も素晴らしく、的確にこっている場所をマッサージしてくださり、揉み返しもなく身体が楽になりました。その日の晩もグッスリ眠れました。凄い技術をお持ちだと思います、また手の暖かさや柔らかさが絶妙です。また次回も宜しくお願いします。",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NV4788B37TSKZ8HCC67XE.01M67NV5AF3CZWNKCNNSCJX0PR.jpg",
+    tags: ["完璧なタオルワーク", "的確な技術", "温かい手"]
+  },
+  {
+    id: 20,
+    name: "momoさん",
+    reviewerInfo: "女性 / 30代後半 / その他",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "【セラピストおすすめコース】アロマリンパケア130分",
+    content: "いつもありがとうございます^-^ このお店に通うようになって、もうすぐ２年になります。セラピストさんの男性ならではの大きくて、あったかい、力強い圧なのに優しい手に包まれ、大好きな香りの中でアロマオイルマッサージを受けるのが、毎月の私の楽しみになりました。プライベートサロンなので、ゆっくりでき、香りもその日の気分で選べます。今回は、少し長いコースにしましたがやっぱりあっというまに終わってしまい、でもすごく贅沢で、幸せな時間を今回も過ごすことが出来ました♪ 聞き上手なセラピストさんでいつも行くと沢山話も聴いて下さり、会話も楽しくて、ついつい話しすぎて笑いすぎてうるさくしてすみません笑。でもほんとに仕事や嫌なことも乗りきり頑張れる私の毎日の活力となってます♪ このサロン、セラピストさんと出会えて、ほんとによかったと思っています♪ これからもよろしくお願い致します^-^",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NV60F3YXM52PJ80Z9GP46.01M67NV70NV0Y7FHKRW9PBVE00.jpg",
+    tags: ["リピーター", "贅沢な時間", "温かい手"]
+  },
+  {
+    id: 21,
+    name: "あーちゅさん",
+    reviewerInfo: "女性 / 20代後半",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "【わがままオイルコース】アロマオイルトリートメント70分",
+    content: "2回目の利用です すごく聞き上手なセラピストさんなので ついつい話しすぎてしまいます！笑 施術もとても力加減が上手で 凝っているところは強く、加減してほしいところは弱く 言わなくてもすごくよくわかってくださいます！ また男性のセラピストさんなので手が大きく 指が入りすぎて痛いなんてこともありませんでした！ ガチガチに凝り固まった肩がだいぶ楽になりました！ また次もお願いしたいと思います！",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NVAB78RWHRXC31JF3QNT9.01M67NVBC2EP27PZGFSRHVHHSE.jpg",
+    tags: ["聞き上手", "絶妙な力加減", "肩のコリ解消"]
+  },
+  {
+    id: 22,
+    name: "釘付けさん",
+    reviewerInfo: "女性 / 30代後半 / 会社員",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "【当店人気】アロマオイルトリートメント90分",
+    content: "先日はありがとうございました。最初は少し緊張していましたが、優しい雰囲気で話しやすい方だったので安心しました。力加減がちょうど良く、大きな手でしっかり流していただき、とても気持ちよかったです。いつも朝起きるのがしんどいのですが、マッサージのあとはぐっすり眠れ、翌朝の目覚めが良く、疲れがとれているのを感じました。定期的に通うつもりなので、今後ともどうぞよろしくお願いいたします。",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NVV7FSKXTEQKH3MNYBZ4N.01M67NVW87Q8NXVSJR51YN41YP.jpg",
+    tags: ["安心・気遣い", "大きな手", "ぐっすり睡眠"]
+  },
+  {
+    id: 23,
+    name: "ごはんちゃんさん",
+    reviewerInfo: "女性 / 30代前半 / 主婦",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "【お好みの部位or全身クイック】アロマリンパケア70分",
+    content: "今日はありがとうございました。妊娠、出産後 約1年ぶりのサロンでした。妊娠中は仕事と子育てと家事、産後は0歳と2歳の2人の子育て家事と自分の時間が全くありませんでした。1年間の凝り固まった体でガチガチだったと思います。担当スタッフさんの人柄も素晴らしく、本当に安心できました。カウンセリングも丁寧にしていただきました。男性ならではの力強さ手の大きさでしっかりとほぐして貰えます。接客も女性以上の気配り、繊細さで施術して頂けます。また、お世話になりましが宜しくお願い致します。",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NW5RHAAPPAW09Z699Y32Y.01M67NW6S9KN4J7E27YSPK8WBZ.jpg",
+    tags: ["産後ケア", "丁寧なヒアリング", "繊細な気配り"]
+  },
+  {
+    id: 24,
+    name: "ちいさん",
+    reviewerInfo: "女性 / 40代 / パート・アルバイト",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "【当店人気NO1】アロマリンパケア90分",
+    content: "初めての利用でしたが、口コミ通りの腕前で、首と肩の凝りが施術後かなりスッキリしました。 また、スタッフさんの人柄や笑顔で、心まで癒されました。 手の平の柔らかさ、最高です笑 また、お願いします。",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NVM2BTSHCFTKN41V4F1FD.01M67NVN3GZ72N4PCGG0N9AP9N.jpg",
+    tags: ["首・肩スッキリ", "柔らかな手のひら", "心まで癒やし"]
+  },
+  {
+    id: 25,
+    name: "ずーちゃんさん",
+    reviewerInfo: "女性 / 60代 / パート・アルバイト",
+    rating: 4,
+    subRatings: "雰囲気 4 ｜ 接客サービス 4 ｜ 技術・仕上がり 4 ｜ メニュー・料金 5",
+    menu: "【お好みの部位集中or全身コース】アロマリンパケア80分",
+    content: "先日はお世話になりました。正直、男性だったので、不安でしたが、話しやすく、年寄りでも、安心出来ました。ありがとうございました。また、予約させていただきたいとおもっています。",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NVNPVVDT8ZE7VZ979XQHG.01M67NVPSSBKG7RW3HZHNQC2HA.jpg",
+    tags: ["不安解消", "幅広い年代", "安心の対応"]
+  },
+  {
+    id: 26,
+    name: "ききさん",
+    reviewerInfo: "女性 / 40代 / 会社員",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "オーダーメイドトリートメント",
+    content: "仕事で体が疲れたよ、足ぱんぱん 元気が欲しいな そう思った時に行かせてもらっているプライベートサロンです。 その日の気分で選ぶアロマオイルの香りに包まれて 疲れた体を丁度いい力加減で 丁寧にケアしてもらえる上に とっても聴き上手なセラピストさん 会話も楽しくて心まで癒やされます。 体は軽くなり 心はリフレッシュできる、お気に入りのサロンです。 仕事をしている私にとっては、遅い時間にお伺い出来るのも魅力の1つです。 これからもよろしくお願いします。",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67P0MH6GNFYRBHFJ5QM269B.01M67P0NKJ0PZC2ATG8HZRGGJF.jpg",
+    tags: ["お仕事帰りに", "リフレッシュ", "聴き上手"]
+  },
+  {
+    id: 27,
+    name: "めぐみさん",
+    reviewerInfo: "女性 / 40代",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "オーダーメイドトリートメント",
+    content: "いいお店に出会えました♪ カウンセリングをしっかりしてから始めて頂けたので、不安もなくリラックスする事が出来ました。 凝っている所はしっかりほぐしてくださるのでスッキリ。 大きな温かい手で包み込むように流してもらえたのがとても気持ちよかったです♪ 施術は、苦手な所ははぶいてもらえるし、 しんどい所はしっかりしてもらえて、 本当に私の好みに合わせてもらえるオーダーメイドのマッサージだと思いました♪ 恋愛の相談にものっていただけて 男性の意見も聞けて、 悩んでる方にもおすすめです笑 帰りには身体ラクになり、気持ちも元気になりました＾＾ 本当に行ってよかったです。 またよろしくお願いします＾＾",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NW0V41FGMZWGZVE3PRQHF.01M67NW1VR9RYPTGK7DZGXNBGR.jpg",
+    tags: ["オーダーメイド", "包み込む手", "お悩み相談"]
+  },
+  {
+    id: 28,
+    name: "まりこさん",
+    reviewerInfo: "女性 / 20代後半 / 会社員",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "【3周年記念】アロマオイルトリートメント（全身）90分",
+    content: "男性のセラピストさんは初めてでしたが、ただ力強いマッサージではなく女性のような優しさもありすごくリラックスできた時間でした。 アロマが好きというと他店では扱っていないオイルも出してくださって勉強にもなりました。 お話も上手でついついなんでも話してしまう雰囲気をお持ちなので悩みがあったら次は相談に乗ってください！ また近いうちにリラックスしに伺います。",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NWH23S0DZB94TCAMETZRN.01M67NWJ3AHWS2PXDMQZ2JMM5P.jpg",
+    tags: ["初来店", "こだわりの精油", "優しいタッチ"]
+  },
+  {
+    id: 29,
+    name: "あきさん",
+    reviewerInfo: "女性 / 30代前半 / 主婦",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "【限定】アロマオイルトリートメント120分",
+    content: "すごく良かったです！丁寧にカウンセリングしてもらい、初めて会ったのに色々相談も乗っていただき気持ちも体も楽になりました！初めてまた行きたいという所に出会えた気がします！ 力加減も都度聞いて頂けるし男性スタッフということを配慮しながら声掛けして頂きました。自分の体がそこまでカチコチというのにも気づけてよかったです。",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NXRF02NDE0WS1WKAHMVBJ.01M67NXSHSN9XXTPBABKEEF53X.jpg",
+    tags: ["細やかな声掛け", "丁寧なヒアリング", "全身スッキリ"]
+  },
+  {
+    id: 30,
+    name: "moiさん",
+    reviewerInfo: "女性 / 40代 / 会社員",
+    rating: 5,
+    subRatings: "雰囲気 4 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "【しっかりアロマ】アロマオイルトリートメント90分",
+    content: "初めてお伺いしました。 男性のセラピストさんですが、とても話しやすい方なので、緊張せずに受けられました。 施術は力加減も絶妙で、とても気持ち良かったです！腕がいいなと思いました。 またお伺いさせていただきますね！",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NWJ3DBMBG7YVQ7TQ3ZX35.01M67NWK4YPNKNMJAPK1EP2HGT.jpg",
+    tags: ["初来店", "絶妙な力加減", "腕が良い"]
+  },
+  {
+    id: 31,
+    name: "まちゃらさん",
+    reviewerInfo: "女性 / 20代前半 / 会社員",
+    rating: 4,
+    subRatings: "雰囲気 4 ｜ 接客サービス 5 ｜ 技術・仕上がり 4 ｜ メニュー・料金 4",
+    menu: "【わがままOK】アロマオイルマッサージ90分",
+    content: "先日初めて伺わせて頂きました！ 施術自体には緊張などは無かったのですが、入る時の不安を感じていたところ、家の前で出迎えて下さって安心しました！ 最初に足湯を用意してくださって、その際に色々お話を聞いて下さって凄く楽しかったです！ カウンセリングされている時に、施術者が男性ということで触られて嫌じゃないかなどしっかり聞いてくださり、本当に女性の事を考えて施術されているのだなと感じました。 足のだるさも無くなってスッキリしてとても良かったです！ また疲れた時に利用させてもらおうと思います！ その際はよろしくお願いします！",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NXKTR16R1GCC8JWYFSH5Q.01M67NXMVTK7Y9SW3D8NCT0D90.jpg",
+    tags: ["女性目線の気遣い", "足湯", "安心の出迎え"]
+  },
+  {
+    id: 32,
+    name: "naAさん",
+    reviewerInfo: "女性 / 20代前半 / 主婦",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "【男性セラピスト高橋担当】ふわふわ手のひらアロマリンパケア60分",
+    content: "心身共に大変リラックスさせて頂きました。 口コミで他の方が気にされているように、男性ということで、多少の不安のようなものはありましたが、施術前にしっかり内容を確認してくださったので、安心してお任せすることが出来ました。 施術後体がスッキリした後の、ちょっとしたトークの時間があって、それもまたとても楽しくて、話していて前向きになれて、心が軽くなりました。 また是非伺います★^_^",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NWRTQCKXTGD1GQQG5Q2VN.01M67NWSXNCJJSY4TY1HP6DVQ3.jpg",
+    tags: ["不安解消", "心が前向きに", "リフレッシュ"]
+  },
+  {
+    id: 33,
+    name: "ひろちゃんさん",
+    reviewerInfo: "女性 / 50代 / 会社員",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "【男性セラピスト高橋担当】ふわふわ手のひらアロマリンパケア90分",
+    content: "はじめて伺いましたが、とても雰囲気もよく、スタッフさんのお人柄、技術も素晴らしく大満足です。楽しいお話もしていただきありがとうございました。また来月も行きたいです。",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NYA1CHMZKMS1K13TE6PE5.01M67NYB3CN2DA9M1H60A5W7M0.jpg",
+    tags: ["初来店", "満足度高", "お人柄と技術"]
+  },
+  {
+    id: 34,
+    name: "ヨシさん",
+    reviewerInfo: "女性 / 40代 / 会社員",
+    rating: 5,
+    subRatings: "雰囲気 5 ｜ 接客サービス 5 ｜ 技術・仕上がり 5 ｜ メニュー・料金 5",
+    menu: "【男性セラピスト高橋担当】ふわふわ手のひらアロマリンパケア120分",
+    content: "何でも話しやすい笑顔が素敵なスタッフ様、施術中も遠慮なく弱め強め止めてなど色々ワガママ言えて応えてくれるのも安心で有り難かったです。足の疲れや頭の重さも無くなり、癒しとリフレッシュと元気もいただきました。また時間が出来た時に行きます♪ありがとうございました。",
+    imageUrl: "https://kusatsu-aroma.com/_emdash/api/media/file/01M67NWSXSKHD3V4TKTZSCBED1.01M67NWTXZ26VQDACY56ZPG694.jpg",
+    tags: ["何でも言える安心感", "頭の重さスッキリ", "元気になれる"]
+  }
+];
+---
+
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>お客様の声・口コミ｜滋賀県草津市の女性専用サロン La Chouette（ラ・シュエット）</title>
+  <meta name="description" content="滋賀県草津市の女性専用サロン「ラ・シュエット」に寄せられたお客様からのリアルな口コミ・ご感想をご紹介。男性セラピストによる温かく力強い手のひらの癒やし、安心のカウンセリングへの声を掲載しています。" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS v3 CDN with is:inline (CRITICAL) -->
+  <script is:inline src="https://cdn.tailwindcss.com"></script>
+  <script is:inline>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            alabaster: '#F7F4EF',
+            champagne: '#EDE7DF',
+            sand: '#DCD3C6',
+            bronze: '#8E735B',
+            charcoal: '#221F1D',
+            taupe: '#7D7571',
+          },
+          fontFamily: {
+            serif: ['"Shippori Mincho"', 'serif'],
+            sans: ['"Zen Kaku Gothic New"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-alabaster text-charcoal font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-sand selection:text-charcoal">
+  <!-- 共通ヘッダー -->
+  <Header />
+
+  <main class="flex-grow pt-24 pb-20">
+    <!-- ヒーローセクション -->
+    <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-8 pb-12">
+      <span class="inline-block text-xs md:text-sm tracking-widest text-bronze uppercase font-medium bg-champagne px-4 py-1.5 rounded-full mb-4 border border-sand">
+        Customer Reviews
+      </span>
+      <h1 class="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-charcoal tracking-wide mb-6">
+        お客様の温かいお声
+      </h1>
+      <p class="text-taupe leading-relaxed text-sm md:text-base max-w-2xl mx-auto">
+        ラ・シュエットをご利用いただいたお客様から届いた、ありのままのご感想です。<br class="hidden sm:inline" />
+        「男性セラピストは初めてで緊張していた」というお客様が、どのような安心感や心地よさを実感されたのか、ぜひご来店前の参考にしてください。
+      </p>
+
+      <!-- サマリースタッツ -->
+      <div class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
+        <div class="bg-champagne p-4 rounded-xl border border-sand text-center">
+          <p class="text-xs text-taupe mb-1">平均総合満足度</p>
+          <p class="text-2xl md:text-3xl font-serif font-bold text-bronze">4.97<span class="text-xs text-taupe font-normal ml-1">/ 5.0</span></p>
+        </div>
+        <div class="bg-champagne p-4 rounded-xl border border-sand text-center">
+          <p class="text-xs text-taupe mb-1">男性セラピストの安心感</p>
+          <p class="text-xl md:text-2xl font-serif font-bold text-charcoal">100<span class="text-xs text-taupe font-normal ml-0.5">%</span></p>
+        </div>
+        <div class="bg-champagne p-4 rounded-xl border border-sand text-center">
+          <p class="text-xs text-taupe mb-1">掲載クチコミ数</p>
+          <p class="text-2xl md:text-3xl font-serif font-bold text-charcoal">34<span class="text-xs text-taupe font-normal ml-1">件</span></p>
+        </div>
+        <div class="bg-champagne p-4 rounded-xl border border-sand text-center">
+          <p class="text-xs text-taupe mb-1">主なご利用年代</p>
+          <p class="text-xl md:text-2xl font-serif font-bold text-charcoal">20〜60<span class="text-xs text-taupe font-normal ml-0.5">代</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- クチコミカード一覧 -->
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+        {reviews.map((review) => (
+          <article class="bg-champagne/80 hover:bg-champagne transition-all duration-300 rounded-2xl p-6 sm:p-7 border border-sand flex flex-col justify-between shadow-sm hover:shadow-md">
+            <div>
+              <!-- 投稿者ヘッダー -->
+              <div class="flex items-start justify-between gap-4 border-b border-sand pb-4 mb-4">
+                <div>
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <h3 class="font-bold text-base sm:text-lg text-charcoal font-serif">{review.name} 様</h3>
+                    <span class="text-xs text-taupe bg-alabaster px-2.5 py-0.5 rounded-full border border-sand">
+                      {review.reviewerInfo}
+                    </span>
+                  </div>
+                  <!-- 星評価 -->
+                  <div class="flex items-center gap-1.5 mt-2">
+                    <div class="flex text-bronze text-sm">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <span>{i < review.rating ? '★' : '☆'}</span>
+                      ))}
+                    </div>
+                    <span class="text-xs font-bold text-bronze ml-1">5点満点中 {review.rating}.0</span>
+                  </div>
+                </div>
+
+                <!-- 原本画像モーダル起動ボタン -->
+                {review.imageUrl && (
+                  <button
+                    type="button"
+                    class="view-evidence-btn inline-flex items-center gap-1 text-xs text-bronze hover:text-[#78614C] bg-alabaster hover:bg-sand/40 border border-sand px-3 py-1.5 rounded-lg transition-colors font-medium flex-shrink-0"
+                    data-image-src={review.imageUrl}
+                    data-reviewer={review.name}
+                  >
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    原本画像
+                  </button>
+                )}
+              </div>
+
+              <!-- サブ評価内訳 -->
+              <div class="text-[11px] sm:text-xs text-taupe mb-3 tracking-tight">
+                {review.subRatings}
+              </div>
+
+              <!-- メニュー名 -->
+              <div class="mb-4 bg-alabaster/70 p-2.5 rounded-lg border border-sand/60">
+                <span class="text-[11px] text-bronze font-semibold block mb-0.5">ご利用コース</span>
+                <p class="text-xs text-charcoal font-medium truncate">{review.menu}</p>
+              </div>
+
+              <!-- クチコミ本文 -->
+              <div class="text-charcoal/90 text-sm leading-relaxed whitespace-pre-line font-sans">
+                {review.content}
+              </div>
+            </div>
+
+            <!-- タグ -->
+            <div class="mt-6 pt-4 border-t border-sand/60 flex flex-wrap gap-1.5">
+              {review.tags.map((tag) => (
+                <span class="text-[11px] text-taupe bg-alabaster px-2 py-0.5 rounded border border-sand/50">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <!-- 安心と約束のセクション -->
+    <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
+      <div class="bg-champagne rounded-3xl p-8 sm:p-10 border border-sand text-center">
+        <h2 class="text-2xl sm:text-3xl font-serif font-bold text-charcoal mb-4">
+          初めての女性にも安心していただくために
+        </h2>
+        <p class="text-taupe text-sm sm:text-base leading-relaxed max-w-2xl mx-auto mb-8">
+          男性セラピストならではの「大きく温かい手のぬくもり」と「しっかりとした圧」をご実感いただきながら、不安なく施術をお受けいただけるよう、細心の配慮と丁寧なコミュニケーションをお約束します。
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left mb-8">
+          <div class="bg-alabaster p-5 rounded-2xl border border-sand">
+            <h4 class="font-bold text-sm text-charcoal mb-2 font-serif flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-bronze inline-block"></span>
+              施術範囲の事前確認
+            </h4>
+            <p class="text-xs text-taupe leading-relaxed">
+              触れてほしくない箇所や力加減のご要望を事前に細かく伺い、無理な施術は一切行いません。
+            </p>
+          </div>
+          <div class="bg-alabaster p-5 rounded-2xl border border-sand">
+            <h4 class="font-bold text-sm text-charcoal mb-2 font-serif flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-bronze inline-block"></span>
+              徹底したタオルワーク
+            </h4>
+            <p class="text-xs text-taupe leading-relaxed">
+              露出を最小限に抑える細やかなタオルさばきで、寒さや恥ずかしさを感じさせない環境を徹底します。
+            </p>
+          </div>
+          <div class="bg-alabaster p-5 rounded-2xl border border-sand">
+            <h4 class="font-bold text-sm text-charcoal mb-2 font-serif flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-bronze inline-block"></span>
+              完全個室・プライベート
+            </h4>
+            <p class="text-xs text-taupe leading-relaxed">
+              他のお客様と顔を合わせることのない静かなプライベート空間で、心身ともに心ゆくまでおくつろぎいただけます。
+            </p>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a
+            href="https://line.me"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-bronze text-white font-medium text-sm hover:bg-[#78614C] transition-colors shadow-sm"
+          >
+            公式LINEで予約・お問い合わせ
+          </a>
+          <a
+            href="tel:080-6219-3290"
+            class="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-alabaster text-charcoal border border-sand font-medium text-sm hover:bg-sand/30 transition-colors"
+          >
+            お電話でのお問い合わせ
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 原本画像プレビュー用モーダル -->
+    <div id="imageModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+      <div class="relative bg-alabaster rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden border border-sand shadow-2xl">
+        <div class="p-4 border-b border-sand flex items-center justify-between bg-champagne">
+          <h4 id="modalReviewerName" class="font-serif font-bold text-charcoal text-sm sm:text-base">
+            口コミ投稿原本
+          </h4>
+          <button id="closeModalBtn" type="button" class="text-taupe hover:text-charcoal p-1 rounded-lg transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="p-4 overflow-y-auto flex items-center justify-center bg-white/40">
+          <img id="modalImage" src="" alt="口コミ投稿の原本画像" class="max-w-full h-auto object-contain rounded-lg border border-sand shadow-inner" />
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- 共通フッター -->
+  <Footer />
+
+  <!-- モーダル制御スクリプト with is:inline (CRITICAL) -->
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('imageModal');
+      const modalImage = document.getElementById('modalImage');
+      const modalReviewerName = document.getElementById('modalReviewerName');
+      const closeModalBtn = document.getElementById('closeModalBtn');
+      const viewButtons = document.querySelectorAll('.view-evidence-btn');
+
+      function openModal(src, reviewer) {
+        if (!modal || !modalImage || !modalReviewerName) return;
+        modalImage.src = src;
+        modalReviewerName.textContent = `${reviewer} 様の口コミ原本`;
+        modal.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+      }
+
+      function closeModal() {
+        if (!modal || !modalImage) return;
+        modal.classList.add('hidden');
+        modalImage.src = '';
+        document.body.classList.remove('overflow-hidden');
+      }
+
+      viewButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const src = btn.getAttribute('data-image-src');
+          const reviewer = btn.getAttribute('data-reviewer');
+          if (src) openModal(src, reviewer);
+        });
+      });
+
+      if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', closeModal);
+      }
+
+      if (modal) {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) closeModal();
+        });
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+          closeModal();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
