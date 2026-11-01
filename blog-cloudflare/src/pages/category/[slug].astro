@@ -1,138 +1,407 @@
 ---
 import {
-	getTaxonomyTermsWithCacheHint,
-	getEmDashCollection,
-	getTermsForEntries,
-	decodeSlug,
+  getTaxonomyTermsWithCacheHint,
+  getEmDashCollection,
+  getTermsForEntries,
+  decodeSlug,
 } from "emdash";
-import Base from "../../layouts/Base.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
 import PostCard from "../../components/PostCard.astro";
 import Pagination from "../../components/Pagination.astro";
 
-const slug = decodeSlug(Astro.params.slug);
-const termsResult = await getTaxonomyTermsWithCacheHint("category", {
-	includeCounts: false,
-});
-const term = slug ? termsResult.data.find((item) => item.slug === slug) : null;
+// 5大カテゴリーのマスター定義
+const CATEGORY_MAP: Record<
+  string,
+  {
+    name: string;
+    theme: string;
+    concept: string;
+    learnings: string[];
+    themeExamples: string[];
+    description: string;
+  }
+> = {
+  relationship: {
+    name: "人と心地よく付き合う",
+    theme: "人間関係としなやかな境界線",
+    concept:
+      "職場や家庭、友人関係で「気を遣いすぎて疲れてしまう」女性に向けた、心理的な荷下ろしのヒント。",
+    learnings: [
+      "相手の機嫌を背負い込まないコツ",
+      "適度な心の距離感（バウンダリー）の保ち方",
+      "自分を犠牲にしない対人関係の整理法",
+    ],
+    themeExamples: [
+      "「断れない」「空気を読みすぎる」心のメカニズム",
+      "相手の不機嫌に巻き込まれないスルーの技術",
+      "家族やパートナーと心地よい距離を保つ習慣",
+    ],
+    description:
+      "相手の機嫌に振り回されず、心地よい心の境界線を引くための対人関係ヒントをお届けします。",
+  },
+  "mind-relax": {
+    name: "心の緊張をほどく",
+    theme: "がんばり屋さんの脱力論",
+    concept:
+      "責任感が強く、無意識に常に気を張っている女性へ向けたストレス緩和のアプローチ。",
+    learnings: [
+      "「ちゃんとしなきゃ」という思い込みを手放す考え方",
+      "自分に厳しくしすぎない自己受容の視点",
+      "心のモヤモヤを紐解く思考の整理法",
+    ],
+    themeExamples: [
+      "完璧主義をゆるめる「70点で合格」の捉え方",
+      "理由のないモヤモヤや焦燥感の正体",
+      "感情を我慢することが身体に与える影響",
+    ],
+    description:
+      "完璧主義や無意識の緊張をゆるめ、ありのままの自分を温かく受け止めるための心のレッスン。",
+  },
+  "body-care": {
+    name: "からだの声を聴く",
+    theme: "身体の強張りと自律神経",
+    concept:
+      "オイルトリートメントの現場で触れる「身体のサイン」をもとに、呼吸や自律神経の仕組みを解説。",
+    learnings: [
+      "首肩の凝りや背中の張りがメンタルとどう繋がっているかの理解",
+      "日常で力を抜く脱力スイッチの見つけ方",
+      "呼吸とリラクゼーションがもたらす自律神経の安定",
+    ],
+    themeExamples: [
+      "息が浅くなっているときの身体のリセット法",
+      "背中がガチガチになる人に共通する心理的サイン",
+      "オイルの摩擦と温かさが副交感神経に届く仕組み",
+    ],
+    description:
+      "日々の疲れや強張りが教えてくれる身体からのメッセージに気づき、深く脱力するためのセルフケア。",
+  },
+  lifestyle: {
+    name: "夜と朝のセルフケア",
+    theme: "自分を慈しむ余白の時間",
+    concept:
+      "忙しい日常の中でも、数分から始められる小さな癒やしの習慣づくり。",
+    learnings: [
+      "がんばってケアするのではなく「何もしない時間」をあえて楽しむ知恵",
+      "五感を満たして日々の緊張をほどくナイトルーティン",
+      "罪悪感なく自分自身を一番に労わる時間割",
+    ],
+    themeExamples: [
+      "眠る前のスマホを手放すための心地よい夜ルーティン",
+      "自分のためだけに丁寧にお茶を淹れるマインドフルネス",
+      "休日を「回復」に充てるための罪悪感の捨て方",
+    ],
+    description:
+      "日々の慌ただしさからそっと離れ、自分だけの静かな時間を慈しむための小さな習慣を提案します。",
+  },
+  "salon-notes": {
+    name: "セラピストの控え室より",
+    theme: "セラピストの視点・サロンの空気感",
+    concept:
+      "施術ベッドでお客さまと向き合ってきたベテラン男性セラピストだからこそわかる、女性たちの健気さへの共感と安心のメッセージ。",
+    learnings: [
+      "「自分だけが疲れているわけじゃない」という安堵感",
+      "サロンという非日常空間に身を委ねる意義と価値",
+      "身体がほぐれることで生まれる心のゆとり",
+    ],
+    themeExamples: [
+      "施術中に深く眠りに落ちる瞬間、身体で起きていること",
+      "人に身を委ねることへの抵抗感をほどくお話",
+      "お客さまから教わった「本当にしなやかな大人の美しさ」",
+    ],
+    description:
+      "サロンの施術現場で日々女性たちの健気さに触れるセラピストが、心を込めて綴る静かなエッセイ。",
+  },
+};
 
-if (!term) {
-	return Astro.rewrite("/404");
+const CATEGORIES_LIST = Object.entries(CATEGORY_MAP).map(([slug, data]) => ({
+  slug,
+  ...data,
+}));
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) {
+  return Astro.rewrite("/404");
 }
+
+const meta = CATEGORY_MAP[slug];
+
+let term: { slug: string; label: string; description?: string } | null = null;
+let termsResult: any = null;
+
+try {
+  termsResult = await getTaxonomyTermsWithCacheHint("category", {
+    includeCounts: false,
+  });
+  term = termsResult?.data?.find((item: any) => item.slug === slug) ?? null;
+} catch (e) {
+  // EmDash側未設定時のフォールバック許容
+}
+
+// 定義マップにもEmDashタームにも存在しない場合は404
+if (!term && !meta) {
+  return Astro.rewrite("/404");
+}
+
+const categoryName = meta?.name || term?.label || slug;
+const categoryTheme = meta?.theme || "ブログカテゴリー";
+const categoryConcept =
+  meta?.concept ||
+  term?.description ||
+  `${categoryName}に関する記事一覧です。`;
+const categoryDescription =
+  meta?.description ||
+  term?.description ||
+  `${categoryName}に関する記事一覧です。`;
 
 const cursor = Astro.url.searchParams.get("cursor") || undefined;
-const {
-	entries: posts,
-	cacheHint,
-	nextCursor,
-} = await getEmDashCollection("posts", {
-	where: { category: term.slug },
-	orderBy: { published_at: "desc" },
-	limit: 20,
-	cursor,
-});
 
-if (Astro.cache?.enabled) {
-	Astro.cache.set(termsResult.cacheHint);
-	Astro.cache.set(cacheHint);
+let posts: any[] = [];
+let cacheHint: any = undefined;
+let nextCursor: string | undefined = undefined;
+
+try {
+  const result = await getEmDashCollection("posts", {
+    where: { category: slug },
+    orderBy: { published_at: "desc" },
+    limit: 20,
+    cursor,
+  });
+  posts = result.entries || [];
+  cacheHint = result.cacheHint;
+  nextCursor = result.nextCursor;
+} catch (e) {
+  posts = [];
 }
 
-// Single batched query for tags on every post in this category, rather
-// than calling getEntryTerms() per post (which would be one round-trip
-// per post).
-const tagsByEntry = await getTermsForEntries(
-	"posts",
-	posts.map((p) => p.data.id),
-	"tag",
-);
-const filteredPosts = posts.map((post) => ({
-	post,
-	tags: tagsByEntry.get(post.data.id) ?? [],
-}));
+if (Astro.cache?.enabled) {
+  if (termsResult?.cacheHint) Astro.cache.set(termsResult.cacheHint);
+  if (cacheHint) Astro.cache.set(cacheHint);
+}
+
+let filteredPosts: { post: any; tags: any[] }[] = [];
+if (posts.length > 0) {
+  try {
+    const tagsByEntry = await getTermsForEntries(
+      "posts",
+      posts.map((p) => p.data.id),
+      "tag",
+    );
+    filteredPosts = posts.map((post) => ({
+      post,
+      tags: tagsByEntry.get(post.data.id) ?? [],
+    }));
+  } catch (e) {
+    filteredPosts = posts.map((post) => ({ post, tags: [] }));
+  }
+}
 ---
 
-<Base title={`${term.label} posts`} description={`All posts in ${term.label}`}>
-	<header class="band intro">
-		<div class="frame archive-intro">
-			<div class="archive-intro__text">
-				<p class="eyebrow">Category</p>
-				<h1 class="intro__title">{term.label}</h1>
-				<p class="intro__lead">
-					{term.description || `Posts filed under ${term.label}, newest first.`}
-				</p>
-			</div>
-			<a href="/posts" class="arrow-link">
-				All posts
-				<svg
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="1.75"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					aria-hidden="true"
-				>
-					<path d="M5 12h14"></path>
-					<path d="m12 5 7 7-7 7"></path>
-				</svg>
-			</a>
-		</div>
-	</header>
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{categoryName} | 女性専用サロン La Chouette（ラ・シュエット）ブログ</title>
+    <meta
+      name="description"
+      content={`${categoryName}（${categoryTheme}）。${categoryDescription}`}
+    />
+    <link rel="canonical" href={`https://kusatsu-aroma.com/category/${slug}`} />
 
-	<section class="band section">
-		<div class="frame">
-			{
-				filteredPosts.length > 0 ? (
-					<>
-						<div class="post-grid">
-							{filteredPosts.map(({ post, tags }) => (
-								<PostCard
-									post={post}
-									tags={tags.map((t) => ({ slug: t.slug, label: t.label }))}
-								/>
-							))}
-						</div>
-						<Pagination
-							basePath={`/category/${term.slug}`}
-							cursor={cursor}
-							nextCursor={nextCursor}
-						/>
-					</>
-				) : (
-					<div class="empty-state">
-						<h2 class="empty-state__title">
-							{cursor ? "No more posts" : "Nothing here yet"}
-						</h2>
-						<p class="empty-state__text">
-							{cursor
-								? "This page is past the last post."
-								: `No posts have been filed under ${term.label} so far.`}
-						</p>
-						<div class="empty-state__actions">
-							<a
-								href={cursor ? `/category/${term.slug}` : "/posts"}
-								class="btn btn--ghost"
-							>
-								{cursor ? "Back to the first page" : "Browse all posts"}
-							</a>
-						</div>
-					</div>
-				)
-			}
-		</div>
-	</section>
-</Base>
+    <!-- Tailwind CSS CDN -->
+    <script is:inline src="https://cdn.tailwindcss.com"></script>
+    <script is:inline>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              alabaster: '#F7F4EF',
+              champagne: '#EDE7DF',
+              sand: '#DCD3C6',
+              bronze: '#8E735B',
+              charcoal: '#221F1D',
+              taupe: '#7D7571',
+            }
+          }
+        }
+      }
+    </script>
+  </head>
+  <body class="bg-alabaster text-charcoal font-sans antialiased min-h-screen flex flex-col">
+    <Header />
 
-<style>
-	.archive-intro {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: flex-end;
-		align-items: last baseline;
-		justify-content: space-between;
-		gap: var(--spacing-5) var(--spacing-10);
-	}
+    <main class="flex-grow pt-28 pb-20">
+      <!-- パンくずリスト -->
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 mb-8">
+        <nav class="flex items-center text-xs text-taupe space-x-2" aria-label="パンくずリスト">
+          <a href="/" class="hover:text-bronze transition-colors">ホーム</a>
+          <span>/</span>
+          <a href="/posts" class="hover:text-bronze transition-colors">ブログ</a>
+          <span>/</span>
+          <span class="text-charcoal font-medium">{categoryName}</span>
+        </nav>
+      </div>
 
-	.archive-intro__text {
-		min-width: 0;
-	}
-</style>
+      <!-- カテゴリーヘッダーセクション -->
+      <section class="max-w-6xl mx-auto px-4 sm:px-6 mb-12">
+        <div class="bg-champagne rounded-3xl p-8 sm:p-12 border border-sand">
+          <div class="max-w-3xl">
+            <div class="inline-block px-3.5 py-1 rounded-full bg-alabaster text-bronze text-xs font-semibold tracking-wider uppercase mb-4 border border-sand/60">
+              {categoryTheme}
+            </div>
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-charcoal mb-4 tracking-tight">
+              {categoryName}
+            </h1>
+            <p class="text-sm sm:text-base text-taupe leading-relaxed mb-8">
+              {categoryConcept}
+            </p>
+
+            {meta && (
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-6 border-t border-sand/70">
+                <div class="bg-alabaster/70 rounded-2xl p-5 border border-sand/40">
+                  <h2 class="text-xs font-bold text-charcoal mb-3 flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-bronze"></span>
+                    このカテゴリーでお届けする視点
+                  </h2>
+                  <ul class="space-y-2">
+                    {meta.learnings.map((learning) => (
+                      <li class="text-xs text-taupe flex items-start gap-2">
+                        <span class="text-bronze leading-none">•</span>
+                        <span>{learning}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div class="bg-alabaster/70 rounded-2xl p-5 border border-sand/40">
+                  <h2 class="text-xs font-bold text-charcoal mb-3 flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-bronze"></span>
+                    主なテーマ・話題
+                  </h2>
+                  <div class="flex flex-wrap gap-2">
+                    {meta.themeExamples.map((theme) => (
+                      <span class="inline-block px-3 py-1.5 rounded-xl bg-champagne text-xs text-charcoal border border-sand/60">
+                        {theme}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <!-- カテゴリー切替ナビゲーション -->
+      <section class="max-w-6xl mx-auto px-4 sm:px-6 mb-12">
+        <div class="flex items-center justify-between pb-3 border-b border-sand mb-4">
+          <span class="text-xs font-bold tracking-wider text-taupe uppercase">カテゴリーを切り替える</span>
+        </div>
+        <nav class="flex flex-wrap items-center gap-2" aria-label="カテゴリー一覧">
+          <a
+            href="/posts"
+            class="px-4 py-2 rounded-full text-xs font-medium bg-champagne text-charcoal hover:bg-sand/60 transition-all"
+          >
+            すべて
+          </a>
+          {CATEGORIES_LIST.map((cat) => {
+            const isActive = cat.slug === slug;
+            return (
+              <a
+                href={`/category/${cat.slug}`}
+                class={`px-4 py-2 rounded-full text-xs font-medium transition-all ${
+                  isActive
+                    ? 'bg-bronze text-white shadow-sm'
+                    : 'bg-champagne text-charcoal hover:bg-sand/60 hover:text-bronze'
+                }`}
+              >
+                {cat.name}
+              </a>
+            );
+          })}
+        </nav>
+      </section>
+
+      <!-- 記事一覧セクション -->
+      <section class="max-w-6xl mx-auto px-4 sm:px-6">
+        {filteredPosts.length > 0 ? (
+          <div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              {filteredPosts.map(({ post, tags }) => (
+                <PostCard
+                  post={post}
+                  tags={tags.map((t) => ({ slug: t.slug, label: t.label }))}
+                />
+              ))}
+            </div>
+
+            <div class="mt-12 flex justify-center">
+              <Pagination
+                basePath={`/category/${slug}`}
+                cursor={cursor}
+                nextCursor={nextCursor}
+              />
+            </div>
+          </div>
+        ) : (
+          <div class="text-center py-16 bg-white/60 rounded-3xl border border-sand">
+            <div class="w-12 h-12 rounded-full bg-champagne text-bronze flex items-center justify-center mx-auto mb-4">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+            </div>
+            <h2 class="text-lg font-bold text-charcoal mb-2">「{categoryName}」の記事を準備中です</h2>
+            <p class="text-xs sm:text-sm text-taupe max-w-md mx-auto leading-relaxed px-4">
+              日々の緊張をほどき、心と身体をいたわるためのコラムを順次お届けしてまいります。公開をどうぞ楽しみにお待ちください。
+            </p>
+            <div class="mt-6">
+              <a
+                href="/posts"
+                class="inline-block px-5 py-2.5 rounded-full text-xs font-medium bg-champagne text-charcoal hover:bg-sand/70 transition-colors"
+              >
+                ブログ一覧へ戻る
+              </a>
+            </div>
+          </div>
+        )}
+      </section>
+
+      <!-- サロン予約・相談案内セクション -->
+      <section class="max-w-4xl mx-auto px-4 sm:px-6 mt-20">
+        <div class="bg-champagne rounded-3xl p-8 sm:p-10 border border-sand text-center">
+          <span class="text-xs tracking-widest text-taupe uppercase font-medium">SALON RESERVATION</span>
+          <h2 class="text-xl sm:text-2xl font-bold text-charcoal mt-2 mb-3">
+            がんばり続ける毎日に、静かな脱力と休息を
+          </h2>
+          <p class="text-xs sm:text-sm text-taupe leading-relaxed max-w-xl mx-auto mb-6">
+            ラ・シュエットでは、アロマの温もりと丁寧なオイルトリートメントで、こわばったお身体と心を深い安らぎへと導きます。お一人だけのプライベートな空間で、どうぞ安心してお過ごしください。
+          </p>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <a
+              href="https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-full text-xs font-semibold text-white bg-bronze hover:bg-[#78614C] transition-all duration-200 shadow-sm"
+            >
+              サロン施術をネット予約する
+            </a>
+            <a
+              href="https://lin.ee/nzuEONf"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 rounded-full text-xs font-semibold text-charcoal bg-white border border-sand hover:bg-alabaster transition-all duration-200"
+            >
+              公式LINEで事前相談する
+            </a>
+          </div>
+          <p class="text-[11px] text-taupe mt-3">
+            ※出張サービスのご相談・日程調整は公式LINEまたはお電話（080-6219-3290）にて承っております。
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+  </body>
+</html>
