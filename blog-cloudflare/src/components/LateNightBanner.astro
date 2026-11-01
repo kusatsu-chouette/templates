@@ -1,0 +1,53 @@
+---
+interface Props {
+  date?: string;
+  hours?: string;
+  status?: string;
+  note?: string;
+  bookingUrl?: string;
+}
+
+const {
+  date = "11月3日(火)",
+  hours = "8:00 — 27:00（深夜3時まで）",
+  status = "ご予約受付中",
+  note = "静まり返った夜の完全個室。一日のお疲れや緊張を、温かなロングストロークで解きほぐします。",
+  bookingUrl = "https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start",
+} = Astro.props;
+---
+
+<div class="rounded-2xl bg-charcoal border border-sand/40 p-5 sm:p-6 shadow-md text-alabaster relative overflow-hidden">
+  <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div class="space-y-1.5">
+      <div class="flex items-center gap-2">
+        <span class="inline-block w-2 h-2 rounded-full bg-bronze animate-pulse"></span>
+        <span class="text-[11px] tracking-[0.2em] uppercase text-sand font-medium">LATE NIGHT SCHEDULE</span>
+        <span class="px-2 py-0.5 rounded-full text-[10px] bg-bronze/80 text-alabaster font-light tracking-wide">
+          {status}
+        </span>
+      </div>
+      <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <h3 class="text-lg sm:text-xl font-serif tracking-wider text-alabaster">
+          次回深夜営業：<span class="text-bronze font-medium border-b border-bronze/40 pb-0.5">{date}</span>
+        </h3>
+        <p class="text-xs sm:text-sm text-sand/80 font-light tracking-wide">
+          受付時間：{hours}
+        </p>
+      </div>
+      <p class="text-xs text-sand/70 font-light leading-relaxed max-w-2xl pt-1">
+        {note}
+      </p>
+    </div>
+
+    <div class="flex items-center gap-3 pt-2 md:pt-0 shrink-0">
+      <a 
+        href={bookingUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-bronze hover:opacity-90 text-alabaster text-xs tracking-wider transition-all duration-300 shadow-sm font-medium w-full md:w-auto text-center"
+      >
+        空き状況の確認・予約
+      </a>
+    </div>
+  </div>
+</div>
