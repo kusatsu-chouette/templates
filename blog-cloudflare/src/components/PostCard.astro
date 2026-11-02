@@ -9,10 +9,8 @@ import { formatReadingTime, getReadingTime } from "../utils/reading-time";
 interface Props {
 	post: ContentEntry<InferCollectionData<"posts">>;
 	tags?: Array<{ slug: string; label: string }>;
-	/** card: グリッドタイル. feature: 大きな特集カード. row: アーカイブ一覧行. */
 	variant?: "card" | "feature" | "row";
 	headingLevel?: 2 | 3;
-	/** ファーストビューの主要画像向けプリロード */
 	priority?: boolean;
 }
 
@@ -52,7 +50,6 @@ const sizes = {
 					/>
 				</div>
 			) : (
-				<!-- サロン仕様のアースカラープレースホルダー -->
 				<div class="post__placeholder">
 					<svg class="post__placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
 						<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
@@ -136,15 +133,11 @@ const sizes = {
 </article>
 
 <style>
-	/* =================================================================
-	   女性専用サロン La Chouette 専用アースカラーデザイントークン
-	   ================================================================= */
 	.post {
 		--c-alabaster: #F7F4EF;
 		--c-champagne: #EDE7DF;
 		--c-sand: #DCD3C6;
 		--c-bronze: #8E735B;
-		--c-bronze-hover: #78614C;
 		--c-charcoal: #221F1D;
 		--c-taupe: #7D7571;
 
@@ -167,7 +160,6 @@ const sizes = {
 		}
 	}
 
-	/* ---------------- メディア（サムネイル画像） ---------------- */
 	.post__media {
 		position: relative;
 		display: block;
@@ -196,7 +188,6 @@ const sizes = {
 		transform: scale(1.04);
 	}
 
-	/* サムネイル未設定時の上品なプレースホルダー */
 	.post__placeholder {
 		position: absolute;
 		inset: 0;
@@ -229,7 +220,6 @@ const sizes = {
 		text-transform: uppercase;
 	}
 
-	/* ---------------- 本文エリア ---------------- */
 	.post__body {
 		display: flex;
 		flex: 1;
@@ -292,7 +282,6 @@ const sizes = {
 		overflow: visible;
 	}
 
-	/* ---------------- フッター & タグ ---------------- */
 	.post__footer {
 		display: flex;
 		flex-wrap: wrap;
@@ -331,7 +320,6 @@ const sizes = {
 		color: var(--c-charcoal);
 	}
 
-	/* ---------------- バリアント1: card（標準グリッド） ---------------- */
 	.post--card {
 		padding: 1.25rem;
 		background: #FFFFFF;
@@ -349,7 +337,6 @@ const sizes = {
 		padding: 1rem 0.25rem 0.75rem;
 	}
 
-	/* ---------------- バリアント2: feature（特集スプリットカード） ---------------- */
 	.post--feature {
 		display: grid;
 		grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
@@ -403,7 +390,6 @@ const sizes = {
 		transform: translateX(4px);
 	}
 
-	/* ---------------- バリアント3: row（行リスト形式） ---------------- */
 	.post--row {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) clamp(7.5rem, 24%, 14rem);
@@ -428,7 +414,6 @@ const sizes = {
 		font-size: 1.2rem;
 	}
 
-	/* ---------------- レスポンシブ調整 ---------------- */
 	@media (max-width: 900px) {
 		.post--feature {
 			grid-template-columns: minmax(0, 1fr);
