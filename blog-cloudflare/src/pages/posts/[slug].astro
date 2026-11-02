@@ -46,7 +46,8 @@ function getImageUrl(img: unknown): string | undefined {
   return undefined;
 }
 
-const featuredImageUrl = getImageUrl(post.data.featured_image);
+const postData = (post.data || {}) as any;
+const featuredImageUrl = getImageUrl(postData.featured_image);
 const { siteTitle } = resolveBlogSiteIdentity(await getSiteSettings());
 
 // SEOメタ情報の生成
@@ -57,10 +58,10 @@ const seo = getSeoMeta(post, {
   defaultOgImage: featuredImageUrl,
 });
 
-// カテゴリー情報の判定・正規化
-const rawTermsCategory = (post.data.terms?.category as any[])?.[0];
-const rawCategory = rawTermsCategory?.slug || post.data.category || 'salon-notes';
-const categorySlug = typeof rawCategory === 'object' && rawCategory !== null ? (rawCategory as any).slug : String(rawCategory);
+// カテゴリー情報の判定・正規化（TypeScript型安全ガード）
+const rawTermsCategory = postData.terms?.category?.[0];
+const rawCategory = rawTermsCategory?.slug || postData.category || 'salon-notes';
+const categorySlug = typeof rawCategory === 'object' && rawCategory !== null ? rawCategory.slug : String(rawCategory);
 
 const categoryMap: Record<string, { name: string; subtitle: string; label: string }> = {
   'relationship': { name: '人と心地よく付き合う', subtitle: '人間関係としなやかな境界線', label: '人間関係・境界線' },
@@ -72,9 +73,9 @@ const categoryMap: Record<string, { name: string; subtitle: string; label: strin
 
 const currentCategory = categoryMap[categorySlug] || { name: 'セラピストの控え室より', subtitle: 'セラピストの視点・サロンの空気感', label: 'サロン通信' };
 
-const tags = post.data.terms?.tag ?? [];
-const readingTime = getReadingTime(post.data.content);
-const publishedAt = post.data.publishedAt ?? null;
+const tags = postData.terms?.tag ?? [];
+const readingTime = getReadingTime(postData.content);
+const publishedAt = postData.publishedAt ?? null;
 const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
 ---
 
@@ -83,8 +84,8 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{seo.title || `${post.data.title} | 女性専用サロン La Chouette`}</title>
-  <meta name="description" content={seo.description || `${post.data.title} - 滋賀県草津市の女性専用完全個室サロン「ラ・シュエット」のブログです。`} />
+  <title>{seo.title || `${postData.title} | 女性専用サロン La Chouette`}</title>
+  <meta name="description" content={seo.description || `${postData.title} - 滋賀県草津市の女性専用完全個室サロン「ラ・シュエット」のブログです。`} />
 
   <!-- Tailwind CSS v3 CDN（is:inline 必須） -->
   <script is:inline src="https://cdn.tailwindcss.com"></script>
@@ -461,7 +462,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
           >
             {currentCategory.label}
           </a>
-          {tags.map((t) => (
+          {tags.map((t: any) => (
             <span class="text-xs tracking-wider px-3 py-1 bg-alabaster text-taupe rounded-full font-medium border border-sand">
               {t.label}
             </span>
@@ -475,21 +476,21 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
         </div>
 
         <h1 class="text-2xl sm:text-3xl md:text-[32px] font-mincho text-charcoal font-medium leading-relaxed sm:leading-relaxed">
-          {post.data.title}
+          {postData.title}
         </h1>
 
-        {post.data.excerpt && (
+        {postData.excerpt && (
           <p class="text-sm text-taupe mt-4 leading-relaxed max-w-xl mx-auto">
-            {post.data.excerpt}
+            {postData.excerpt}
           </p>
         )}
       </header>
 
       <!-- アイキャッチ画像 -->
-      {post.data.featured_image && (
+      {postData.featured_image && (
         <div class="mb-12 overflow-hidden rounded-2xl shadow-sm border border-sand">
           <Image
-            image={post.data.featured_image}
+            image={postData.featured_image}
             sizes="(min-width: 1024px) 768px, 92vw"
             class="w-full h-auto object-cover max-h-[440px]"
             priority
@@ -499,7 +500,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
 
       <!-- 記事本文 -->
       <div class="entry-content" id="post-content">
-        <PortableText value={post.data.content} />
+        <PortableText value={postData.content} />
       </div>
 
       <!-- スクリプト構文干渉対策済み変換ロジック -->
