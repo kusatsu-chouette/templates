@@ -1,4 +1,5 @@
 ---
+// templates/blog-cloudflare/src/components/PostCard.astro
 import type { ContentEntry, InferCollectionData } from "emdash";
 import { Image } from "emdash/ui";
 import Byline from "./Byline.astro";
@@ -8,10 +9,10 @@ import { formatReadingTime, getReadingTime } from "../utils/reading-time";
 interface Props {
 	post: ContentEntry<InferCollectionData<"posts">>;
 	tags?: Array<{ slug: string; label: string }>;
-	/** card: grid tile. feature: large split card. row: archive list item. */
+	/** card: グリッドタイル. feature: 大きな特集カード. row: アーカイブ一覧行. */
 	variant?: "card" | "feature" | "row";
 	headingLevel?: 2 | 3;
-	/** Load the image eagerly; use for the largest image above the fold. */
+	/** ファーストビューの主要画像向けプリロード */
 	priority?: boolean;
 }
 
@@ -26,7 +27,7 @@ const {
 const Heading = `h${headingLevel}` as const;
 const href = `/posts/${post.id}`;
 const titleId = `post-${variant}-${post.id}`;
-const title = post.data.title || "Untitled";
+const title = post.data.title || "無題のコラム";
 const publishedAt = post.data.publishedAt ?? null;
 const readingTime = formatReadingTime(getReadingTime(post.data.content));
 const bylines = post.data.bylines ?? [];
@@ -51,10 +52,17 @@ const sizes = {
 					/>
 				</div>
 			) : (
-				<div class="post__placeholder" />
+				<!-- サロン仕様のアースカラープレースホルダー -->
+				<div class="post__placeholder">
+					<svg class="post__placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+					</svg>
+					<span class="post__placeholder-text">La Chouette Note</span>
+				</div>
 			)
 		}
 	</a>
+
 	<div class="post__body">
 		<a href={href} class="post__link" aria-labelledby={titleId}>
 			<span class="post__meta">
@@ -65,11 +73,13 @@ const sizes = {
 						</time>
 					)
 				}
-				<span>{readingTime}</span>
+				<span class="post__reading-time">{readingTime}</span>
 			</span>
+
 			<Heading class="post__title" id={titleId} {...post.edit.title}>
 				{title}
 			</Heading>
+
 			{
 				post.data.excerpt && (
 					<p class="post__excerpt" {...post.edit.excerpt}>
@@ -77,10 +87,11 @@ const sizes = {
 					</p>
 				)
 			}
+
 			{
 				variant === "feature" && (
-					<span class="post__cta arrow-link" aria-hidden="true">
-						Read article
+					<span class="post__cta" aria-hidden="true">
+						記事を読む
 						<svg
 							viewBox="0 0 24 24"
 							fill="none"
@@ -96,19 +107,22 @@ const sizes = {
 				)
 			}
 		</a>
+
 		{
 			(bylines.length > 0 || visibleTags.length > 0) && (
 				<div class="post__footer">
-					<Byline
-						bylines={bylines}
-						max={variant === "card" ? 1 : 2}
-						size={variant === "feature" ? "sm" : "xs"}
-					/>
+					{bylines.length > 0 && (
+						<Byline
+							bylines={bylines}
+							max={variant === "card" ? 1 : 2}
+							size={variant === "feature" ? "sm" : "xs"}
+						/>
+					)}
 					{visibleTags.length > 0 && (
-						<ul class="chips post__tags" aria-label="Tags">
+						<ul class="post__tags" aria-label="カテゴリー・タグ">
 							{visibleTags.map((tag) => (
 								<li>
-									<a href={`/tag/${tag.slug}`} class="chip">
+									<a href={`/category/${tag.slug}`} class="post__tag-chip">
 										{tag.label}
 									</a>
 								</li>
@@ -122,19 +136,29 @@ const sizes = {
 </article>
 
 <style>
+	/* =================================================================
+	   女性専用サロン La Chouette 専用アースカラーデザイントークン
+	   ================================================================= */
 	.post {
+		--c-alabaster: #F7F4EF;
+		--c-champagne: #EDE7DF;
+		--c-sand: #DCD3C6;
+		--c-bronze: #8E735B;
+		--c-bronze-hover: #78614C;
+		--c-charcoal: #221F1D;
+		--c-taupe: #7D7571;
+
 		position: relative;
 		display: flex;
 		flex-direction: column;
 		min-width: 0;
-		transition:
-			box-shadow var(--transition-base),
-			outline-color var(--transition-fast);
+		border-radius: 1.25rem;
+		transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 	}
 
 	.post:has(.post__link:focus-visible) {
-		outline: 2px solid var(--color-brand);
-		outline-offset: 2px;
+		outline: 2px solid var(--c-bronze);
+		outline-offset: 3px;
 	}
 
 	@supports selector(:has(*)) {
@@ -143,28 +167,20 @@ const sizes = {
 		}
 	}
 
-	/* Media */
+	/* ---------------- メディア（サムネイル画像） ---------------- */
 	.post__media {
 		position: relative;
 		display: block;
 		overflow: hidden;
 		aspect-ratio: 16 / 10;
-		border-radius: var(--radius-lg);
-		background: var(--color-fill);
-	}
-
-	.post__media::after {
-		content: "";
-		position: absolute;
-		inset: 0;
-		border-radius: inherit;
-		outline: 1px solid var(--color-media-outline);
-		outline-offset: -1px;
-		pointer-events: none;
+		border-radius: 1rem;
+		background: var(--c-champagne);
+		border: 1px solid var(--c-sand);
 	}
 
 	.post__image {
 		height: 100%;
+		width: 100%;
 	}
 
 	.post__image :global(img) {
@@ -173,26 +189,47 @@ const sizes = {
 		height: 100%;
 		max-height: none;
 		object-fit: cover;
-		transition: scale 500ms var(--ease-out);
+		transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 	}
 
 	.post:has(.post__link:hover, .post__media:hover) .post__image :global(img) {
-		scale: 1.03;
+		transform: scale(1.04);
 	}
 
+	/* サムネイル未設定時の上品なプレースホルダー */
 	.post__placeholder {
 		position: absolute;
 		inset: 0;
-		background-image: radial-gradient(
-			circle,
-			var(--color-border-strong) 1px,
-			transparent 1.5px
-		);
-		background-size: 14px 14px;
-		mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		background: linear-gradient(135deg, #EDE7DF 0%, #E3D9CC 100%);
+		padding: 1.5rem;
+		text-align: center;
 	}
 
-	/* Text */
+	.post__placeholder-icon {
+		width: 2.25rem;
+		height: 2.25rem;
+		color: rgba(142, 115, 91, 0.7);
+		margin-bottom: 0.5rem;
+		transition: transform 0.3s ease;
+	}
+
+	.post:has(.post__link:hover, .post__media:hover) .post__placeholder-icon {
+		transform: scale(1.1);
+	}
+
+	.post__placeholder-text {
+		font-family: "Shippori Mincho", serif;
+		font-size: 0.75rem;
+		letter-spacing: 0.15em;
+		color: var(--c-taupe);
+		text-transform: uppercase;
+	}
+
+	/* ---------------- 本文エリア ---------------- */
 	.post__body {
 		display: flex;
 		flex: 1;
@@ -203,7 +240,7 @@ const sizes = {
 	.post__link {
 		display: flex;
 		flex-direction: column;
-		gap: var(--spacing-2);
+		gap: 0.625rem;
 		color: inherit;
 		text-decoration: none;
 	}
@@ -212,28 +249,31 @@ const sizes = {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		column-gap: var(--spacing-2);
-		font-size: var(--font-size-xs);
-		color: var(--color-muted);
+		column-gap: 0.5rem;
+		font-size: 0.78rem;
+		color: var(--c-taupe);
 		font-variant-numeric: tabular-nums;
+		margin-top: 0.25rem;
 	}
 
-	/* Trailing separators, so a wrapped line never starts with a dot */
 	.post__meta > :not(:last-child)::after {
-		content: "·";
-		content: "·" / "";
-		margin-inline-start: var(--spacing-2);
+		content: "•";
+		margin-inline-start: 0.5rem;
+		opacity: 0.6;
 	}
 
 	.post__title {
-		font-size: var(--font-size-lg);
-		line-height: var(--leading-snug);
-		color: var(--color-text);
-		text-decoration-line: underline;
-		text-decoration-thickness: 1px;
-		text-decoration-color: transparent;
-		text-underline-offset: 0.18em;
-		transition: text-decoration-color var(--transition-fast);
+		font-family: "Shippori Mincho", serif;
+		font-size: 1.15rem;
+		font-weight: 700;
+		line-height: 1.55;
+		color: var(--c-charcoal);
+		letter-spacing: 0.02em;
+		transition: color 0.2s ease;
+	}
+
+	.post:has(.post__link:hover) .post__title {
+		color: var(--c-bronze);
 	}
 
 	.post__excerpt {
@@ -241,80 +281,87 @@ const sizes = {
 		-webkit-line-clamp: 2;
 		-webkit-box-orient: vertical;
 		overflow: hidden;
-		font-size: var(--font-size-sm);
-		line-height: var(--leading-normal);
-		color: var(--color-text-secondary);
+		font-size: 0.875rem;
+		line-height: 1.7;
+		color: var(--c-taupe);
 	}
 
-	/* Inline editing needs the whole excerpt, not the clamped preview */
 	.post__excerpt[data-emdash-editing] {
 		display: block;
 		-webkit-line-clamp: unset;
 		overflow: visible;
 	}
 
+	/* ---------------- フッター & タグ ---------------- */
 	.post__footer {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
 		justify-content: space-between;
-		gap: var(--spacing-3);
+		gap: 0.75rem;
 		margin-top: auto;
-	}
-
-	.post__footer > * {
-		min-width: 0;
-		max-width: 100%;
+		padding-top: 1rem;
+		border-top: 1px solid rgba(220, 211, 198, 0.6);
 	}
 
 	.post__tags {
-		gap: var(--spacing-1);
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.375rem;
+		list-style: none;
+		padding: 0;
+		margin: 0;
 	}
 
-	/* Card: grid tile with inset media */
+	.post__tag-chip {
+		display: inline-block;
+		padding: 0.25rem 0.65rem;
+		font-size: 0.72rem;
+		font-weight: 500;
+		color: var(--c-bronze);
+		background-color: var(--c-alabaster);
+		border: 1px solid var(--c-sand);
+		border-radius: 9999px;
+		text-decoration: none;
+		transition: all 0.2s ease;
+	}
+
+	.post__tag-chip:hover {
+		background-color: var(--c-champagne);
+		color: var(--c-charcoal);
+	}
+
+	/* ---------------- バリアント1: card（標準グリッド） ---------------- */
 	.post--card {
-		padding: var(--card-padding);
-		border-radius: var(--radius-xl);
-		background: var(--color-surface);
-		box-shadow: var(--shadow-card);
+		padding: 1.25rem;
+		background: #FFFFFF;
+		border: 1px solid var(--c-sand);
+		box-shadow: 0 2px 8px rgba(34, 31, 29, 0.03);
 	}
 
-	.post--card:has(.post__link:hover, .post__media:hover) {
-		box-shadow: var(--shadow-card-hover);
-	}
-
-	.post--card:has(.post__link:focus-visible) {
-		outline-offset: 3px;
+	.post--card:hover {
+		transform: translateY(-3px);
+		box-shadow: 0 10px 24px rgba(34, 31, 29, 0.07);
+		border-color: rgba(142, 115, 91, 0.4);
 	}
 
 	.post--card .post__link {
-		padding: var(--spacing-4) var(--spacing-3) var(--spacing-4);
+		padding: 1rem 0.25rem 0.75rem;
 	}
 
-	/* Stacked, so footers line up across a row whatever their content */
-	.post--card .post__footer {
-		flex-direction: column;
-		align-items: flex-start;
-		gap: var(--spacing-3);
-		padding: 0 var(--spacing-3) var(--spacing-3);
-	}
-
-	/* Feature: large split card */
+	/* ---------------- バリアント2: feature（特集スプリットカード） ---------------- */
 	.post--feature {
 		display: grid;
 		grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-		padding: var(--card-padding);
-		border-radius: var(--radius-xl);
-		background: var(--color-surface);
-		box-shadow: var(--shadow-card);
+		padding: 1.75rem;
+		background: #FFFFFF;
+		border: 1px solid var(--c-sand);
+		box-shadow: 0 4px 16px rgba(34, 31, 29, 0.04);
+		gap: 1.5rem;
 	}
 
-	.post--feature:has(.post__link:hover, .post__media:hover) {
-		box-shadow: var(--shadow-card-hover);
-	}
-
-	.post--feature:has(.post__link:focus-visible) {
-		outline-offset: 3px;
+	.post--feature:hover {
+		box-shadow: 0 12px 30px rgba(34, 31, 29, 0.08);
 	}
 
 	.post--feature .post__media {
@@ -323,58 +370,48 @@ const sizes = {
 
 	.post--feature .post__body {
 		justify-content: center;
-		gap: var(--spacing-8);
-		padding: clamp(1.5rem, 1rem + 2vw, 3rem);
-	}
-
-	.post--feature .post__link {
-		gap: var(--spacing-4);
-	}
-
-	.post--feature .post__meta {
-		font-size: var(--font-size-sm);
+		padding: clamp(1rem, 0.5rem + 1.5vw, 2.5rem);
 	}
 
 	.post--feature .post__title {
-		font-size: clamp(1.75rem, 1.2rem + 1.6vw, 2.5rem);
-		line-height: var(--leading-tight);
-		font-weight: var(--font-weight-display);
-		letter-spacing: var(--tracking-tight);
+		font-size: clamp(1.4rem, 1rem + 1.2vw, 2rem);
+		line-height: 1.4;
 	}
 
 	.post--feature .post__excerpt {
 		-webkit-line-clamp: 3;
-		font-size: var(--font-size-lg);
+		font-size: 0.95rem;
 	}
 
 	.post--feature .post__cta {
-		margin-top: var(--spacing-2);
-		color: var(--color-text);
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin-top: 0.75rem;
+		font-size: 0.85rem;
+		font-weight: 600;
+		color: var(--c-bronze);
 	}
 
-	.post--feature:has(.post__link:hover) .post__cta :global(svg) {
-		translate: 2px 0;
+	.post--feature .post__cta svg {
+		width: 1rem;
+		height: 1rem;
+		transition: transform 0.2s ease;
 	}
 
-	.post--feature:has(.post__link:hover) .post__cta :global(svg:dir(rtl)) {
-		translate: -2px 0;
+	.post--feature:has(.post__link:hover) .post__cta svg {
+		transform: translateX(4px);
 	}
 
-	.post--feature .post__footer {
-		margin-top: 0;
-		padding-top: var(--spacing-6);
-		border-top: 1px solid var(--color-border-subtle);
-	}
-
-	/* Row: archive list item with an end-side thumbnail */
+	/* ---------------- バリアント3: row（行リスト形式） ---------------- */
 	.post--row {
-		--avatar-ring: var(--color-bg);
 		display: grid;
-		grid-template-columns: minmax(0, 1fr) clamp(7.5rem, 24%, 15rem);
+		grid-template-columns: minmax(0, 1fr) clamp(7.5rem, 24%, 14rem);
 		align-items: start;
-		gap: var(--spacing-8);
-		padding-block: var(--spacing-8);
-		border-radius: var(--radius-lg);
+		gap: 1.5rem;
+		padding: 1.5rem 0;
+		border-bottom: 1px solid var(--c-sand);
+		border-radius: 0;
 	}
 
 	.post--row .post__media {
@@ -385,27 +422,13 @@ const sizes = {
 	.post--row .post__body {
 		grid-column: 1;
 		grid-row: 1;
-		gap: var(--spacing-4);
-		max-width: 44rem;
 	}
 
 	.post--row .post__title {
-		font-size: var(--font-size-xl);
+		font-size: 1.2rem;
 	}
 
-	.post--row .post__excerpt {
-		font-size: var(--font-size-base);
-	}
-
-	.post--row:has(.post__link:hover) .post__title {
-		text-decoration-color: currentColor;
-	}
-
-	.post--row .post__footer {
-		justify-content: flex-start;
-		column-gap: var(--spacing-4);
-	}
-
+	/* ---------------- レスポンシブ調整 ---------------- */
 	@media (max-width: 900px) {
 		.post--feature {
 			grid-template-columns: minmax(0, 1fr);
@@ -416,15 +439,14 @@ const sizes = {
 		}
 
 		.post--feature .post__body {
-			padding: var(--spacing-6) var(--spacing-4) var(--spacing-4);
+			padding: 1rem 0 0;
 		}
 	}
 
 	@media (max-width: 560px) {
 		.post--row {
-			grid-template-columns: minmax(0, 1fr) 6rem;
-			gap: var(--spacing-4);
-			padding-block: var(--spacing-6);
+			grid-template-columns: minmax(0, 1fr) 5.5rem;
+			gap: 1rem;
 		}
 
 		.post--row .post__media {
@@ -432,18 +454,7 @@ const sizes = {
 		}
 
 		.post--row .post__title {
-			font-size: var(--font-size-lg);
-		}
-
-		.post--row .post__excerpt {
-			font-size: var(--font-size-sm);
-		}
-	}
-
-	@media (max-width: 400px) {
-		.post--row {
-			grid-template-columns: minmax(0, 1fr) 4.5rem;
-			gap: var(--spacing-3);
+			font-size: 1rem;
 		}
 	}
 </style>
