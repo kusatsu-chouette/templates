@@ -41,14 +41,14 @@ const formattedPosts = posts.map((post) => ({
 }));
 
 // 全6カテゴリーのタブ定義（お知らせを「すべて」の直後に配置）
-const categoryTabs = [
-  { name: "すべて", href: "/posts", active: true },
-  { name: "お知らせ", href: "/category/news", active: false },
-  { name: "サロン・施術", href: "/category/salon-treatment", active: false },
-  { name: "心と体のケア", href: "/category/body-mind-care", active: false },
-  { name: "男性セラピスト", href: "/category/male-therapist", active: false },
-  { name: "お客様の声", href: "/category/customer-reviews", active: false },
-  { name: "日常・メンタル", href: "/category/daily-mental", active: false },
+// 変更後
+const categories = [
+  { name: 'すべて', slug: 'all' },
+  { name: '人と心地よく付き合う', slug: 'relationship' },
+  { name: '心の緊張をほどく', slug: 'mind-relax' },
+  { name: 'からだの声を聴く', slug: 'body-care' },
+  { name: '夜と朝のセルフケア', slug: 'lifestyle' },
+  { name: 'セラピストの控え室より', slug: 'salon-notes' },
 ];
 
 const pageTitle = "サロンコラム・お知らせ一覧 ｜ 草津の女性専用サロン La Chouette";
