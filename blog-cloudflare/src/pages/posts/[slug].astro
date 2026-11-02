@@ -1,4 +1,5 @@
 ---
+// templates/blog-cloudflare/src/pages/posts/[slug].astro
 import {
   getEmDashEntry,
   getSeoMeta,
@@ -56,6 +57,21 @@ const seo = getSeoMeta(post, {
   defaultOgImage: featuredImageUrl,
 });
 
+// カテゴリー情報の判定・正規化
+const rawTermsCategory = (post.data.terms?.category as any[])?.[0];
+const rawCategory = rawTermsCategory?.slug || post.data.category || 'salon-notes';
+const categorySlug = typeof rawCategory === 'object' && rawCategory !== null ? (rawCategory as any).slug : String(rawCategory);
+
+const categoryMap: Record<string, { name: string; subtitle: string; label: string }> = {
+  'relationship': { name: '人と心地よく付き合う', subtitle: '人間関係としなやかな境界線', label: '人間関係・境界線' },
+  'mind-relax': { name: '心の緊張をほどく', subtitle: 'がんばり屋さんの脱力論', label: '心・自律神経' },
+  'body-care': { name: 'からだの声を聴く', subtitle: '身体の強張りと自律神経', label: '身体・巡り' },
+  'lifestyle': { name: '夜と朝のセルフケア', subtitle: '自分を慈しむ余白の時間', label: 'セルフケア・余白' },
+  'salon-notes': { name: 'セラピストの控え室より', subtitle: 'セラピストの視点・サロンの空気感', label: 'サロン通信' },
+};
+
+const currentCategory = categoryMap[categorySlug] || { name: 'セラピストの控え室より', subtitle: 'セラピストの視点・サロンの空気感', label: 'サロン通信' };
+
 const tags = post.data.terms?.tag ?? [];
 const readingTime = getReadingTime(post.data.content);
 const publishedAt = post.data.publishedAt ?? null;
@@ -91,7 +107,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <style is:global>
@@ -426,23 +442,42 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
 
   <main class="flex-grow pt-24 pb-20">
     <article class="max-w-3xl mx-auto px-5 sm:px-8">
+      
+      <!-- パンくずリスト -->
+      <nav class="flex items-center gap-2 text-xs text-taupe mb-8 overflow-x-auto whitespace-nowrap py-1">
+        <a href="/" class="hover:text-bronze transition-colors">ホーム</a>
+        <span>/</span>
+        <a href="/posts" class="hover:text-bronze transition-colors">コラム一覧</a>
+        <span>/</span>
+        <a href={`/category/${categorySlug}`} class="hover:text-bronze transition-colors">{currentCategory.name}</a>
+      </nav>
+
+      <!-- 記事ヘッダー -->
       <header class="mb-10 text-center border-b border-sand pb-8">
         <div class="inline-flex flex-wrap items-center justify-center gap-2 mb-4">
+          <a
+            href={`/category/${categorySlug}`}
+            class="text-xs tracking-wider px-3.5 py-1 bg-champagne text-bronze rounded-full font-medium border border-sand hover:bg-sand/40 transition-colors"
+          >
+            {currentCategory.label}
+          </a>
           {tags.map((t) => (
-            <span class="text-xs tracking-wider px-3 py-1 bg-champagne text-bronze rounded-full font-medium">
+            <span class="text-xs tracking-wider px-3 py-1 bg-alabaster text-taupe rounded-full font-medium border border-sand">
               {t.label}
             </span>
           ))}
           {publishDate && (
-            <time class="text-xs text-taupe tracking-wider">{publishDate}</time>
+            <time class="text-xs text-taupe tracking-wider font-mono">{publishDate}</time>
           )}
           {readingTime && (
             <span class="text-xs text-taupe tracking-wider">読了目安 {readingTime}分</span>
           )}
         </div>
-        <h1 class="text-2xl sm:text-3xl font-mincho text-charcoal font-medium leading-relaxed sm:leading-relaxed">
+
+        <h1 class="text-2xl sm:text-3xl md:text-[32px] font-mincho text-charcoal font-medium leading-relaxed sm:leading-relaxed">
           {post.data.title}
         </h1>
+
         {post.data.excerpt && (
           <p class="text-sm text-taupe mt-4 leading-relaxed max-w-xl mx-auto">
             {post.data.excerpt}
@@ -450,12 +485,13 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
         )}
       </header>
 
+      <!-- アイキャッチ画像 -->
       {post.data.featured_image && (
-        <div class="mb-12 overflow-hidden rounded-2xl shadow-sm">
+        <div class="mb-12 overflow-hidden rounded-2xl shadow-sm border border-sand">
           <Image
             image={post.data.featured_image}
             sizes="(min-width: 1024px) 768px, 92vw"
-            class="w-full h-auto object-cover max-h-[420px]"
+            class="w-full h-auto object-cover max-h-[440px]"
             priority
           />
         </div>
@@ -481,7 +517,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
           html = html.replace(/【(?:セラピスト|私)】([\s\S]*?)【\/(?:セラピスト|私)】/gi, '<div class="speech-therapist"><div class="avatar">私<' + '/div><div class="bubble">$1<' + '/div><' + '/div>');
           html = html.replace(/【(?:お客様|相談)】([\s\S]*?)【\/(?:お客様|相談)】/gi, '<div class="speech-client"><div class="avatar">客<' + '/div><div class="bubble">$1<' + '/div><' + '/div>');
 
-          // 各種ボックス
+          // 各種装飾ボックス
           html = html.replace(/【(?:POINT|ポイント)】([\s\S]*?)【\/(?:POINT|ポイント)】/gi, '<div class="box-point">$1<' + '/div>');
           html = html.replace(/【(?:CHECK|チェック)】([\s\S]*?)【\/(?:CHECK|チェック)】/gi, '<div class="box-check">$1<' + '/div>');
           html = html.replace(/【(?:付箋|つぶやき)】([\s\S]*?)【\/(?:付箋|つぶやき)】/gi, '<div class="box-fusen">$1<' + '/div>');
@@ -512,49 +548,77 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
         })();
       </script>
 
-      <!-- 予約・LINE導線CTA -->
-      <section class="mt-16 pt-10 border-t border-sand">
-        <div class="bg-champagne/60 rounded-2xl p-6 sm:p-8 border border-sand text-center">
-          <p class="text-xs tracking-widest text-bronze uppercase font-medium mb-1">Reservation & Contact</p>
-          <h2 class="text-xl font-mincho text-charcoal font-medium mb-3">心と身体をゆるめる、静かな癒やしの時間</h2>
-          <p class="text-sm text-taupe leading-relaxed max-w-lg mx-auto mb-6">
-            草津市の完全個室サロン「ラ・シュエット」では、温かいホホバオイルを用いたオールハンドのトリートメントで、日々の緊張をほどくお手伝いをしております。
-          </p>
-
-          <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href="https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 bg-bronze text-white text-sm tracking-wider rounded-full hover:bg-[#78614C] transition duration-300 shadow-sm"
-            >
-              サロン施術の空き状況・ネット予約
-            </a>
-
-            <a
-              href="https://lin.ee/nzuEONf"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 bg-white border border-sand text-charcoal text-sm tracking-wider rounded-full hover:bg-alabaster transition duration-300"
-            >
-              公式LINEでお問い合わせ
-            </a>
+      <!-- 著者紹介（男性セラピスト 高橋） -->
+      <div class="mt-16 pt-10 border-t border-sand">
+        <div class="bg-champagne/40 rounded-2xl p-6 sm:p-8 border border-sand">
+          <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5">
+            <div class="w-16 h-16 rounded-full bg-sand text-charcoal flex-shrink-0 flex items-center justify-center font-mincho text-sm font-bold border-2 border-white shadow-xs">
+              高橋
+            </div>
+            <div class="flex-grow text-center sm:text-left">
+              <div class="flex items-center justify-center sm:justify-start gap-2 mb-2">
+                <span class="text-xs font-medium text-bronze bg-white px-2.5 py-0.5 rounded-full border border-sand">男性セラピスト</span>
+                <span class="text-sm font-mincho font-bold text-charcoal">高橋（La Chouette）</span>
+              </div>
+              <p class="text-xs sm:text-sm text-taupe leading-relaxed">
+                滋賀県草津市の女性専用完全個室サロン「ラ・シュエット」を運営しています。日常の役割や気遣いから少し離れ、ご自身の呼吸と身体の重みを取り戻せる静かな余白の時間をお届けしています。
+              </p>
+            </div>
           </div>
-
-          <p class="text-xs text-taupe mt-4">
-            お電話でのご相談 - <a href="tel:080-6219-3290" class="hover:underline">080-6219-3290</a> / 完全予約制・女性専用
-          </p>
         </div>
+      </div>
+
+      <!-- 予約・LINE導線CTA -->
+      <section class="mt-12 bg-gradient-to-br from-champagne/60 to-alabaster rounded-3xl p-7 sm:p-10 border border-sand text-center shadow-xs">
+        <span class="text-xs font-mincho tracking-widest text-bronze uppercase">Reservation & Care</span>
+        <h2 class="text-xl sm:text-2xl font-mincho text-charcoal font-medium mt-2 mb-3">
+          心と身体をゆるめる、静かな休息の時間へ
+        </h2>
+        <p class="text-sm text-taupe max-w-lg mx-auto leading-relaxed mb-8">
+          草津市の完全個室サロン「ラ・シュエット」では、温かいホホバオイルを用いたオールハンドのトリートメントで、日々の緊張をほどく深い癒やしの時間をご提供しています。
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
+          <a
+            href="https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-full sm:w-auto flex-1 inline-flex items-center justify-center px-6 py-3.5 bg-bronze text-white text-sm tracking-wider rounded-full hover:bg-[#78614C] transition duration-300 shadow-sm"
+          >
+            サロンWeb予約（Square）
+          </a>
+
+          <a
+            href="https://lin.ee/nzuEONf"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-full sm:w-auto flex-1 inline-flex items-center justify-center px-6 py-3.5 bg-[#06C755] text-white text-sm tracking-wider rounded-full hover:opacity-95 transition duration-300 shadow-sm"
+          >
+            公式LINEで相談する
+          </a>
+        </div>
+
+        <p class="text-xs text-taupe/90 mt-6 leading-relaxed max-w-md mx-auto">
+          ※ 出張オイルトリートメントは移動時間と枠の事前調整が必要なため、Squareの即時予約は設けておりません。公式LINEまたはお電話（080-6219-3290）よりお気軽にご相談ください。
+        </p>
       </section>
 
-      <div class="mt-12 text-center">
-        <a href="/posts" class="inline-flex items-center text-sm text-taupe hover:text-bronze transition">
-          <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <!-- 前後のナビゲーション -->
+      <div class="mt-12 pt-6 border-t border-sand flex items-center justify-between text-sm">
+        <a href="/posts" class="inline-flex items-center gap-2 text-taupe hover:text-bronze transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
           </svg>
-          記事一覧へ戻る
+          コラム一覧へ戻る
+        </a>
+        <a href={`/category/${categorySlug}`} class="inline-flex items-center gap-2 text-bronze hover:underline">
+          「{currentCategory.name}」をもっと読む
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
         </a>
       </div>
+
     </article>
   </main>
 
