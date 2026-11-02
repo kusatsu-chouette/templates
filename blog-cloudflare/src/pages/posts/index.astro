@@ -1,11 +1,12 @@
 ---
+// templates/blog-cloudflare/src/pages/posts/index.astro
 import { getEmDashCollection, getTermsForEntries } from "emdash";
-import Base from "../../layouts/Base.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
 import PostCard from "../../components/PostCard.astro";
 import Pagination from "../../components/Pagination.astro";
 
-// Sort in the database rather than in JS — lets the DB use its index on
-// published_at and avoids a full-table scan on the client.
+// DBインデックスを活用した効率的な取得
 const cursor = Astro.url.searchParams.get("cursor") || undefined;
 const {
 	entries: posts,
@@ -13,15 +14,13 @@ const {
 	nextCursor,
 } = await getEmDashCollection("posts", {
 	orderBy: { published_at: "desc" },
-	limit: 20,
+	limit: 10,
 	cursor,
 });
 
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
 
-// Single batched query for tags across all posts, instead of one
-// getEntryTerms() call per post (which would be N round-trips).
-// Bylines are already hydrated on entry.data.bylines.
+// タグ情報の一括取得
 const tagsByEntry = await getTermsForEntries(
 	"posts",
 	posts.map((p) => p.data.id),
@@ -32,70 +31,182 @@ const postsWithTags = posts.map((post) => ({
 	post,
 	tags: tagsByEntry.get(post.data.id) ?? [],
 }));
+
+// 5大カテゴリー定義
+const categories = [
+  { slug: 'relationship', name: '人と心地よく付き合う', label: '人間関係・境界線' },
+  { slug: 'mind-relax', name: '心の緊張をほどく', label: '心・自律神経' },
+  { slug: 'body-care', name: 'からだの声を聴く', label: '身体・巡り' },
+  { slug: 'lifestyle', name: '夜と朝のセルフケア', label: 'セルフケア・余白' },
+  { slug: 'salon-notes', name: 'セラピストの控え室より', label: 'サロン通信' },
+];
+
+const featuredItem = (!cursor && postsWithTags.length > 0) ? postsWithTags[0] : null;
+const regularItems = (!cursor && postsWithTags.length > 0) ? postsWithTags.slice(1) : postsWithTags;
 ---
 
-<Base title="All Posts" description="Browse all blog posts">
-	<header class="band intro">
-		<div class="frame">
-			<p class="eyebrow">Archive</p>
-			<h1 class="intro__title">All Posts</h1>
-			<p class="intro__lead">Every post, newest first.</p>
-		</div>
-	</header>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>コラム・セラピストの控え室 | 女性専用サロン La Chouette（ラ・シュエット）</title>
+  <meta name="description" content="滋賀県草津市の女性専用完全個室サロン「ラ・シュエット」のコラム一覧です。人間関係のしなやかな境界線、心の脱力、からだの強張りやセルフケアなど、日々の役割を少し脇に置いてほっと息を抜ける言葉を綴っています。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet" />
 
-	<section class="band section archive-band">
-		<div class="frame">
-			{
-				posts.length === 0 ? (
-					<div class="empty-state">
-						<h2 class="empty-state__title">
-							{cursor ? "No more posts" : "No posts yet"}
-						</h2>
-						<p class="empty-state__text">
-							{cursor
-								? "You have reached the end of the archive."
-								: "Published posts will show up here."}
-						</p>
-						{cursor && (
-							<div class="empty-state__actions">
-								<a href="/posts" class="btn btn--ghost">
-									First page
-								</a>
-							</div>
-						)}
-					</div>
-				) : (
-					<>
-						<ol class="archive__list">
-							{postsWithTags.map(({ post, tags }) => (
-								<li>
-									<PostCard post={post} tags={tags} variant="row" />
-								</li>
-							))}
-						</ol>
-						<Pagination
-							basePath="/posts"
-							cursor={cursor}
-							nextCursor={nextCursor}
-						/>
-					</>
-				)
-			}
-		</div>
-	</section>
-</Base>
+  <!-- Tailwind CSS CDN (is:inline 必須) -->
+  <script is:inline src="https://cdn.tailwindcss.com"></script>
+  <script is:inline>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            alabaster: '#F7F4EF',
+            champagne: '#EDE7DF',
+            sand: '#DCD3C6',
+            bronze: '#8E735B',
+            charcoal: '#221F1D',
+            taupe: '#7D7571',
+          },
+          fontFamily: {
+            serif: ['"Shippori Mincho"', 'serif'],
+            sans: ['"Zen Kaku Gothic New"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-alabaster text-charcoal font-sans antialiased min-h-screen flex flex-col selection:bg-champagne selection:text-bronze">
+  <Header />
 
-<style>
-	/* The band's rule doubles as the first row divider */
-	.archive-band {
-		padding-block-start: 0;
-	}
+  <main class="flex-grow pt-24 md:pt-32 pb-24">
+    <div class="max-w-6xl mx-auto px-5 sm:px-6">
+      
+      <!-- ページヘッダー -->
+      <div class="text-center max-w-2xl mx-auto mb-10 md:mb-14">
+        <span class="text-xs font-serif tracking-[0.2em] text-bronze uppercase">Columns & Thoughts</span>
+        <h1 class="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-charcoal mt-2 mb-4">
+          日々の余白を愛おしむコラム
+        </h1>
+        <p class="text-sm md:text-base text-taupe leading-relaxed">
+          誰かのための役割を少し脇に置き、心とからだの緊張をほどくためのヒント。<br class="hidden sm:inline" />
+          男性セラピストの視点から、人間関係のしなやかな境界線やセルフケアの言葉を綴っています。
+        </p>
+      </div>
 
-	.archive__list {
-		list-style: none;
-	}
+      <!-- カテゴリーナビゲーションタブ -->
+      <div class="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-4 mb-10 md:mb-14 scrollbar-none">
+        <a
+          href="/posts"
+          class="px-4 py-2 rounded-full text-xs font-medium whitespace-nowrap bg-bronze text-white shadow-xs"
+        >
+          すべて表示
+        </a>
+        {categories.map((cat) => (
+          <a
+            href={`/category/${cat.slug}`}
+            class="px-4 py-2 rounded-full text-xs font-medium whitespace-nowrap bg-champagne text-charcoal border border-sand hover:border-bronze hover:text-bronze transition-colors"
+          >
+            {cat.name}
+          </a>
+        ))}
+      </div>
 
-	.archive__list > li + li {
-		border-block-start: 1px solid var(--color-border);
-	}
-</style>
+      <!-- 記事一覧コンテンツ -->
+      {posts.length === 0 ? (
+        <div class="bg-champagne/40 rounded-3xl p-12 text-center border border-sand max-w-lg mx-auto">
+          <svg class="w-12 h-12 text-taupe/60 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+          </svg>
+          <h2 class="text-base font-serif font-bold text-charcoal mb-2">
+            {cursor ? "記事はこれ以上ありません" : "記事を準備しています"}
+          </h2>
+          <p class="text-xs text-taupe leading-relaxed mb-6">
+            {cursor
+              ? "過去のすべてのコラムをご覧いただきました。"
+              : "EmDash CMSより新しいコラムを執筆・公開中です。もう少々お待ちください。"}
+          </p>
+          <a
+            href="/posts"
+            class="inline-block px-5 py-2.5 text-xs font-medium bg-bronze text-white rounded-full hover:bg-[#78614C] transition-colors"
+          >
+            最初のページへ戻る
+          </a>
+        </div>
+      ) : (
+        <div class="space-y-10 md:space-y-12">
+          
+          {featuredItem && (
+            <div class="mb-10">
+              <PostCard
+                post={featuredItem.post}
+                tags={featuredItem.tags}
+                variant="feature"
+                priority={true}
+              />
+            </div>
+          )}
+
+          {regularItems.length > 0 && (
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              {regularItems.map(({ post, tags }) => (
+                <PostCard
+                  post={post}
+                  tags={tags}
+                  variant="card"
+                />
+              ))}
+            </div>
+          )}
+
+          <!-- ページネーション -->
+          <div class="pt-8 border-t border-sand">
+            <Pagination
+              basePath="/posts"
+              cursor={cursor}
+              nextCursor={nextCursor}
+            />
+          </div>
+
+        </div>
+      )}
+
+      <!-- サロン案内・施術メニュー誘導バナー -->
+      <section class="mt-20 bg-champagne/50 rounded-3xl p-8 sm:p-10 border border-sand flex flex-col md:flex-row items-center justify-between gap-6 shadow-xs">
+        <div>
+          <span class="text-xs font-serif tracking-widest text-bronze uppercase">Salon Experience</span>
+          <h2 class="text-lg sm:text-xl font-serif font-bold text-charcoal mt-1 mb-2">
+            読む時間から、身体をゆだねる時間へ
+          </h2>
+          <p class="text-xs sm:text-sm text-taupe leading-relaxed max-w-xl">
+            滋賀県草津市の完全個室にて、お一人おひとりの呼吸や強張りに寄り添うアロマオイルトリートメントをご提供しています。日々の役割から少し離れ、ご自身を慈しむ静かな時間をお過ごしください。
+          </p>
+        </div>
+        <div class="flex flex-col sm:flex-row items-center gap-3 flex-shrink-0 w-full sm:w-auto">
+          <a
+            href="/menu"
+            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-bronze text-white text-xs sm:text-sm font-medium rounded-full shadow-sm hover:bg-[#78614C] transition-colors"
+          >
+            施術メニューを見る
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+          </a>
+          <a
+            href="https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3.5 bg-white text-charcoal border border-sand text-xs sm:text-sm font-medium rounded-full shadow-sm hover:bg-alabaster transition-colors"
+          >
+            空き状況を見る
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <Footer />
+</body>
+</html>
