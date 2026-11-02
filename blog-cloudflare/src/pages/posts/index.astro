@@ -40,8 +40,7 @@ const formattedPosts = posts.map((post) => ({
   })),
 }));
 
-// 全6カテゴリーのタブ定義（お知らせを「すべて」の直後に配置）
-// 変更後
+// 正式な5大カテゴリー＋すベてのタブ定義
 const categories = [
   { name: 'すべて', slug: 'all' },
   { name: '人と心地よく付き合う', slug: 'relationship' },
@@ -50,6 +49,13 @@ const categories = [
   { name: '夜と朝のセルフケア', slug: 'lifestyle' },
   { name: 'セラピストの控え室より', slug: 'salon-notes' },
 ];
+
+// タブ表示用データの生成
+const categoryTabs = categories.map((cat) => ({
+  name: cat.name,
+  href: cat.slug === 'all' ? '/posts' : `/category/${cat.slug}`,
+  active: cat.slug === 'all',
+}));
 
 const pageTitle = "サロンコラム・お知らせ一覧 ｜ 草津の女性専用サロン La Chouette";
 const pageDescription = "滋賀県草津市の女性専用リラクゼーションサロン La Chouette（ラ・シュエット）の公式コラム。サロンからのお知らせ、オイルトリートメントのこだわり、男性セラピストならではの安心感、心とお体を深く緩める日々のヒントをお届けします。";
