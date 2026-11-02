@@ -380,13 +380,12 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       width: 2.5rem;
       height: 2.5rem;
       border-radius: 9999px;
-      background-color: #DCD3C6;
-      color: #221F1D;
+      background-color: #EDE7DF;
+      border: 1px solid #DCD3C6;
+      color: #7D7571;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.75rem;
-      font-weight: 600;
       flex-shrink: 0;
     }
     .speech-client .bubble {
@@ -514,9 +513,12 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
           // エスケープされた div の復元
           html = html.replace(/&lt;div class="([^"]+)"&gt;([\s\S]*?)&lt;\/div&gt;/gi, '<div class="$1">$2<' + '/div>');
 
-          // 吹き出し
+          // 女性シルエットSVGアイコン
+          const clientIconSvg = '<svg class="w-5 h-5 text-taupe" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a5 5 0 0 0-5 5v1c0 1.8.96 3.37 2.4 4.23A8.006 8.006 0 0 0 4 19.5a1 1 0 0 0 2 0c0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5a1 1 0 0 0 2 0 8.006 8.006 0 0 0-5.4-7.27A4.98 4.98 0 0 0 17 8V7a5 5 0 0 0-5-5zm-3 6V7a3 3 0 0 1 6 0v1a3 3 0 0 1-6 0z"/><' + '/svg>';
+
+          // 吹き出し（お客様側を女性シルエットSVGに変更）
           html = html.replace(/【(?:セラピスト|私)】([\s\S]*?)【\/(?:セラピスト|私)】/gi, '<div class="speech-therapist"><div class="avatar">私<' + '/div><div class="bubble">$1<' + '/div><' + '/div>');
-          html = html.replace(/【(?:お客様|相談)】([\s\S]*?)【\/(?:お客様|相談)】/gi, '<div class="speech-client"><div class="avatar">客<' + '/div><div class="bubble">$1<' + '/div><' + '/div>');
+          html = html.replace(/【(?:お客様|相談)】([\s\S]*?)【\/(?:お客様|相談)】/gi, '<div class="speech-client"><div class="avatar">' + clientIconSvg + '<' + '/div><div class="bubble">$1<' + '/div><' + '/div>');
 
           // 各種装飾ボックス
           html = html.replace(/【(?:POINT|ポイント)】([\s\S]*?)【\/(?:POINT|ポイント)】/gi, '<div class="box-point">$1<' + '/div>');
