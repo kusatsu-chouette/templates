@@ -5,7 +5,8 @@ import {
 	getTermsForEntries,
 	decodeSlug,
 } from "emdash";
-import Base from "../../layouts/Base.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
 import PostCard from "../../components/PostCard.astro";
 import Pagination from "../../components/Pagination.astro";
 
@@ -36,8 +37,7 @@ if (Astro.cache?.enabled) {
 	Astro.cache.set(cacheHint);
 }
 
-// Single batched query for tags on every post tagged with this term,
-// rather than calling getEntryTerms() per post.
+// Single batched query for tags on every post tagged with this term
 const tagsByEntry = await getTermsForEntries(
 	"posts",
 	posts.map((p) => p.data.id),
@@ -49,94 +49,144 @@ const filteredPosts = posts.map((post) => ({
 		(t) => t.slug !== term.slug,
 	),
 }));
+
+const pageTitle = `#${term.label} の記事一覧｜草津の女性専用サロン La Chouette`;
+const pageDescription = term.description || `草津市の女性専用リラクゼーションサロン La Chouette（ラ・シュエット）の「${term.label}」に関するブログ記事一覧です。`;
 ---
 
-<Base
-	title={`Posts tagged "${term.label}"`}
-	description={`All posts tagged with ${term.label}`}
->
-	<header class="band intro">
-		<div class="frame archive-intro">
-			<div class="archive-intro__text">
-				<p class="eyebrow">Tag</p>
-				<h1 class="intro__title">{term.label}</h1>
-				<p class="intro__lead">
-					{term.description || `Posts tagged ${term.label}, newest first.`}
-				</p>
-			</div>
-			<a href="/posts" class="arrow-link">
-				All posts
-				<svg
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="1.75"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					aria-hidden="true"
-				>
-					<path d="M5 12h14"></path>
-					<path d="m12 5 7 7-7 7"></path>
-				</svg>
-			</a>
-		</div>
-	</header>
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-	<section class="band section">
-		<div class="frame">
-			{
-				filteredPosts.length > 0 ? (
-					<>
-						<div class="post-grid">
-							{filteredPosts.map(({ post, tags }) => (
-								<PostCard
-									post={post}
-									tags={tags.map((t) => ({ slug: t.slug, label: t.label }))}
-								/>
-							))}
-						</div>
-						<Pagination
-							basePath={`/tag/${term.slug}`}
-							cursor={cursor}
-							nextCursor={nextCursor}
-						/>
-					</>
-				) : (
-					<div class="empty-state">
-						<h2 class="empty-state__title">
-							{cursor ? "No more posts" : "Nothing here yet"}
-						</h2>
-						<p class="empty-state__text">
-							{cursor
-								? "This page is past the last post."
-								: `No posts have been tagged ${term.label} so far.`}
-						</p>
-						<div class="empty-state__actions">
-							<a
-								href={cursor ? `/tag/${term.slug}` : "/posts"}
-								class="btn btn--ghost"
-							>
-								{cursor ? "Back to the first page" : "Browse all posts"}
-							</a>
-						</div>
-					</div>
-				)
-			}
-		</div>
-	</section>
-</Base>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Noto+Serif+JP:wght@300;400;600&display=swap" rel="stylesheet" />
 
-<style>
-	.archive-intro {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: flex-end;
-		align-items: last baseline;
-		justify-content: space-between;
-		gap: var(--spacing-5) var(--spacing-10);
-	}
+  <!-- Tailwind CSS CDN / Custom Config (is:inline 必須) -->
+  <script is:inline src="https://cdn.tailwindcss.com"></script>
+  <script is:inline>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            alabaster: '#F7F4EF',
+            champagne: '#EDE7DF',
+            sand: '#DCD3C6',
+            bronze: '#8E735B',
+            charcoal: '#221F1D',
+            taupe: '#7D7571',
+          },
+          fontFamily: {
+            serif: ['"Noto Serif JP"', 'serif'],
+            cormorant: ['"Cormorant Garamond"', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-alabaster text-charcoal font-serif antialiased min-h-screen flex flex-col selection:bg-sand selection:text-charcoal">
+  <Header />
 
-	.archive-intro__text {
-		min-width: 0;
-	}
-</style>
+  <main class="flex-grow pt-24 pb-20">
+    <!-- パンくずリスト -->
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 mb-8">
+      <nav class="flex items-center text-xs text-taupe space-x-2" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-bronze transition-colors">ホーム</a>
+        <span>/</span>
+        <a href="/posts" class="hover:text-bronze transition-colors">ブログ</a>
+        <span>/</span>
+        <span class="text-charcoal font-medium">#{term.label}</span>
+      </nav>
+    </div>
+
+    <!-- ヘッダーセクション -->
+    <header class="max-w-4xl mx-auto px-4 sm:px-6 text-center mb-16">
+      <span class="inline-block font-cormorant text-bronze tracking-widest text-sm uppercase mb-3">
+        Tag Archive
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-normal text-charcoal tracking-wide mb-4">
+        #{term.label}
+      </h1>
+      <div class="w-12 h-px bg-sand mx-auto mb-6"></div>
+      <p class="text-taupe text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
+        {term.description || `「${term.label}」に関する記事一覧です。日々の心とお体のメンテナンスやリラクゼーションに役立つ情報をお届けします。`}
+      </p>
+      <div class="mt-4 text-xs text-taupe">
+        該当記事 - <span class="font-medium text-charcoal">{posts.length}</span> 件
+      </div>
+    </header>
+
+    <!-- 記事一覧グリッド -->
+    <section class="max-w-6xl mx-auto px-4 sm:px-6">
+      {filteredPosts.length > 0 ? (
+        <>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            {filteredPosts.map(({ post, tags }) => (
+              <PostCard
+                post={post}
+                tags={tags.map((t) => ({ slug: t.slug, label: t.label }))}
+              />
+            ))}
+          </div>
+
+          <!-- ページネーション -->
+          <div class="mt-12 flex justify-center">
+            <Pagination
+              basePath={`/tag/${term.slug}`}
+              cursor={cursor}
+              nextCursor={nextCursor}
+            />
+          </div>
+        </>
+      ) : (
+        <div class="bg-champagne/40 border border-sand rounded-2xl p-12 text-center max-w-lg mx-auto shadow-sm">
+          <h2 class="text-base font-medium text-charcoal mb-3">
+            {cursor ? "これ以上の記事はありません" : "準備中のタグです"}
+          </h2>
+          <p class="text-taupe text-sm leading-relaxed mb-8">
+            {cursor
+              ? "最後のページまでご覧いただきありがとうございます。"
+              : `「${term.label}」に関する新しい記事を準備しております。順次お届けしてまいりますので、今しばらくお待ちください。`}
+          </p>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <a
+              href={cursor ? `/tag/${term.slug}` : "/posts"}
+              class="w-full sm:w-auto px-6 py-3 rounded-full bg-bronze text-alabaster text-xs tracking-wider hover:bg-[#78614C] transition-colors shadow-sm text-center"
+            >
+              {cursor ? "最初のページへ戻る" : "ブログ一覧を見る"}
+            </a>
+            <a
+              href="/"
+              class="w-full sm:w-auto px-6 py-3 rounded-full bg-champagne text-charcoal border border-sand text-xs tracking-wider hover:border-bronze transition-colors text-center"
+            >
+              サロンTOPへ
+            </a>
+          </div>
+        </div>
+      )}
+    </section>
+
+    <!-- 下部リンク導線 -->
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 mt-16 text-center">
+      <a
+        href="/posts"
+        class="inline-flex items-center text-xs tracking-wider text-taupe hover:text-bronze transition-colors group"
+      >
+        <span class="mr-2 transform group-hover:-translate-x-1 transition-transform">←</span>
+        ブログ一覧へ戻る
+      </a>
+    </div>
+  </main>
+
+  <Footer />
+</body>
+</html>
