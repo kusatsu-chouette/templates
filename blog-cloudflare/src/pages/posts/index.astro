@@ -1,62 +1,82 @@
 ---
-// templates/blog-cloudflare/src/pages/posts/index.astro
-import { getEmDashCollection, getTermsForEntries } from "emdash";
+import {
+  getEmDashCollection,
+  getTermsForEntries,
+} from "emdash";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import PostCard from "../../components/PostCard.astro";
 import Pagination from "../../components/Pagination.astro";
 
-// DBインデックスを活用した効率的な取得
 const cursor = Astro.url.searchParams.get("cursor") || undefined;
+
+// 記事データの取得
 const {
-	entries: posts,
-	cacheHint,
-	nextCursor,
+  entries: posts,
+  cacheHint,
+  nextCursor,
 } = await getEmDashCollection("posts", {
-	orderBy: { published_at: "desc" },
-	limit: 10,
-	cursor,
+  orderBy: { published_at: "desc" },
+  limit: 12,
+  cursor,
 });
 
-if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+if (Astro.cache?.enabled) {
+  Astro.cache.set(cacheHint);
+}
 
-// タグ情報の一括取得
+// タグデータの取得
 const tagsByEntry = await getTermsForEntries(
-	"posts",
-	posts.map((p) => p.data.id),
-	"tag",
+  "posts",
+  posts.map((p) => p.data.id),
+  "tag",
 );
 
-const postsWithTags = posts.map((post) => ({
-	post,
-	tags: tagsByEntry.get(post.data.id) ?? [],
+const formattedPosts = posts.map((post) => ({
+  post,
+  tags: (tagsByEntry.get(post.data.id) ?? []).map((t) => ({
+    slug: t.slug,
+    label: t.label,
+  })),
 }));
 
-// 5大カテゴリー定義
-const categories = [
-  { slug: 'relationship', name: '人と心地よく付き合う', label: '人間関係・境界線' },
-  { slug: 'mind-relax', name: '心の緊張をほどく', label: '心・自律神経' },
-  { slug: 'body-care', name: 'からだの声を聴く', label: '身体・巡り' },
-  { slug: 'lifestyle', name: '夜と朝のセルフケア', label: 'セルフケア・余白' },
-  { slug: 'salon-notes', name: 'セラピストの控え室より', label: 'サロン通信' },
+// 1ページ目の先頭記事を「特集記事（FEATURED）」として強調表示
+const isFirstPage = !cursor;
+const featuredPost = isFirstPage && formattedPosts.length > 0 ? formattedPosts[0] : null;
+const regularPosts = featuredPost ? formattedPosts.slice(1) : formattedPosts;
+
+// 全6カテゴリーのタブ定義（お知らせを「すべて」の直後に配置）
+const categoryTabs = [
+  { name: "すべて", href: "/posts", active: true },
+  { name: "お知らせ", href: "/category/news", active: false },
+  { name: "サロン・施術", href: "/category/salon-treatment", active: false },
+  { name: "心と体のケア", href: "/category/body-mind-care", active: false },
+  { name: "男性セラピスト", href: "/category/male-therapist", active: false },
+  { name: "お客様の声", href: "/category/customer-reviews", active: false },
+  { name: "日常・メンタル", href: "/category/daily-mental", active: false },
 ];
 
-const featuredItem = (!cursor && postsWithTags.length > 0) ? postsWithTags[0] : null;
-const regularItems = (!cursor && postsWithTags.length > 0) ? postsWithTags.slice(1) : postsWithTags;
+const pageTitle = "サロンコラム・お知らせ一覧 ｜ 草津の女性専用サロン La Chouette";
+const pageDescription = "滋賀県草津市の女性専用リラクゼーションサロン La Chouette（ラ・シュエット）の公式コラム。サロンからのお知らせ、オイルトリートメントのこだわり、男性セラピストならではの安心感、心とお体を深く緩める日々のヒントをお届けします。";
 ---
 
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>コラム・セラピストの控え室 | 女性専用サロン La Chouette（ラ・シュエット）</title>
-  <meta name="description" content="滋賀県草津市の女性専用完全個室サロン「ラ・シュエット」のコラム一覧です。人間関係のしなやかな境界線、心の脱力、からだの強張りやセルフケアなど、日々の役割を少し脇に置いてほっと息を抜ける言葉を綴っています。" />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600&family=Noto+Serif+JP:wght@300;400;600&display=swap" rel="stylesheet" />
 
-  <!-- Tailwind CSS CDN (is:inline 必須) -->
+  <!-- Tailwind CSS CDN / Custom Config (is:inline 必須) -->
   <script is:inline src="https://cdn.tailwindcss.com"></script>
   <script is:inline>
     tailwind.config = {
@@ -71,139 +91,155 @@ const regularItems = (!cursor && postsWithTags.length > 0) ? postsWithTags.slice
             taupe: '#7D7571',
           },
           fontFamily: {
-            serif: ['"Shippori Mincho"', 'serif'],
-            sans: ['"Zen Kaku Gothic New"', 'sans-serif'],
+            serif: ['"Noto Serif JP"', 'serif'],
+            cormorant: ['"Cormorant Garamond"', 'serif'],
           }
         }
       }
     }
   </script>
 </head>
-<body class="bg-alabaster text-charcoal font-sans antialiased min-h-screen flex flex-col selection:bg-champagne selection:text-bronze">
+<body class="bg-alabaster text-charcoal font-serif antialiased min-h-screen flex flex-col selection:bg-sand selection:text-charcoal">
   <Header />
 
-  <main class="flex-grow pt-24 md:pt-32 pb-24">
-    <div class="max-w-6xl mx-auto px-5 sm:px-6">
-      
-      <!-- ページヘッダー -->
-      <div class="text-center max-w-2xl mx-auto mb-10 md:mb-14">
-        <span class="text-xs font-serif tracking-[0.2em] text-bronze uppercase">Columns & Thoughts</span>
-        <h1 class="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-charcoal mt-2 mb-4">
-          日々の余白を愛おしむコラム
-        </h1>
-        <p class="text-sm md:text-base text-taupe leading-relaxed">
-          誰かのための役割を少し脇に置き、心とからだの緊張をほどくためのヒント。<br class="hidden sm:inline" />
-          男性セラピストの視点から、人間関係のしなやかな境界線やセルフケアの言葉を綴っています。
-        </p>
-      </div>
+  <main class="flex-grow pt-24 pb-20">
+    <!-- パンくずリスト -->
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 mb-8">
+      <nav class="flex items-center text-xs text-taupe space-x-2" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-bronze transition-colors">ホーム</a>
+        <span>/</span>
+        <span class="text-charcoal font-medium">ブログ・コラム</span>
+      </nav>
+    </div>
 
-      <!-- カテゴリーナビゲーションタブ -->
-      <div class="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-4 mb-10 md:mb-14 scrollbar-none">
-        <a
-          href="/posts"
-          class="px-4 py-2 rounded-full text-xs font-medium whitespace-nowrap bg-bronze text-white shadow-xs"
-        >
-          すべて表示
-        </a>
-        {categories.map((cat) => (
+    <!-- ページタイトルヘッダー -->
+    <header class="max-w-4xl mx-auto px-4 sm:px-6 text-center mb-12 sm:mb-16">
+      <span class="inline-block font-cormorant text-bronze tracking-widest text-sm uppercase mb-3">
+        Journal & Columns
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-normal text-charcoal tracking-wide mb-4">
+        コラム ＆ お知らせ
+      </h1>
+      <div class="w-12 h-px bg-sand mx-auto mb-6"></div>
+      <p class="text-taupe text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
+        日々の役割を脱ぎ捨てて、ひとりの女性へと還る時間。<br class="hidden sm:inline" />
+        施術への想いやサロンからのお便り、心とお体をやさしく解きほぐすヒントを綴っています。
+      </p>
+    </header>
+
+    <!-- カテゴリー切り替えタブ（スマホ対応・横スクロール） -->
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 mb-14">
+      <div class="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-3 pt-1 scrollbar-none sm:flex-wrap">
+        {categoryTabs.map((tab) => (
           <a
-            href={`/category/${cat.slug}`}
-            class="px-4 py-2 rounded-full text-xs font-medium whitespace-nowrap bg-champagne text-charcoal border border-sand hover:border-bronze hover:text-bronze transition-colors"
+            href={tab.href}
+            class={`whitespace-nowrap px-4 py-2 rounded-full text-xs tracking-wider transition-all duration-200 border ${
+              tab.active
+                ? "bg-bronze text-alabaster border-bronze shadow-sm pointer-events-none font-medium"
+                : "bg-champagne/60 text-charcoal border-sand/80 hover:border-bronze hover:bg-champagne"
+            }`}
           >
-            {cat.name}
+            {tab.name}
           </a>
         ))}
       </div>
+    </div>
 
-      <!-- 記事一覧コンテンツ -->
-      {posts.length === 0 ? (
-        <div class="bg-champagne/40 rounded-3xl p-12 text-center border border-sand max-w-lg mx-auto">
-          <svg class="w-12 h-12 text-taupe/60 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-          </svg>
-          <h2 class="text-base font-serif font-bold text-charcoal mb-2">
-            {cursor ? "記事はこれ以上ありません" : "記事を準備しています"}
-          </h2>
-          <p class="text-xs text-taupe leading-relaxed mb-6">
-            {cursor
-              ? "過去のすべてのコラムをご覧いただきました。"
-              : "EmDash CMSより新しいコラムを執筆・公開中です。もう少々お待ちください。"}
-          </p>
-          <a
-            href="/posts"
-            class="inline-block px-5 py-2.5 text-xs font-medium bg-bronze text-white rounded-full hover:bg-[#78614C] transition-colors"
-          >
-            最初のページへ戻る
-          </a>
-        </div>
-      ) : (
-        <div class="space-y-10 md:space-y-12">
-          
-          {featuredItem && (
-            <div class="mb-10">
-              <PostCard
-                post={featuredItem.post}
-                tags={featuredItem.tags}
-                variant="feature"
-                priority={true}
-              />
-            </div>
+    <!-- 記事一覧コンテナ -->
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      {formattedPosts.length > 0 ? (
+        <>
+          <!-- 特集記事（1ページ目先頭） -->
+          {featuredPost && (
+            <section class="mb-14">
+              <div class="relative bg-champagne/40 border border-sand rounded-2xl overflow-hidden p-6 sm:p-8 transition-shadow hover:shadow-md">
+                <div class="flex flex-col lg:flex-row gap-6 sm:gap-8 items-center">
+                  {featuredPost.post.data.feature_image && (
+                    <div class="w-full lg:w-1/2 aspect-[16/10] overflow-hidden rounded-xl bg-sand/30 flex-shrink-0">
+                      <img
+                        src={featuredPost.post.data.feature_image}
+                        alt={featuredPost.post.data.title}
+                        class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                  )}
+                  <div class="w-full lg:w-1/2 flex flex-col justify-center">
+                    <div class="flex items-center gap-3 mb-3">
+                      <span class="inline-block px-3 py-1 rounded-full bg-bronze/10 text-bronze text-[11px] tracking-widest uppercase font-cormorant font-semibold">
+                        FEATURED
+                      </span>
+                      {featuredPost.post.data.published_at && (
+                        <time class="text-xs text-taupe font-cormorant">
+                          {new Date(featuredPost.post.data.published_at).toLocaleDateString("ja-JP", {
+                            year: "numeric",
+                            month: "2-digit",
+                            day: "2-digit",
+                          }).replace(/\//g, ".")}
+                        </time>
+                      )}
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-normal text-charcoal mb-4 leading-snug">
+                      <a
+                        href={`/posts/${featuredPost.post.slug}`}
+                        class="hover:text-bronze transition-colors"
+                      >
+                        {featuredPost.post.data.title}
+                      </a>
+                    </h2>
+                    {featuredPost.post.data.excerpt && (
+                      <p class="text-taupe text-sm leading-relaxed mb-6 line-clamp-3">
+                        {featuredPost.post.data.excerpt}
+                      </p>
+                    )}
+                    <div>
+                      <a
+                        href={`/posts/${featuredPost.post.slug}`}
+                        class="inline-flex items-center text-xs tracking-widest text-bronze font-medium hover:text-[#78614C] transition-colors group"
+                      >
+                        記事を読む
+                        <span class="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
           )}
 
-          {regularItems.length > 0 && (
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-              {regularItems.map(({ post, tags }) => (
-                <PostCard
-                  post={post}
-                  tags={tags}
-                  variant="card"
-                />
+          <!-- 通常記事グリッド一覧 -->
+          {regularPosts.length > 0 && (
+            <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+              {regularPosts.map(({ post, tags }) => (
+                <PostCard post={post} tags={tags} />
               ))}
-            </div>
+            </section>
           )}
 
           <!-- ページネーション -->
-          <div class="pt-8 border-t border-sand">
+          <div class="mt-12 flex justify-center">
             <Pagination
               basePath="/posts"
               cursor={cursor}
               nextCursor={nextCursor}
             />
           </div>
-
+        </>
+      ) : (
+        <div class="bg-champagne/40 border border-sand rounded-2xl p-12 text-center max-w-lg mx-auto shadow-sm">
+          <h2 class="text-base font-medium text-charcoal mb-3">
+            {cursor ? "これ以上の記事はありません" : "記事を準備しております"}
+          </h2>
+          <p class="text-taupe text-sm leading-relaxed mb-8">
+            サロンからのお知らせや、心身を癒やすコラムを順次お届けしてまいります。
+          </p>
+          <a
+            href="/"
+            class="inline-flex items-center justify-center px-6 py-3 rounded-full bg-bronze text-alabaster text-xs tracking-wider hover:bg-[#78614C] transition-colors shadow-sm"
+          >
+            サロンTOPへ戻る
+          </a>
         </div>
       )}
-
-      <!-- サロン案内・施術メニュー誘導バナー -->
-      <section class="mt-20 bg-champagne/50 rounded-3xl p-8 sm:p-10 border border-sand flex flex-col md:flex-row items-center justify-between gap-6 shadow-xs">
-        <div>
-          <span class="text-xs font-serif tracking-widest text-bronze uppercase">Salon Experience</span>
-          <h2 class="text-lg sm:text-xl font-serif font-bold text-charcoal mt-1 mb-2">
-            読む時間から、身体をゆだねる時間へ
-          </h2>
-          <p class="text-xs sm:text-sm text-taupe leading-relaxed max-w-xl">
-            滋賀県草津市の完全個室にて、お一人おひとりの呼吸や強張りに寄り添うアロマオイルトリートメントをご提供しています。日々の役割から少し離れ、ご自身を慈しむ静かな時間をお過ごしください。
-          </p>
-        </div>
-        <div class="flex flex-col sm:flex-row items-center gap-3 flex-shrink-0 w-full sm:w-auto">
-          <a
-            href="/menu"
-            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-bronze text-white text-xs sm:text-sm font-medium rounded-full shadow-sm hover:bg-[#78614C] transition-colors"
-          >
-            施術メニューを見る
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
-          </a>
-          <a
-            href="https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3.5 bg-white text-charcoal border border-sand text-xs sm:text-sm font-medium rounded-full shadow-sm hover:bg-alabaster transition-colors"
-          >
-            空き状況を見る
-          </a>
-        </div>
-      </section>
-
     </div>
   </main>
 
