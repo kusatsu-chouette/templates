@@ -1,203 +1,184 @@
 ---
-import Base from "../layouts/Base.astro";
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const pageTitle = 'ページが見つかりませんでした (404) ｜ 草津の女性専用サロン La Chouette';
+const pageDescription = 'お探しのページは移動または削除された可能性がございます。草津市の女性専用リラクゼーションサロン La Chouette（ラ・シュエット）のトップページ、主要案内、またはブログ記事検索よりお進みください。';
 ---
 
-<Base title="Page not found">
-	<section class="band not-found">
-		<div class="not-found__backdrop" aria-hidden="true"></div>
-		<div class="frame not-found__inner">
-			<p class="eyebrow not-found__code">Error 404</p>
-			<h1 class="intro__title">Page not found</h1>
-			<p class="intro__lead">
-				The page you’re looking for doesn’t exist or may have moved.
-			</p>
-			<div class="not-found__actions">
-				<a href="/" class="btn">Go home</a>
-				<a href="/posts" class="btn btn--ghost">Browse posts</a>
-			</div>
-			<form
-				method="get"
-				action="/search"
-				role="search"
-				aria-label="Posts"
-				class="not-found__search"
-			>
-				<label for="not-found-query" class="sr-only">Search posts</label>
-				<svg
-					class="not-found__search-icon"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="1.75"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					aria-hidden="true"
-					><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"
-					></path></svg
-				>
-				<input
-					id="not-found-query"
-					class="not-found__search-input"
-					type="search"
-					name="q"
-					placeholder="Or search posts"
-				/>
-				<button
-					type="submit"
-					class="btn not-found__search-submit"
-					aria-label="Search"
-				>
-					<svg
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="1.75"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						aria-hidden="true"
-					>
-						<path d="M5 12h14"></path>
-						<path d="m12 5 7 7-7 7"></path>
-					</svg>
-				</button>
-			</form>
-		</div>
-	</section>
-</Base>
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-<style>
-	.not-found {
-		padding-block: clamp(4rem, 2.5rem + 6vw, 8rem);
-	}
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600&family=Noto+Serif+JP:wght@300;400;600&display=swap" rel="stylesheet" />
 
-	.not-found__backdrop {
-		position: absolute;
-		inset: 0;
-		background-image: radial-gradient(
-			circle,
-			var(--color-border-strong) 1px,
-			transparent 1.5px
-		);
-		background-position: center;
-		background-size: 16px 16px;
-		mask-image: radial-gradient(
-			ellipse 46% 58% at 50% 50%,
-			#000 15%,
-			transparent 75%
-		);
-		pointer-events: none;
-	}
+  <!-- Tailwind CSS CDN / Custom Config (is:inline 必須) -->
+  <script is:inline src="https://cdn.tailwindcss.com"></script>
+  <script is:inline>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            alabaster: '#F7F4EF',
+            champagne: '#EDE7DF',
+            sand: '#DCD3C6',
+            bronze: '#8E735B',
+            charcoal: '#221F1D',
+            taupe: '#7D7571',
+          },
+          fontFamily: {
+            serif: ['"Noto Serif JP"', 'serif'],
+            cormorant: ['"Cormorant Garamond"', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-alabaster text-charcoal font-serif antialiased min-h-screen flex flex-col selection:bg-sand selection:text-charcoal">
+  <Header />
 
-	.not-found__inner {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		text-align: center;
-	}
+  <main class="flex-grow flex items-center justify-center pt-28 pb-20 px-4 sm:px-6">
+    <div class="max-w-2xl w-full text-center">
+      <!-- 404 装飾表示 -->
+      <span class="font-cormorant text-7xl sm:text-8xl text-bronze/60 font-light tracking-widest block mb-1 select-none">
+        404
+      </span>
+      <span class="inline-block font-cormorant text-taupe tracking-widest text-xs uppercase mb-6">
+        Page Not Found
+      </span>
 
-	.not-found__code {
-		display: inline-flex;
-		align-items: center;
-		gap: var(--spacing-2);
-		min-height: 28px;
-		padding: 2px 12px;
-		border-radius: var(--radius-full);
-		background: var(--color-surface);
-		box-shadow:
-			inset 0 0 0 1px var(--color-border),
-			var(--shadow-sm);
-		color: var(--color-text-secondary);
-	}
+      <h1 class="text-2xl sm:text-3xl font-normal text-charcoal tracking-wide mb-4">
+        ページが見つかりませんでした
+      </h1>
+      
+      <div class="w-12 h-px bg-sand mx-auto mb-6"></div>
 
-	.not-found__code::before {
-		content: "";
-		width: 6px;
-		height: 6px;
-		border-radius: var(--radius-full);
-		background: var(--color-muted);
-	}
+      <p class="text-taupe text-sm sm:text-base leading-relaxed max-w-md mx-auto mb-8">
+        お探しのページは移動または削除されたか、URLが正しくない可能性がございます。<br class="hidden sm:inline" />
+        記事検索、または下記の主要案内よりお進みください。
+      </p>
 
-	.not-found__inner .intro__lead {
-		max-width: 40ch;
-		text-wrap: balance;
-	}
+      <!-- 記事内キーワード検索フォーム -->
+      <form
+        method="get"
+        action="/search"
+        role="search"
+        aria-label="記事を検索"
+        class="relative max-w-md mx-auto mb-10"
+      >
+        <label for="not-found-query" class="sr-only">記事キーワード検索</label>
+        <div class="relative flex items-center">
+          <svg
+            class="absolute left-4 w-4 h-4 text-taupe pointer-events-none"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m20 20-3.5-3.5"></path>
+          </svg>
+          <input
+            id="not-found-query"
+            class="w-full h-12 pl-11 pr-12 text-sm bg-champagne/50 border border-sand rounded-full text-charcoal placeholder-taupe/70 focus:outline-none focus:border-bronze focus:ring-1 focus:ring-bronze transition-all"
+            type="search"
+            name="q"
+            placeholder="ブログ記事を検索する"
+          />
+          <button
+            type="submit"
+            class="absolute right-1.5 w-9 h-9 flex items-center justify-center rounded-full bg-bronze text-alabaster hover:bg-[#78614C] transition-colors"
+            aria-label="検索を実行"
+          >
+            <svg
+              class="w-4 h-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M5 12h14"></path>
+              <path d="m12 5 7 7-7 7"></path>
+            </svg>
+          </button>
+        </div>
+      </form>
 
-	.not-found__actions {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-		gap: var(--spacing-3);
-		margin-top: var(--spacing-8);
-	}
+      <!-- 主要ページへの案内カード -->
+      <div class="bg-champagne/40 border border-sand rounded-2xl p-6 sm:p-8 mb-10 text-left max-w-xl mx-auto shadow-sm">
+        <h2 class="text-xs font-semibold text-charcoal tracking-widest uppercase mb-4 text-center">
+          サロンの主要なご案内
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <a
+            href="/"
+            class="flex items-center justify-between p-3.5 rounded-lg bg-alabaster border border-sand/60 hover:border-bronze hover:shadow-sm transition-all group"
+          >
+            <span class="text-xs text-charcoal group-hover:text-bronze transition-colors">トップページ</span>
+            <span class="text-taupe text-xs group-hover:text-bronze group-hover:translate-x-0.5 transition-all">→</span>
+          </a>
+          <a
+            href="/posts"
+            class="flex items-center justify-between p-3.5 rounded-lg bg-alabaster border border-sand/60 hover:border-bronze hover:shadow-sm transition-all group"
+          >
+            <span class="text-xs text-charcoal group-hover:text-bronze transition-colors">ブログ一覧</span>
+            <span class="text-taupe text-xs group-hover:text-bronze group-hover:translate-x-0.5 transition-all">→</span>
+          </a>
+          <a
+            href="/menu"
+            class="flex items-center justify-between p-3.5 rounded-lg bg-alabaster border border-sand/60 hover:border-bronze hover:shadow-sm transition-all group"
+          >
+            <span class="text-xs text-charcoal group-hover:text-bronze transition-colors">メニュー・料金</span>
+            <span class="text-taupe text-xs group-hover:text-bronze group-hover:translate-x-0.5 transition-all">→</span>
+          </a>
+          <a
+            href="/therapist"
+            class="flex items-center justify-between p-3.5 rounded-lg bg-alabaster border border-sand/60 hover:border-bronze hover:shadow-sm transition-all group"
+          >
+            <span class="text-xs text-charcoal group-hover:text-bronze transition-colors">セラピスト紹介</span>
+            <span class="text-taupe text-xs group-hover:text-bronze group-hover:translate-x-0.5 transition-all">→</span>
+          </a>
+        </div>
+      </div>
 
-	.not-found__search {
-		position: relative;
-		width: min(100%, 340px);
-		margin-top: var(--spacing-6);
-	}
+      <!-- アクションボタン -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a
+          href="/"
+          class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-bronze text-alabaster text-xs tracking-widest uppercase hover:bg-[#78614C] transition-all shadow-sm"
+        >
+          トップページへ戻る
+        </a>
+        <a
+          href="https://lin.ee/nzuEONf"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="w-full sm:w-auto px-6 py-3.5 rounded-full bg-champagne text-charcoal border border-sand text-xs tracking-wider hover:border-bronze transition-colors inline-flex items-center justify-center gap-2"
+        >
+          <span>公式LINEで問い合わせる</span>
+          <span class="text-taupe text-xs">↗</span>
+        </a>
+      </div>
+    </div>
+  </main>
 
-	.not-found__search-icon {
-		position: absolute;
-		inset-inline-start: 16px;
-		top: 50%;
-		width: 16px;
-		height: 16px;
-		translate: 0 -50%;
-		color: var(--color-muted);
-		pointer-events: none;
-	}
-
-	.not-found__search-input {
-		display: block;
-		width: 100%;
-		height: 44px;
-		padding-block: 0;
-		padding-inline: 42px 48px;
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius-full);
-		background: var(--color-surface);
-		color: var(--color-text);
-		font: inherit;
-		font-size: var(--font-size-base);
-		-webkit-appearance: none;
-		appearance: none;
-		transition:
-			border-color var(--transition-fast),
-			box-shadow var(--transition-fast);
-	}
-
-	.not-found__search-input::placeholder {
-		color: var(--color-muted);
-	}
-
-	.not-found__search-input::-webkit-search-cancel-button {
-		filter: grayscale(1);
-		cursor: pointer;
-	}
-
-	.not-found__search-input:hover {
-		border-color: var(--color-border-strong);
-	}
-
-	/* Transparent rather than none so forced-colors mode still draws a ring */
-	.not-found__search-input:focus {
-		outline: 2px solid transparent;
-		border-color: var(--color-muted);
-		box-shadow: 0 0 0 3px var(--color-brand-ring);
-	}
-
-	.not-found__search-submit {
-		position: absolute;
-		top: 6px;
-		inset-inline-end: 6px;
-		width: 32px;
-		height: 32px;
-		min-height: 0;
-		padding: 0;
-	}
-
-	.not-found__search-submit svg:dir(rtl) {
-		scale: -1 1;
-	}
-</style>
+  <Footer />
+</body>
+</html>
