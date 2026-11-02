@@ -40,9 +40,10 @@ const formattedPosts = posts.map((post) => ({
   })),
 }));
 
-// 正式な5大カテゴリー＋すベてのタブ定義
+// カテゴリー定義（お知らせ + 5大カテゴリー + すべて）
 const categories = [
   { name: 'すべて', slug: 'all' },
+  { name: 'お知らせ', slug: 'news' },
   { name: '人と心地よく付き合う', slug: 'relationship' },
   { name: '心の緊張をほどく', slug: 'mind-relax' },
   { name: 'からだの声を聴く', slug: 'body-care' },
