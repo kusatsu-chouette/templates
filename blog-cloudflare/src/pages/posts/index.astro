@@ -40,11 +40,6 @@ const formattedPosts = posts.map((post) => ({
   })),
 }));
 
-// 1ページ目の先頭記事を「特集記事（FEATURED）」として強調表示
-const isFirstPage = !cursor;
-const featuredPost = isFirstPage && formattedPosts.length > 0 ? formattedPosts[0] : null;
-const regularPosts = featuredPost ? formattedPosts.slice(1) : formattedPosts;
-
 // 全6カテゴリーのタブ定義（お知らせを「すべて」の直後に配置）
 const categoryTabs = [
   { name: "すべて", href: "/posts", active: true },
@@ -145,75 +140,15 @@ const pageDescription = "滋賀県草津市の女性専用リラクゼーショ�
       </div>
     </div>
 
-    <!-- 記事一覧コンテナ -->
+    <!-- 記事一覧グリッド -->
     <div class="max-w-6xl mx-auto px-4 sm:px-6">
       {formattedPosts.length > 0 ? (
         <>
-          <!-- 特集記事（1ページ目先頭） -->
-          {featuredPost && (
-            <section class="mb-14">
-              <div class="relative bg-champagne/40 border border-sand rounded-2xl overflow-hidden p-6 sm:p-8 transition-shadow hover:shadow-md">
-                <div class="flex flex-col lg:flex-row gap-6 sm:gap-8 items-center">
-                  {featuredPost.post.data.featured_image && (
-                    <div class="w-full lg:w-1/2 aspect-[16/10] overflow-hidden rounded-xl bg-sand/30 flex-shrink-0">
-                      <img
-                        src={featuredPost.post.data.featured_image}
-                        alt={featuredPost.post.data.title}
-                        class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
-                      />
-                    </div>
-                  )}
-                  <div class="w-full lg:w-1/2 flex flex-col justify-center">
-                    <div class="flex items-center gap-3 mb-3">
-                      <span class="inline-block px-3 py-1 rounded-full bg-bronze/10 text-bronze text-[11px] tracking-widest uppercase font-cormorant font-semibold">
-                        FEATURED
-                      </span>
-                      {featuredPost.post.data.publishedAt && (
-                        <time class="text-xs text-taupe font-cormorant">
-                          {new Date(featuredPost.post.data.publishedAt).toLocaleDateString("ja-JP", {
-                            year: "numeric",
-                            month: "2-digit",
-                            day: "2-digit",
-                          }).replace(/\//g, ".")}
-                        </time>
-                      )}
-                    </div>
-                    <h2 class="text-xl sm:text-2xl font-normal text-charcoal mb-4 leading-snug">
-                      <a
-                        href={`/posts/${featuredPost.post.slug}`}
-                        class="hover:text-bronze transition-colors"
-                      >
-                        {featuredPost.post.data.title}
-                      </a>
-                    </h2>
-                    {featuredPost.post.data.excerpt && (
-                      <p class="text-taupe text-sm leading-relaxed mb-6 line-clamp-3">
-                        {featuredPost.post.data.excerpt}
-                      </p>
-                    )}
-                    <div>
-                      <a
-                        href={`/posts/${featuredPost.post.slug}`}
-                        class="inline-flex items-center text-xs tracking-widest text-bronze font-medium hover:text-[#78614C] transition-colors group"
-                      >
-                        記事を読む
-                        <span class="ml-2 transform group-hover:translate-x-1 transition-transform">→</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-          )}
-
-          <!-- 通常記事グリッド一覧 -->
-          {regularPosts.length > 0 && (
-            <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-              {regularPosts.map(({ post, tags }) => (
-                <PostCard post={post} tags={tags} />
-              ))}
-            </section>
-          )}
+          <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            {formattedPosts.map(({ post, tags }) => (
+              <PostCard post={post} tags={tags} />
+            ))}
+          </section>
 
           <!-- ページネーション -->
           <div class="mt-12 flex justify-center">
