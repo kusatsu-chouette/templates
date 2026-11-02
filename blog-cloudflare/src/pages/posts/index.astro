@@ -154,10 +154,10 @@ const pageDescription = "滋賀県草津市の女性専用リラクゼーショ�
             <section class="mb-14">
               <div class="relative bg-champagne/40 border border-sand rounded-2xl overflow-hidden p-6 sm:p-8 transition-shadow hover:shadow-md">
                 <div class="flex flex-col lg:flex-row gap-6 sm:gap-8 items-center">
-                  {featuredPost.post.data.feature_image && (
+                  {featuredPost.post.data.featured_image && (
                     <div class="w-full lg:w-1/2 aspect-[16/10] overflow-hidden rounded-xl bg-sand/30 flex-shrink-0">
                       <img
-                        src={featuredPost.post.data.feature_image}
+                        src={featuredPost.post.data.featured_image}
                         alt={featuredPost.post.data.title}
                         class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
                       />
@@ -168,9 +168,9 @@ const pageDescription = "滋賀県草津市の女性専用リラクゼーショ�
                       <span class="inline-block px-3 py-1 rounded-full bg-bronze/10 text-bronze text-[11px] tracking-widest uppercase font-cormorant font-semibold">
                         FEATURED
                       </span>
-                      {featuredPost.post.data.published_at && (
+                      {featuredPost.post.data.publishedAt && (
                         <time class="text-xs text-taupe font-cormorant">
-                          {new Date(featuredPost.post.data.published_at).toLocaleDateString("ja-JP", {
+                          {new Date(featuredPost.post.data.publishedAt).toLocaleDateString("ja-JP", {
                             year: "numeric",
                             month: "2-digit",
                             day: "2-digit",
