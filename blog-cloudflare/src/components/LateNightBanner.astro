@@ -1,6 +1,7 @@
 ---
 interface Props {
-  date?: string;
+  dates?: string[];
+  date?: string; // 単一文字列での指定も受け取れるよう互換性を保持
   hours?: string;
   status?: string;
   note?: string;
@@ -8,12 +9,16 @@ interface Props {
 }
 
 const {
-  date = "11月3日(火)",
+  dates = ["11月3日(火)", "11月8日(日)"],
+  date,
   hours = "8:00 — 27:00（深夜3時まで）",
   status = "ご予約受付中",
   note = "静まり返った夜の完全個室。一日のお疲れや緊張を、温かなロングストロークで解きほぐします。",
   bookingUrl = "https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start",
 } = Astro.props;
+
+// dates配列がある場合はそれを採用、date単一指定がある場合は配列化
+const scheduleDates = dates ?? (date ? [date] : ["11月3日(火)", "11月8日(日)"]);
 ---
 
 <div class="rounded-2xl bg-charcoal border border-sand/40 p-5 sm:p-6 shadow-md text-alabaster relative overflow-hidden">
@@ -28,7 +33,10 @@ const {
       </div>
       <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
         <h3 class="text-lg sm:text-xl font-serif tracking-wider text-alabaster">
-          次回深夜営業：<span class="text-bronze font-medium border-b border-bronze/40 pb-0.5">{date}</span>
+          次回深夜営業：
+          <span class="text-bronze font-medium border-b border-bronze/40 pb-0.5">
+            {scheduleDates.join("、")}
+          </span>
         </h3>
         <p class="text-xs sm:text-sm text-sand/80 font-light tracking-wide">
           受付時間：{hours}
