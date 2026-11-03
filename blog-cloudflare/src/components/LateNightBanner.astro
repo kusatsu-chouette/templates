@@ -1,7 +1,7 @@
 ---
 interface Props {
   dates?: string[];
-  date?: string; // 単一文字列での指定も受け取れるよう互換性を保持
+  date?: string;
   hours?: string;
   status?: string;
   note?: string;
@@ -17,13 +17,13 @@ const {
   bookingUrl = "https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start",
 } = Astro.props;
 
-// dates配列がある場合はそれを採用、date単一指定がある場合は配列化
 const scheduleDates = dates ?? (date ? [date] : ["11月3日(火)", "11月8日(日)"]);
 ---
 
 <div class="rounded-2xl bg-charcoal border border-sand/40 p-5 sm:p-6 shadow-md text-alabaster relative overflow-hidden">
-  <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
-    <div class="space-y-1.5">
+  <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5">
+    <div class="space-y-2.5">
+      <!-- ステータスバッジ -->
       <div class="flex items-center gap-2">
         <span class="inline-block w-2 h-2 rounded-full bg-bronze animate-pulse"></span>
         <span class="text-[11px] tracking-[0.2em] uppercase text-sand font-medium">LATE NIGHT SCHEDULE</span>
@@ -31,28 +31,41 @@ const scheduleDates = dates ?? (date ? [date] : ["11月3日(火)", "11月8日(�
           {status}
         </span>
       </div>
-      <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h3 class="text-lg sm:text-xl font-serif tracking-wider text-alabaster">
-          次回深夜営業：
-          <span class="text-bronze font-medium border-b border-bronze/40 pb-0.5">
-            {scheduleDates.join("、")}
+
+      <!-- 日程カードバッジ一覧 -->
+      <div class="space-y-2">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+          <span class="text-xs sm:text-sm font-serif tracking-wider text-sand/90 shrink-0">
+            次回深夜営業日：
           </span>
-        </h3>
+          <div class="flex flex-wrap items-center gap-2">
+            {scheduleDates.map((d) => (
+              <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-champagne/10 border border-sand/30 text-alabaster text-xs sm:text-sm font-medium tracking-wide whitespace-nowrap shadow-sm backdrop-blur-xs">
+                <span class="w-1.5 h-1.5 rounded-full bg-bronze"></span>
+                {d}
+              </span>
+            ))}
+          </div>
+        </div>
+
         <p class="text-xs sm:text-sm text-sand/80 font-light tracking-wide">
           受付時間：{hours}
         </p>
       </div>
-      <p class="text-xs text-sand/70 font-light leading-relaxed max-w-2xl pt-1">
+
+      <!-- 補足テキスト -->
+      <p class="text-xs text-sand/70 font-light leading-relaxed max-w-2xl pt-0.5">
         {note}
       </p>
     </div>
 
-    <div class="flex items-center gap-3 pt-2 md:pt-0 shrink-0">
+    <!-- 予約ボタン -->
+    <div class="flex items-center gap-3 pt-1 md:pt-0 shrink-0">
       <a 
         href={bookingUrl}
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-bronze hover:opacity-90 text-alabaster text-xs tracking-wider transition-all duration-300 shadow-sm font-medium w-full md:w-auto text-center"
+        class="inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-bronze hover:opacity-90 text-alabaster text-xs tracking-wider transition-all duration-300 shadow-sm font-medium w-full md:w-auto text-center"
       >
         空き状況の確認・予約
       </a>
