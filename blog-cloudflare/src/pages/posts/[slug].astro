@@ -1,3 +1,4 @@
+---
 // templates/blog-cloudflare/src/pages/posts/[slug].astro
 import {
   getEmDashEntry,
@@ -368,7 +369,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       border: 1px solid #DCD3C6;
     }
 
-    /* お客様吹き出し（左配置・上品なカプセルバッジ） */
+    /* お客様吹き出し */
     .speech-client {
       display: flex;
       align-items: flex-start;
@@ -602,7 +603,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = raw;
 
-            // エディタが勝手に挿入したリンク（aタグ）のURLを優先取得
+            // エディタが挿入した a タグの URL を優先取得
             const linkElem = tempDiv.querySelector('a');
             let href = linkElem ? (linkElem.getAttribute('href') || '') : '';
 
@@ -644,7 +645,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
                      descHtml +
                      '<div class="blog-card-footer">' +
                        '<span>記事を読む<' + '/span>' +
-                       '<svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /><' + '/svg>' +
+                       '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /><' + '/svg>' +
                      '<' + '/div>' +
                    '<' + '/a>';
           });
