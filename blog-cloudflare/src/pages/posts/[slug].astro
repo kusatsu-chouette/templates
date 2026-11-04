@@ -1,10 +1,10 @@
 ---
 // templates/blog-cloudflare/src/pages/posts/[slug].astro
 import {
-  getEmDashEntry,
-  getSeoMeta,
-  decodeSlug,
-  getSiteSettings,
+  getEmDashEntry,
+  getSeoMeta,
+  decodeSlug,
+  getSiteSettings,
 } from "emdash";
 import { Image, PortableText } from "emdash/ui";
 import Header from "../../components/Header.astro";
@@ -16,34 +16,34 @@ import { resolveBlogSiteIdentity } from "../../utils/site-identity";
 const slug = decodeSlug(Astro.params.slug);
 
 if (!slug) {
-  return Astro.rewrite("/404");
+  return Astro.rewrite("/404");
 }
 
 const { entry: post, cacheHint } = await getEmDashEntry("posts", slug);
 
 if (!post) {
-  return Astro.rewrite("/404");
+  return Astro.rewrite("/404");
 }
 
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
 
 // アイキャッチ画像のURL取得
 function getImageUrl(img: unknown): string | undefined {
-  if (!img || typeof img !== "object") return undefined;
-  const image = img as Record<string, unknown>;
-  if (typeof image.src === "string" && image.src) {
-    return image.src.startsWith("http")
-      ? image.src
-      : `${Astro.url.origin}${image.src}`;
-  }
-  const meta = image.meta as Record<string, unknown> | undefined;
-  const storageKey =
-    (typeof meta?.storageKey === "string" ? meta.storageKey : undefined) ||
-    (typeof image.id === "string" ? image.id : undefined);
-  if (storageKey) {
-    return `${Astro.url.origin}/_emdash/api/media/file/${storageKey}`;
-  }
-  return undefined;
+  if (!img || typeof img !== "object") return undefined;
+  const image = img as Record<string, unknown>;
+  if (typeof image.src === "string" && image.src) {
+    return image.src.startsWith("http")
+      ? image.src
+      : `${Astro.url.origin}${image.src}`;
+  }
+  const meta = image.meta as Record<string, unknown> | undefined;
+  const storageKey =
+    (typeof meta?.storageKey === "string" ? meta.storageKey : undefined) ||
+    (typeof image.id === "string" ? image.id : undefined);
+  if (storageKey) {
+    return `${Astro.url.origin}/_emdash/api/media/file/${storageKey}`;
+  }
+  return undefined;
 }
 
 const postData = (post.data || {}) as any;
@@ -52,10 +52,10 @@ const { siteTitle } = resolveBlogSiteIdentity(await getSiteSettings());
 
 // SEOメタ情報の生成
 const seo = getSeoMeta(post, {
-  siteTitle: siteTitle || "女性専用サロン La Chouette（ラ・シュエット）",
-  siteUrl: Astro.url.origin,
-  path: Astro.url.pathname.replace(/\/$/, ""),
-  defaultOgImage: featuredImageUrl,
+  siteTitle: siteTitle || "女性専用サロン La Chouette（ラ・シュエット）",
+  siteUrl: Astro.url.origin,
+  path: Astro.url.pathname.replace(/\/$/, ""),
+  defaultOgImage: featuredImageUrl,
 });
 
 // カテゴリー情報の判定・正規化（TypeScript型安全ガード）
@@ -64,11 +64,11 @@ const rawCategory = rawTermsCategory?.slug || postData.category || 'salon-notes'
 const categorySlug = typeof rawCategory === 'object' && rawCategory !== null ? rawCategory.slug : String(rawCategory);
 
 const categoryMap: Record<string, { name: string; subtitle: string; label: string }> = {
-  'relationship': { name: '人と心地よく付き合う', subtitle: '人間関係としなやかな境界線', label: '人間関係・境界線' },
-  'mind-relax': { name: '心の緊張をほどく', subtitle: 'がんばり屋さんの脱力論', label: '心・自律神経' },
-  'body-care': { name: 'からだの声を聴く', subtitle: '身体の強張りと自律神経', label: '身体・巡り' },
-  'lifestyle': { name: '夜と朝のセルフケア', subtitle: '自分を慈しむ余白の時間', label: 'セルフケア・余白' },
-  'salon-notes': { name: 'セラピストの控え室より', subtitle: 'セラピストの視点・サロンの空気感', label: 'サロン通信' },
+  'relationship': { name: '人と心地よく付き合う', subtitle: '人間関係としなやかな境界線', label: '人間関係・境界線' },
+  'mind-relax': { name: '心の緊張をほどく', subtitle: 'がんばり屋さんの脱力論', label: '心・自律神経' },
+  'body-care': { name: 'からだの声を聴く', subtitle: '身体の強張りと自律神経', label: '身体・巡り' },
+  'lifestyle': { name: '夜と朝のセルフケア', subtitle: '自分を慈しむ余白の時間', label: 'セルフケア・余白' },
+  'salon-notes': { name: 'セラピストの控え室より', subtitle: 'セラピストの視点・サロンの空気感', label: 'サロン通信' },
 };
 
 const currentCategory = categoryMap[categorySlug] || { name: 'セラピストの控え室より', subtitle: 'セラピストの視点・サロンの空気感', label: 'サロン通信' };
@@ -82,774 +82,553 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{seo.title || `${postData.title} | 女性専用サロン La Chouette`}</title>
-  <meta name="description" content={seo.description || `${postData.title} - 滋賀県草津市の女性専用完全個室サロン「ラ・シュエット」のブログです。`} />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{seo.title || `${postData.title} | 女性専用サロン La Chouette`}</title>
+  <meta name="description" content={seo.description || `${postData.title} - 滋賀県草津市の女性専用完全個室サロン「ラ・シュエット」のブログです。`} />
 
-  <!-- Tailwind CSS v3 CDN（is:inline 必須） -->
-  <script is:inline src="https://cdn.tailwindcss.com"></script>
-  <script is:inline>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            alabaster: '#F7F4EF',
-            champagne: '#EDE7DF',
-            sand: '#DCD3C6',
-            bronze: '#8E735B',
-            charcoal: '#221F1D',
-            taupe: '#7D7571',
-          }
-        }
-      }
-    }
-  </script>
+  <!-- Tailwind CSS v3 CDN（is:inline 必須） -->
+  <script is:inline src="https://cdn.tailwindcss.com"></script>
+  <script is:inline>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            alabaster: '#F7F4EF',
+            champagne: '#EDE7DF',
+            sand: '#DCD3C6',
+            bronze: '#8E735B',
+            charcoal: '#221F1D',
+            taupe: '#7D7571',
+          }
+        }
+      }
+    }
+  </script>
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
-  <style is:global>
-    body {
-      font-family: 'Zen Kaku Gothic New', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: #F7F4EF;
-      color: #221F1D;
-    }
-    .font-mincho {
-      font-family: 'Shippori Mincho', serif;
-    }
+  <style is:global>
+    body {
+      font-family: 'Zen Kaku Gothic New', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #F7F4EF;
+      color: #221F1D;
+    }
+    .font-mincho {
+      font-family: 'Shippori Mincho', serif;
+    }
 
-    /* 装飾ボックス基本スタイル */
-    .box-fusen {
-      background-color: #EDE7DF;
-      border-left: 5px solid #8E735B;
-      padding: 1.25rem 1.5rem;
-      margin: 2rem 0;
-      border-radius: 0 0.5rem 0.5rem 0;
-      color: #221F1D;
-      line-height: 1.85;
-    }
+    /* 装飾ボックス基本スタイル */
+    .box-fusen {
+      background-color: #EDE7DF;
+      border-left: 5px solid #8E735B;
+      padding: 1.25rem 1.5rem;
+      margin: 2rem 0;
+      border-radius: 0 0.5rem 0.5rem 0;
+      color: #221F1D;
+      line-height: 1.85;
+    }
 
-    .box-point {
-      position: relative;
-      background-color: #FFFFFF;
-      border: 1px solid #8E735B;
-      border-radius: 0.5rem;
-      padding: 1.75rem 1.5rem 1.25rem;
-      margin: 2.25rem 0 1.75rem;
-      line-height: 1.85;
-    }
-    .box-point::before {
-      content: 'POINT';
-      position: absolute;
-      top: -0.75rem;
-      left: 1.25rem;
-      background-color: #8E735B;
-      color: #FFFFFF;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      padding: 0.15rem 0.85rem;
-      border-radius: 9999px;
-    }
+    .box-point {
+      position: relative;
+      background-color: #FFFFFF;
+      border: 1px solid #8E735B;
+      border-radius: 0.5rem;
+      padding: 1.75rem 1.5rem 1.25rem;
+      margin: 2.25rem 0 1.75rem;
+      line-height: 1.85;
+    }
+    .box-point::before {
+      content: 'POINT';
+      position: absolute;
+      top: -0.75rem;
+      left: 1.25rem;
+      background-color: #8E735B;
+      color: #FFFFFF;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      padding: 0.15rem 0.85rem;
+      border-radius: 9999px;
+    }
 
-    .box-check {
-      position: relative;
-      background-color: #FFFFFF;
-      border: 1px solid #DCD3C6;
-      border-radius: 0.5rem;
-      padding: 1.75rem 1.5rem 1.25rem;
-      margin: 2.25rem 0 1.75rem;
-      line-height: 1.85;
-    }
-    .box-check::before {
-      content: 'CHECK';
-      position: absolute;
-      top: -0.75rem;
-      left: 1.25rem;
-      background-color: #7D7571;
-      color: #FFFFFF;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      padding: 0.15rem 0.85rem;
-      border-radius: 9999px;
-    }
+    .box-check {
+      position: relative;
+      background-color: #FFFFFF;
+      border: 1px solid #DCD3C6;
+      border-radius: 0.5rem;
+      padding: 1.75rem 1.5rem 1.25rem;
+      margin: 2.25rem 0 1.75rem;
+      line-height: 1.85;
+    }
+    .box-check::before {
+      content: 'CHECK';
+      position: absolute;
+      top: -0.75rem;
+      left: 1.25rem;
+      background-color: #7D7571;
+      color: #FFFFFF;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      padding: 0.15rem 0.85rem;
+      border-radius: 9999px;
+    }
 
-    .box-inset {
-      background-color: #EDE7DF;
-      box-shadow: inset 0 2px 4px rgba(34, 31, 29, 0.05);
-      border-radius: 0.75rem;
-      padding: 1.5rem 1.75rem;
-      margin: 2rem 0;
-      color: #221F1D;
-      line-height: 1.85;
-    }
+    .box-inset {
+      background-color: #EDE7DF;
+      box-shadow: inset 0 2px 4px rgba(34, 31, 29, 0.05);
+      border-radius: 0.75rem;
+      padding: 1.5rem 1.75rem;
+      margin: 2rem 0;
+      color: #221F1D;
+      line-height: 1.85;
+    }
 
-    .box-bracket {
-      position: relative;
-      background-color: #FFFFFF;
-      padding: 1.75rem 2rem;
-      margin: 2.25rem 0;
-      border-radius: 0.25rem;
-      line-height: 1.85;
-    }
-    .box-bracket::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 24px;
-      height: 24px;
-      border-top: 2px solid #8E735B;
-      border-left: 2px solid #8E735B;
-    }
-    .box-bracket::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      width: 24px;
-      height: 24px;
-      border-bottom: 2px solid #8E735B;
-      border-right: 2px solid #8E735B;
-    }
+    .box-bracket {
+      position: relative;
+      background-color: #FFFFFF;
+      padding: 1.75rem 2rem;
+      margin: 2.25rem 0;
+      border-radius: 0.25rem;
+      line-height: 1.85;
+    }
+    .box-bracket::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 24px;
+      height: 24px;
+      border-top: 2px solid #8E735B;
+      border-left: 2px solid #8E735B;
+    }
+    .box-bracket::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 24px;
+      height: 24px;
+      border-bottom: 2px solid #8E735B;
+      border-right: 2px solid #8E735B;
+    }
 
-    .box-double {
-      background-color: #FFFFFF;
-      border: 3px double #8E735B;
-      border-radius: 0.375rem;
-      padding: 1.5rem 1.75rem;
-      margin: 2rem 0;
-      line-height: 1.85;
-    }
+    .box-double {
+      background-color: #FFFFFF;
+      border: 3px double #8E735B;
+      border-radius: 0.375rem;
+      padding: 1.5rem 1.75rem;
+      margin: 2rem 0;
+      line-height: 1.85;
+    }
 
-    .box-stitch {
-      background-color: #FAF8F5;
-      border: 1.5px dashed #DCD3C6;
-      border-radius: 0.5rem;
-      padding: 1.5rem 1.75rem;
-      margin: 2rem 0;
-      line-height: 1.85;
-    }
+    .box-stitch {
+      background-color: #FAF8F5;
+      border: 1.5px dashed #DCD3C6;
+      border-radius: 0.5rem;
+      padding: 1.5rem 1.75rem;
+      margin: 2rem 0;
+      line-height: 1.85;
+    }
 
-    .box-folded {
-      position: relative;
-      background-color: #EDE7DF;
-      border-radius: 0.375rem;
-      padding: 1.5rem 1.75rem;
-      margin: 2rem 0;
-      line-height: 1.85;
-    }
+    .box-folded {
+      position: relative;
+      background-color: #EDE7DF;
+      border-radius: 0.375rem;
+      padding: 1.5rem 1.75rem;
+      margin: 2rem 0;
+      line-height: 1.85;
+    }
 
-    .box-stripe {
-      background: repeating-linear-gradient(45deg, #FAF8F5, #FAF8F5 10px, #EDE7DF 10px, #EDE7DF 20px);
-      border: 1px solid #DCD3C6;
-      border-radius: 0.5rem;
-      padding: 1.5rem 1.75rem;
-      margin: 2rem 0;
-      line-height: 1.85;
-    }
+    .box-stripe {
+      background: repeating-linear-gradient(45deg, #FAF8F5, #FAF8F5 10px, #EDE7DF 10px, #EDE7DF 20px);
+      border: 1px solid #DCD3C6;
+      border-radius: 0.5rem;
+      padding: 1.5rem 1.75rem;
+      margin: 2rem 0;
+      line-height: 1.85;
+    }
 
-    .box-info {
-      position: relative;
-      background-color: #FAF8F5;
-      border: 1px solid #DCD3C6;
-      border-radius: 0.5rem;
-      padding: 1.75rem 1.5rem 1.25rem;
-      margin: 2.25rem 0 1.75rem;
-      line-height: 1.85;
-    }
-    .box-info::before {
-      content: 'i';
-      position: absolute;
-      top: -0.75rem;
-      left: 1.25rem;
-      background-color: #8E735B;
-      color: #FFFFFF;
-      font-size: 0.85rem;
-      font-weight: 700;
-      font-family: serif;
-      width: 1.5rem;
-      height: 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 9999px;
-    }
+    .box-info {
+      position: relative;
+      background-color: #FAF8F5;
+      border: 1px solid #DCD3C6;
+      border-radius: 0.5rem;
+      padding: 1.75rem 1.5rem 1.25rem;
+      margin: 2.25rem 0 1.75rem;
+      line-height: 1.85;
+    }
+    .box-info::before {
+      content: 'i';
+      position: absolute;
+      top: -0.75rem;
+      left: 1.25rem;
+      background-color: #8E735B;
+      color: #FFFFFF;
+      font-size: 0.85rem;
+      font-weight: 700;
+      font-family: serif;
+      width: 1.5rem;
+      height: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9999px;
+    }
 
-    .box-question {
-      position: relative;
-      background-color: #FAF8F5;
-      border: 1px solid #8E735B;
-      border-radius: 0.5rem;
-      padding: 1.75rem 1.5rem 1.25rem;
-      margin: 2.25rem 0 1.75rem;
-      line-height: 1.85;
-    }
-    .box-question::before {
-      content: '?';
-      position: absolute;
-      top: -0.75rem;
-      left: 1.25rem;
-      background-color: #7D7571;
-      color: #FFFFFF;
-      font-size: 0.85rem;
-      font-weight: 700;
-      width: 1.5rem;
-      height: 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 9999px;
-    }
+    .box-question {
+      position: relative;
+      background-color: #FAF8F5;
+      border: 1px solid #8E735B;
+      border-radius: 0.5rem;
+      padding: 1.75rem 1.5rem 1.25rem;
+      margin: 2.25rem 0 1.75rem;
+      line-height: 1.85;
+    }
+    .box-question::before {
+      content: '?';
+      position: absolute;
+      top: -0.75rem;
+      left: 1.25rem;
+      background-color: #7D7571;
+      color: #FFFFFF;
+      font-size: 0.85rem;
+      font-weight: 700;
+      width: 1.5rem;
+      height: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9999px;
+    }
 
-    .box-alert {
-      position: relative;
-      background-color: #FAF8F5;
-      border: 1px solid #B45309;
-      border-radius: 0.5rem;
-      padding: 1.75rem 1.5rem 1.25rem;
-      margin: 2.25rem 0 1.75rem;
-      line-height: 1.85;
-    }
-    .box-alert::before {
-      content: '!';
-      position: absolute;
-      top: -0.75rem;
-      left: 1.25rem;
-      background-color: #B45309;
-      color: #FFFFFF;
-      font-size: 0.85rem;
-      font-weight: 700;
-      width: 1.5rem;
-      height: 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 9999px;
-    }
+    .box-alert {
+      position: relative;
+      background-color: #FAF8F5;
+      border: 1px solid #B45309;
+      border-radius: 0.5rem;
+      padding: 1.75rem 1.5rem 1.25rem;
+      margin: 2.25rem 0 1.75rem;
+      line-height: 1.85;
+    }
+    .box-alert::before {
+      content: '!';
+      position: absolute;
+      top: -0.75rem;
+      left: 1.25rem;
+      background-color: #B45309;
+      color: #FFFFFF;
+      font-size: 0.85rem;
+      font-weight: 700;
+      width: 1.5rem;
+      height: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9999px;
+    }
 
-    .marker-bronze {
-      background: linear-gradient(transparent 60%, rgba(142, 115, 91, 0.25) 60%);
-      font-weight: 600;
-      padding: 0 0.15rem;
-    }
+    .marker-bronze {
+      background: linear-gradient(transparent 60%, rgba(142, 115, 91, 0.25) 60%);
+      font-weight: 600;
+      padding: 0 0.15rem;
+    }
 
-    /* セラピスト吹き出し */
-    .speech-therapist {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.85rem;
-      margin: 2rem 0;
-    }
-    .speech-therapist .avatar {
-      padding: 0.35rem 0.75rem;
-      border-radius: 9999px;
-      background-color: #8E735B;
-      color: #FFFFFF;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      white-space: nowrap;
-      flex-shrink: 0;
-      margin-top: 0.25rem;
-    }
-    .speech-therapist .bubble {
-      position: relative;
-      background-color: #EDE7DF;
-      color: #221F1D;
-      padding: 1.1rem 1.35rem;
-      border-radius: 1rem;
-      border-top-left-radius: 0;
-      font-size: 0.925rem;
-      line-height: 1.85;
-      border: 1px solid #DCD3C6;
-    }
+    /* セラピスト吹き出し */
+    .speech-therapist {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      margin: 2rem 0;
+    }
+    .speech-therapist .avatar {
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      background-color: #8E735B;
+      color: #FFFFFF;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 0.25rem;
+    }
+    .speech-therapist .bubble {
+      position: relative;
+      background-color: #EDE7DF;
+      color: #221F1D;
+      padding: 1.1rem 1.35rem;
+      border-radius: 1rem;
+      border-top-left-radius: 0;
+      font-size: 0.925rem;
+      line-height: 1.85;
+      border: 1px solid #DCD3C6;
+    }
 
-    /* お客様吹き出し */
-    .speech-client {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.85rem;
-      margin: 2rem 0;
-    }
-    .speech-client .avatar {
-      padding: 0.35rem 0.75rem;
-      border-radius: 9999px;
-      background-color: #EDE7DF;
-      border: 1px solid #DCD3C6;
-      color: #7D7571;
-      font-size: 0.75rem;
-      font-weight: 500;
-      letter-spacing: 0.05em;
-      white-space: nowrap;
-      flex-shrink: 0;
-      margin-top: 0.25rem;
-    }
-    .speech-client .bubble {
-      position: relative;
-      background-color: #FFFFFF;
-      color: #221F1D;
-      padding: 1.1rem 1.35rem;
-      border-radius: 1rem;
-      border-top-left-radius: 0;
-      font-size: 0.925rem;
-      line-height: 1.85;
-      border: 1px solid #DCD3C6;
-      box-shadow: 0 1px 3px rgba(34, 31, 29, 0.03);
-    }
+    /* お客様吹き出し（左配置・上品なカプセルバッジ） */
+    .speech-client {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      margin: 2rem 0;
+    }
+    .speech-client .avatar {
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      background-color: #EDE7DF;
+      border: 1px solid #DCD3C6;
+      color: #7D7571;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 0.25rem;
+    }
+    .speech-client .bubble {
+      position: relative;
+      background-color: #FFFFFF;
+      color: #221F1D;
+      padding: 1.1rem 1.35rem;
+      border-radius: 1rem;
+      border-top-left-radius: 0;
+      font-size: 0.925rem;
+      line-height: 1.85;
+      border: 1px solid #DCD3C6;
+      box-shadow: 0 1px 3px rgba(34, 31, 29, 0.03);
+    }
 
-    /* ラ・シュエット専用 アースカラーブログカード */
-    .box-blogcard {
-      display: block;
-      margin: 2.25rem 0;
-      padding: 1.15rem;
-      background-color: #EDE7DF;
-      border: 1px solid #DCD3C6;
-      border-radius: 1rem;
-      text-decoration: none !important;
-      color: inherit;
-      transition: all 0.25s ease;
-      box-shadow: 0 1px 3px rgba(34, 31, 29, 0.04);
-    }
-    .box-blogcard:hover {
-      border-color: #8E735B;
-      background-color: #FAF8F5;
-      box-shadow: 0 4px 12px rgba(142, 115, 91, 0.12);
-      transform: translateY(-2px);
-    }
-    .box-blogcard-inner {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    @media (min-width: 640px) {
-      .box-blogcard {
-        padding: 1.35rem;
-      }
-      .box-blogcard-inner {
-        flex-direction: row;
-        align-items: center;
-        gap: 1.35rem;
-      }
-    }
-    .box-blogcard-thumb {
-      width: 100%;
-      height: 160px;
-      border-radius: 0.75rem;
-      overflow: hidden;
-      background-color: #DCD3C6;
-      flex-shrink: 0;
-    }
-    @media (min-width: 640px) {
-      .box-blogcard-thumb {
-        width: 190px;
-        height: 125px;
-      }
-    }
-    .box-blogcard-thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.3s ease;
-    }
-    .box-blogcard:hover .box-blogcard-thumb img {
-      transform: scale(1.05);
-    }
-    .box-blogcard-body {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-width: 0;
-    }
-    .box-blogcard-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.4rem;
-    }
-    .box-blogcard-badge-cat {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      color: #8E735B;
-      background-color: #F7F4EF;
-      border: 1px solid #DCD3C6;
-      padding: 0.15rem 0.65rem;
-      border-radius: 9999px;
-    }
-    .box-blogcard-badge-label {
-      font-size: 0.75rem;
-      color: #7D7571;
-    }
-    .box-blogcard-title {
-      font-family: 'Shippori Mincho', serif;
-      font-size: 1.05rem;
-      font-weight: 600;
-      line-height: 1.5;
-      color: #221F1D;
-      margin: 0;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-    .box-blogcard:hover .box-blogcard-title {
-      color: #8E735B;
-    }
-    .box-blogcard-desc {
-      font-size: 0.8rem;
-      line-height: 1.6;
-      color: #7D7571;
-      margin-top: 0.35rem;
-      margin-bottom: 0;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-    .box-blogcard-cta {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 0.25rem;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: #8E735B;
-      margin-top: 0.65rem;
-    }
-
-    .entry-content h2 {
-      font-family: 'Shippori Mincho', serif;
-      font-size: 1.35rem;
-      font-weight: 600;
-      color: #221F1D;
-      border-left: 4px solid #8E735B;
-      padding: 0.35rem 0 0.35rem 0.85rem;
-      margin-top: 3rem;
-      margin-bottom: 1.5rem;
-      line-height: 1.45;
-    }
-    @media (min-width: 768px) {
-      .entry-content h2 {
-        font-size: 1.5rem;
-      }
-    }
-    .entry-content h3 {
-      font-family: 'Shippori Mincho', serif;
-      font-size: 1.15rem;
-      font-weight: 600;
-      color: #221F1D;
-      border-bottom: 1px solid #DCD3C6;
-      padding-bottom: 0.5rem;
-      margin-top: 2.25rem;
-      margin-bottom: 1.25rem;
-      line-height: 1.4;
-    }
-    .entry-content p {
-      color: #221F1D;
-      font-size: 0.975rem;
-      line-height: 2;
-      margin-bottom: 1.6rem;
-      letter-spacing: 0.02em;
-    }
-  </style>
+    .entry-content h2 {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: #221F1D;
+      border-left: 4px solid #8E735B;
+      padding: 0.35rem 0 0.35rem 0.85rem;
+      margin-top: 3rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.45;
+    }
+    @media (min-width: 768px) {
+      .entry-content h2 {
+        font-size: 1.5rem;
+      }
+    }
+    .entry-content h3 {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #221F1D;
+      border-bottom: 1px solid #DCD3C6;
+      padding-bottom: 0.5rem;
+      margin-top: 2.25rem;
+      margin-bottom: 1.25rem;
+      line-height: 1.4;
+    }
+    .entry-content p {
+      color: #221F1D;
+      font-size: 0.975rem;
+      line-height: 2;
+      margin-bottom: 1.6rem;
+      letter-spacing: 0.02em;
+    }
+  </style>
 </head>
 
 <body class="min-h-screen flex flex-col antialiased">
-  <Header />
+  <Header />
 
-  <main class="flex-grow pt-24 pb-20">
-    <article class="max-w-3xl mx-auto px-5 sm:px-8">
-      
-      <!-- パンくずリスト -->
-      <nav class="flex items-center gap-2 text-xs text-taupe mb-8 overflow-x-auto whitespace-nowrap py-1">
-        <a href="/" class="hover:text-bronze transition-colors">ホーム</a>
-        <span>/</span>
-        <a href="/posts" class="hover:text-bronze transition-colors">コラム一覧</a>
-        <span>/</span>
-        <a href={`/category/${categorySlug}`} class="hover:text-bronze transition-colors">{currentCategory.name}</a>
-      </nav>
+  <main class="flex-grow pt-24 pb-20">
+    <article class="max-w-3xl mx-auto px-5 sm:px-8">
+      
+      <!-- パンくずリスト -->
+      <nav class="flex items-center gap-2 text-xs text-taupe mb-8 overflow-x-auto whitespace-nowrap py-1">
+        <a href="/" class="hover:text-bronze transition-colors">ホーム</a>
+        <span>/</span>
+        <a href="/posts" class="hover:text-bronze transition-colors">コラム一覧</a>
+        <span>/</span>
+        <a href={`/category/${categorySlug}`} class="hover:text-bronze transition-colors">{currentCategory.name}</a>
+      </nav>
 
-      <!-- 記事ヘッダー -->
-      <header class="mb-10 text-center border-b border-sand pb-8">
-        <div class="inline-flex flex-wrap items-center justify-center gap-2 mb-4">
-          <a
-            href={`/category/${categorySlug}`}
-            class="text-xs tracking-wider px-3.5 py-1 bg-champagne text-bronze rounded-full font-medium border border-sand hover:bg-sand/40 transition-colors"
-          >
-            {currentCategory.label}
-          </a>
-          {tags.map((t: any) => (
-            <span class="text-xs tracking-wider px-3 py-1 bg-alabaster text-taupe rounded-full font-medium border border-sand">
-              {t.label}
-            </span>
-          ))}
-          {publishDate && (
-            <time class="text-xs text-taupe tracking-wider font-mono">{publishDate}</time>
-          )}
-          {readingTime && (
-            <span class="text-xs text-taupe tracking-wider">読了目安 {readingTime}分</span>
-          )}
-        </div>
+      <!-- 記事ヘッダー -->
+      <header class="mb-10 text-center border-b border-sand pb-8">
+        <div class="inline-flex flex-wrap items-center justify-center gap-2 mb-4">
+          <a
+            href={`/category/${categorySlug}`}
+            class="text-xs tracking-wider px-3.5 py-1 bg-champagne text-bronze rounded-full font-medium border border-sand hover:bg-sand/40 transition-colors"
+          >
+            {currentCategory.label}
+          </a>
+          {tags.map((t: any) => (
+            <span class="text-xs tracking-wider px-3 py-1 bg-alabaster text-taupe rounded-full font-medium border border-sand">
+              {t.label}
+            </span>
+          ))}
+          {publishDate && (
+            <time class="text-xs text-taupe tracking-wider font-mono">{publishDate}</time>
+          )}
+          {readingTime && (
+            <span class="text-xs text-taupe tracking-wider">読了目安 {readingTime}分</span>
+          )}
+        </div>
 
-        <h1 class="text-2xl sm:text-3xl md:text-[32px] font-mincho text-charcoal font-medium leading-relaxed sm:leading-relaxed">
-          {postData.title}
-        </h1>
+        <h1 class="text-2xl sm:text-3xl md:text-[32px] font-mincho text-charcoal font-medium leading-relaxed sm:leading-relaxed">
+          {postData.title}
+        </h1>
 
-        {postData.excerpt && (
-          <p class="text-sm text-taupe mt-4 leading-relaxed max-w-xl mx-auto">
-            {postData.excerpt}
-          </p>
-        )}
-      </header>
+        {postData.excerpt && (
+          <p class="text-sm text-taupe mt-4 leading-relaxed max-w-xl mx-auto">
+            {postData.excerpt}
+          </p>
+        )}
+      </header>
 
-      <!-- アイキャッチ画像 -->
-      {postData.featured_image && (
-        <div class="mb-12 overflow-hidden rounded-2xl shadow-sm border border-sand">
-          <Image
-            image={postData.featured_image}
-            sizes="(min-width: 1024px) 768px, 92vw"
-            class="w-full h-auto object-cover max-h-[440px]"
-            priority
-          />
-        </div>
-      )}
+      <!-- アイキャッチ画像 -->
+      {postData.featured_image && (
+        <div class="mb-12 overflow-hidden rounded-2xl shadow-sm border border-sand">
+          <Image
+            image={postData.featured_image}
+            sizes="(min-width: 1024px) 768px, 92vw"
+            class="w-full h-auto object-cover max-h-[440px]"
+            priority
+          />
+        </div>
+      )}
 
-      <!-- 記事本文 -->
-      <div class="entry-content" id="post-content">
-        <PortableText value={postData.content} />
-      </div>
+      <!-- 記事本文 -->
+      <div class="entry-content" id="post-content">
+        <PortableText value={postData.content} />
+      </div>
 
-      <!-- スクリプト構文干渉対策済み変換ロジック（装飾ボックス ＋ 自動ブログカード） -->
-      <script is:inline>
-        (function() {
-          var container = document.getElementById('post-content');
-          if (!container) return;
+      <!-- スクリプト構文干渉対策済み変換ロジック -->
+      <script is:inline>
+        (function() {
+          const container = document.getElementById('post-content');
+          if (!container) return;
 
-          var cDiv = '<' + '/div>';
-          var cA = '<' + '/a>';
-          var cSpan = '<' + '/span>';
-          var cH4 = '<' + '/h4>';
-          var cP = '<' + '/p>';
-          var cSvg = '<' + '/svg>';
+          let html = container.innerHTML;
 
-          var html = container.innerHTML;
+          // エスケープされた div の復元
+          html = html.replace(/&lt;div class="([^"]+)"&gt;([\s\S]*?)&lt;\/div&gt;/gi, '<div class="$1">$2<' + '/div>');
 
-          // エスケープされた div の復元
-          html = html.replace(/&lt;div class="([^"]+)"&gt;([\s\S]*?)&lt;\/div&gt;/gi, '<div class="$1">$2' + cDiv);
+          // 吹き出し（両者とも左にラベルバッジ、右に吹き出しの統一レイアウト）
+          html = html.replace(/【(?:セラピスト|私)】([\s\S]*?)【\/(?:セラピスト|私)】/gi, '<div class="speech-therapist"><div class="avatar">セラピスト<' + '/div><div class="bubble">$1<' + '/div><' + '/div>');
+          html = html.replace(/【(?:お客様|相談)】([\s\S]*?)【\/(?:お客様|相談)】/gi, '<div class="speech-client"><div class="avatar">お客様<' + '/div><div class="bubble">$1<' + '/div><' + '/div>');
 
-          // 吹き出し（両者とも左にラベルバッジ、右に吹き出しの統一レイアウト）
-          html = html.replace(/【(?:セラピスト|私)】([\s\S]*?)【\/(?:セラピスト|私)】/gi, '<div class="speech-therapist"><div class="avatar">セラピスト' + cDiv + '<div class="bubble">$1' + cDiv + cDiv);
-          html = html.replace(/【(?:お客様|相談)】([\s\S]*?)【\/(?:お客様|相談)】/gi, '<div class="speech-client"><div class="avatar">お客様' + cDiv + '<div class="bubble">$1' + cDiv + cDiv);
+          // 各種装飾ボックス
+          html = html.replace(/【(?:POINT|ポイント)】([\s\S]*?)【\/(?:POINT|ポイント)】/gi, '<div class="box-point">$1<' + '/div>');
+          html = html.replace(/【(?:CHECK|チェック)】([\s\S]*?)【\/(?:CHECK|チェック)】/gi, '<div class="box-check">$1<' + '/div>');
+          html = html.replace(/【(?:付箋|つぶやき)】([\s\S]*?)【\/(?:付箋|つぶやき)】/gi, '<div class="box-fusen">$1<' + '/div>');
+          html = html.replace(/【(?:かぎ括弧|言葉)】([\s\S]*?)【\/(?:かぎ括弧|言葉)】/gi, '<div class="box-bracket">$1<' + '/div>');
+          html = html.replace(/【(?:カード|窪み)】([\s\S]*?)【\/(?:カード|窪み)】/gi, '<div class="box-inset">$1<' + '/div>');
+          html = html.replace(/【(?:二重線|ダブル)】([\s\S]*?)【\/(?:二重線|ダブル)】/gi, '<div class="box-double">$1<' + '/div>');
+          html = html.replace(/【(?:スティッチ|点線)】([\s\S]*?)【\/(?:スティッチ|点線)】/gi, '<div class="box-stitch">$1<' + '/div>');
+          html = html.replace(/【(?:角折り|メモ用紙)】([\s\S]*?)【\/(?:角折り|メモ用紙)】/gi, '<div class="box-folded">$1<' + '/div>');
+          html = html.replace(/【(?:ストライプ|斜線)】([\s\S]*?)【\/(?:ストライプ|斜線)】/gi, '<div class="box-stripe">$1<' + '/div>');
+          html = html.replace(/【(?:インフォ|info)】([\s\S]*?)【\/(?:インフォ|info)】/gi, '<div class="box-info">$1<' + '/div>');
+          html = html.replace(/【(?:はてな|疑問)】([\s\S]*?)【\/(?:はてな|疑問)】/gi, '<div class="box-question">$1<' + '/div>');
+          html = html.replace(/【(?:注意|アラート)】([\s\S]*?)【\/(?:注意|アラート)】/gi, '<div class="box-alert">$1<' + '/div>');
 
-          // 各種装飾ボックス
-          html = html.replace(/【(?:POINT|ポイント)】([\s\S]*?)【\/(?:POINT|ポイント)】/gi, '<div class="box-point">$1' + cDiv);
-          html = html.replace(/【(?:CHECK|チェック)】([\s\S]*?)【\/(?:CHECK|チェック)】/gi, '<div class="box-check">$1' + cDiv);
-          html = html.replace(/【(?:付箋|つぶやき)】([\s\S]*?)【\/(?:付箋|つぶやき)】/gi, '<div class="box-fusen">$1' + cDiv);
-          html = html.replace(/【(?:かぎ括弧|言葉)】([\s\S]*?)【\/(?:かぎ括弧|言葉)】/gi, '<div class="box-bracket">$1' + cDiv);
-          html = html.replace(/【(?:カード|窪み)】([\s\S]*?)【\/(?:カード|窪み)】/gi, '<div class="box-inset">$1' + cDiv);
-          html = html.replace(/【(?:二重線|ダブル)】([\s\S]*?)【\/(?:二重線|ダブル)】/gi, '<div class="box-double">$1' + cDiv);
-          html = html.replace(/【(?:スティッチ|点線)】([\s\S]*?)【\/(?:スティッチ|点線)】/gi, '<div class="box-stitch">$1' + cDiv);
-          html = html.replace(/【(?:角折り|メモ用紙)】([\s\S]*?)【\/(?:角折り|メモ用紙)】/gi, '<div class="box-folded">$1' + cDiv);
-          html = html.replace(/【(?:ストライプ|斜線)】([\s\S]*?)【\/(?:ストライプ|斜線)】/gi, '<div class="box-stripe">$1' + cDiv);
-          html = html.replace(/【(?:インフォ|info)】([\s\S]*?)【\/(?:インフォ|info)】/gi, '<div class="box-info">$1' + cDiv);
-          html = html.replace(/【(?:はてな|疑問)】([\s\S]*?)【\/(?:はてな|疑問)】/gi, '<div class="box-question">$1' + cDiv);
-          html = html.replace(/【(?:注意|アラート)】([\s\S]*?)【\/(?:注意|アラート)】/gi, '<div class="box-alert">$1' + cDiv);
+          // マーカー
+          html = html.replace(/【(?:マーカー|強調)】([\s\S]*?)【\/(?:マーカー|強調)】/gi, '<span class="marker-bronze">$1<' + '/span>');
 
-          // マーカー
-          html = html.replace(/【(?:マーカー|強調)】([\s\S]*?)【\/(?:マーカー|強調)】/gi, '<span class="marker-bronze">$1' + cSpan);
+          // 見出し変換
+          html = html.replace(/<p>\s*###\s+(.*?)<\/p>/gi, '<h3>$1<' + '/h3>');
+          html = html.replace(/<p>\s*##\s+(.*?)<\/p>/gi, '<h2>$1<' + '/h2>');
+          html = html.replace(/###\s+([^<\n]+)/gi, '<h3>$1<' + '/h3>');
+          html = html.replace(/##\s+([^<\n]+)/gi, '<h2>$1<' + '/h2>');
 
-          // 見出し変換
-          html = html.replace(/<p>\s*###\s+(.*?)<\/p>/gi, '<h3>$1<' + '/h3>');
-          html = html.replace(/<p>\s*##\s+(.*?)<\/p>/gi, '<h2>$1<' + '/h2>');
-          html = html.replace(/###\s+([^<\n]+)/gi, '<h3>$1<' + '/h3>');
-          html = html.replace(/##\s+([^<\n]+)/gi, '<h2>$1<' + '/h2>');
+          // 孤立した # の消去
+          html = html.replace(/<p>\s*#+\s*<\/p>/gi, '');
+          html = html.replace(/(?:^|\n)\s*#+\s*(?=\n|$)/g, '');
 
-          // 孤立した # の消去
-          html = html.replace(/<p>\s*#+\s*<\/p>/gi, '');
-          html = html.replace(/(?:^|\n)\s*#+\s*(?=\n|$)/g, '');
+          container.innerHTML = html;
+        })();
+      </script>
 
-          // ==========================================
-          // ラ・シュエット専用 軽量ブログカード置換ロジック（Astroパーサー安全対策済み）
-          // ==========================================
-          var blogCardRegex = /【(?:ブログカード|card|CARD)】([\s\S]*?)【\/(?:ブログカード|card|CARD)】/gi;
-          var cardTargets = [];
-          var cardCounter = 0;
+      <!-- 著者紹介（男性セラピスト 高橋） -->
+      <div class="mt-16 pt-10 border-t border-sand">
+        <div class="bg-champagne/40 rounded-2xl p-6 sm:p-8 border border-sand">
+          <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5">
+            <img
+              src="https://kusatsu-aroma.com/_emdash/api/media/file/01M661ZK0REMWT6T12ZTGXXMM5.01M661ZKQ84Q0X5VSYND61F1A7.jpeg"
+              alt="男性セラピスト 高橋"
+              class="w-16 h-16 rounded-full object-cover object-top flex-shrink-0 border-2 border-white shadow-xs"
+            />
+            <div class="flex-grow text-center sm:text-left">
+              <div class="flex items-center justify-center sm:justify-start gap-2 mb-2">
+                <span class="text-xs font-medium text-bronze bg-white px-2.5 py-0.5 rounded-full border border-sand">男性セラピスト</span>
+                <span class="text-sm font-mincho font-bold text-charcoal">高橋（La Chouette）</span>
+              </div>
+              <p class="text-xs sm:text-sm text-taupe leading-relaxed">
+                滋賀県草津市の女性専用完全個室サロン「ラ・シュエット」を運営しています。日常の役割や気遣いから少し離れ、ご自身の呼吸と身体の重みを取り戻せる静かな余白の時間をお届けしています。
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-          html = html.replace(blogCardRegex, function(match, target) {
-            var cleanTarget = target.replace(/<[^>]+>/g, '').trim();
-            var targetUrl = cleanTarget;
-            if (!cleanTarget.startsWith('http') && !cleanTarget.startsWith('/')) {
-              targetUrl = '/posts/' + cleanTarget;
-            }
-            
-            var cardId = 'chouette-card-' + (++cardCounter);
-            cardTargets.push({ id: cardId, url: targetUrl });
+      <!-- 予約・LINE導線CTA -->
+      <section class="mt-12 bg-gradient-to-br from-champagne/60 to-alabaster rounded-3xl p-7 sm:p-10 border border-sand text-center shadow-xs">
+        <span class="text-xs font-mincho tracking-widest text-bronze uppercase">Reservation & Care</span>
+        <h2 class="text-xl sm:text-2xl font-mincho text-charcoal font-medium mt-2 mb-3">
+          心と身体をゆるめる、静かな休息の時間へ
+        </h2>
+        <p class="text-sm text-taupe max-w-lg mx-auto leading-relaxed mb-8">
+          草津市の完全個室サロン「ラ・シュエット」では、温かいホホバオイルを用いたオールハンドのトリートメントで、日々の緊張をほどく深い癒やしの時間をご提供しています。
+        </p>
 
-            return '<a href="' + targetUrl + '" id="' + cardId + '" class="box-blogcard not-prose">' +
-              '<div class="box-blogcard-inner">' +
-                '<div class="box-blogcard-body">' +
-                  '<div>' +
-                    '<div class="box-blogcard-badge">' +
-                      '<span class="box-blogcard-badge-cat">コラム' + cSpan +
-                      '<span class="box-blogcard-badge-label">あわせて読みたい' + cSpan +
-                    cDiv +
-                    '<h4 class="box-blogcard-title">' + (cleanTarget.startsWith('http') ? '関連記事を読む' : cleanTarget) + cH4 +
-                    '<p class="box-blogcard-desc">滋賀県草津市の女性専用完全個室サロン「ラ・シュエット」のコラム記事です。' + cP +
-                  cDiv +
-                  '<div class="box-blogcard-cta"><span>記事を読む' + cSpan + '<svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>' + cSvg + cDiv +
-                cDiv +
-              cDiv +
-            cA;
-          });
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
+          <a
+            href="https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-full sm:w-auto flex-1 inline-flex items-center justify-center px-6 py-3.5 bg-bronze text-white text-sm tracking-wider rounded-full hover:bg-[#78614C] transition duration-300 shadow-sm"
+          >
+            サロンWeb予約（Square）
+          </a>
 
-          container.innerHTML = html;
+          <a
+            href="https://lin.ee/nzuEONf"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-full sm:w-auto flex-1 inline-flex items-center justify-center px-6 py-3.5 bg-[#06C755] text-white text-sm tracking-wider rounded-full hover:opacity-95 transition duration-300 shadow-sm"
+          >
+            公式LINEで相談する
+          </a>
+        </div>
 
-          if (cardTargets.length > 0) {
-            function updateCardDOM(cardEl, data) {
-              var imgHtml = '';
-              if (data.img) {
-                imgHtml = '<div class="box-blogcard-thumb"><img src="' + data.img + '" alt="' + (data.title || '') + '" loading="lazy" />' + cDiv;
-              }
-              cardEl.innerHTML = '<div class="box-blogcard-inner">' +
-                imgHtml +
-                '<div class="box-blogcard-body">' +
-                  '<div>' +
-                    '<div class="box-blogcard-badge">' +
-                      '<span class="box-blogcard-badge-cat">' + (data.cat || 'コラム') + cSpan +
-                      '<span class="box-blogcard-badge-label">あわせて読みたい' + cSpan +
-                    cDiv +
-                    '<h4 class="box-blogcard-title">' + (data.title || '関連記事') + cH4 +
-                    (data.desc ? '<p class="box-blogcard-desc">' + data.desc + cP : '') +
-                  cDiv +
-                  '<div class="box-blogcard-cta"><span>記事を読む' + cSpan + '<svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>' + cSvg + cDiv +
-                cDiv +
-              cDiv;
-            }
+        <p class="text-xs text-taupe/90 mt-6 leading-relaxed max-w-md mx-auto">
+          ※ 出張オイルトリートメントは移動時間と枠の事前調整が必要なため、Squareの即時予約は設けておりません。公式LINEまたはお電話（080-6219-3290）よりお気軽にご相談ください。
+        </p>
+      </section>
 
-            cardTargets.forEach(function(item) {
-              var cardEl = document.getElementById(item.id);
-              if (!cardEl) return;
+      <!-- 前後のナビゲーション -->
+      <div class="mt-12 pt-6 border-t border-sand flex items-center justify-between text-sm">
+        <a href="/posts" class="inline-flex items-center gap-2 text-taupe hover:text-bronze transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          コラム一覧へ戻る
+        </a>
+        <a href={`/category/${categorySlug}`} class="inline-flex items-center gap-2 text-bronze hover:underline">
+          「{currentCategory.name}」をもっと読む
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
 
-              var cached = sessionStorage.getItem('bc_' + item.url);
-              if (cached) {
-                try {
-                  updateCardDOM(cardEl, JSON.parse(cached));
-                  return;
-                } catch(e) {}
-              }
+    </article>
+  </main>
 
-              fetch(item.url)
-                .then(function(res) {
-                  if (!res.ok) throw new Error('Not found');
-                  return res.text();
-                })
-                .then(function(text) {
-                  var parser = new DOMParser();
-                  var doc = parser.parseFromString(text, 'text/html');
-
-                  var title = doc.querySelector('h1') ? doc.querySelector('h1').innerText.trim() : (doc.querySelector('title') ? doc.querySelector('title').innerText.replace(/\|.*/, '').trim() : '関連記事');
-                  var desc = (doc.querySelector('meta[name="description"]') && doc.querySelector('meta[name="description"]').getAttribute('content')) || (doc.querySelector('meta[property="og:description"]') && doc.querySelector('meta[property="og:description"]').getAttribute('content')) || '';
-                  var img = (doc.querySelector('meta[property="og:image"]') && doc.querySelector('meta[property="og:image"]').getAttribute('content')) || (doc.querySelector('article img') && doc.querySelector('article img').getAttribute('src')) || '';
-                  var catEl = doc.querySelector('header a[href^="/category/"]');
-                  var cat = catEl ? catEl.innerText.trim() : 'コラム';
-
-                  var cardData = { title: title, desc: desc, img: img, cat: cat };
-                  try {
-                    sessionStorage.setItem('bc_' + item.url, JSON.stringify(cardData));
-                  } catch(e) {}
-
-                  updateCardDOM(cardEl, cardData);
-                })
-                .catch(function() {
-                  // フォールバック表示を維持
-                });
-            });
-          }
-        })();
-      </script>
-
-      <!-- 著者紹介（男性セラピスト 高橋） -->
-      <div class="mt-16 pt-10 border-t border-sand">
-        <div class="bg-champagne/40 rounded-2xl p-6 sm:p-8 border border-sand">
-          <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5">
-            <img
-              src="https://kusatsu-aroma.com/_emdash/api/media/file/01M661ZK0REMWT6T12ZTGXXMM5.01M661ZKQ84Q0X5VSYND61F1A7.jpeg"
-              alt="男性セラピスト 高橋"
-              class="w-16 h-16 rounded-full object-cover object-top flex-shrink-0 border-2 border-white shadow-xs"
-            />
-            <div class="flex-grow text-center sm:text-left">
-              <div class="flex items-center justify-center sm:justify-start gap-2 mb-2">
-                <span class="text-xs font-medium text-bronze bg-white px-2.5 py-0.5 rounded-full border border-sand">男性セラピスト</span>
-                <span class="text-sm font-mincho font-bold text-charcoal">高橋（La Chouette）</span>
-              </div>
-              <p class="text-xs sm:text-sm text-taupe leading-relaxed">
-                滋賀県草津市の女性専用完全個室サロン「ラ・シュエット」を運営しています。日常の役割や気遣いから少し離れ、ご自身の呼吸と身体の重みを取り戻せる静かな余白の時間をお届けしています。
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 予約・LINE導線CTA -->
-      <section class="mt-12 bg-gradient-to-br from-champagne/60 to-alabaster rounded-3xl p-7 sm:p-10 border border-sand text-center shadow-xs">
-        <span class="text-xs font-mincho tracking-widest text-bronze uppercase">Reservation & Care</span>
-        <h2 class="text-xl sm:text-2xl font-mincho text-charcoal font-medium mt-2 mb-3">
-          心と身体をゆるめる、静かな休息の時間へ
-        </h2>
-        <p class="text-sm text-taupe max-w-lg mx-auto leading-relaxed mb-8">
-          草津市の完全個室サロン「ラ・シュエット」では、温かいホホバオイルを用いたオールハンドのトリートメントで、日々の緊張をほどく深い癒やしの時間をご提供しています。
-        </p>
-
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
-          <a
-            href="https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="w-full sm:w-auto flex-1 inline-flex items-center justify-center px-6 py-3.5 bg-bronze text-white text-sm tracking-wider rounded-full hover:bg-[#78614C] transition duration-300 shadow-sm"
-          >
-            サロンWeb予約（Square）
-          </a>
-
-          <a
-            href="https://lin.ee/nzuEONf"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="w-full sm:w-auto flex-1 inline-flex items-center justify-center px-6 py-3.5 bg-[#06C755] text-white text-sm tracking-wider rounded-full hover:opacity-95 transition duration-300 shadow-sm"
-          >
-            公式LINEで相談する
-          </a>
-        </div>
-
-        <p class="text-xs text-taupe/90 mt-6 leading-relaxed max-w-md mx-auto">
-          ※ 出張オイルトリートメントは移動時間と枠の事前調整が必要なため、Squareの即時予約は設けておりません。公式LINEまたはお電話（080-6219-3290）よりお気軽にご相談ください。
-        </p>
-      </section>
-
-      <!-- 前後のナビゲーション -->
-      <div class="mt-12 pt-6 border-t border-sand flex items-center justify-between text-sm">
-        <a href="/posts" class="inline-flex items-center gap-2 text-taupe hover:text-bronze transition-colors">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-          </svg>
-          コラム一覧へ戻る
-        </a>
-        <a href={`/category/${categorySlug}`} class="inline-flex items-center gap-2 text-bronze hover:underline">
-          「{currentCategory.name}」をもっと読む
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-          </svg>
-        </a>
-      </div>
-
-    </article>
-  </main>
-
-  <Footer />
+  <Footer />
 </body>
 </html>
+
+
+---
