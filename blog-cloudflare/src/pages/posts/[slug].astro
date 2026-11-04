@@ -628,34 +628,41 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       <!-- スクリプト構文干渉対策済み変換ロジック（装飾ボックス ＋ 自動ブログカード） -->
       <script is:inline>
         (function() {
-          const container = document.getElementById('post-content');
+          var container = document.getElementById('post-content');
           if (!container) return;
 
-          let html = container.innerHTML;
+          var cDiv = '<' + '/div>';
+          var cA = '<' + '/a>';
+          var cSpan = '<' + '/span>';
+          var cH4 = '<' + '/h4>';
+          var cP = '<' + '/p>';
+          var cSvg = '<' + '/svg>';
+
+          var html = container.innerHTML;
 
           // エスケープされた div の復元
-          html = html.replace(/&lt;div class="([^"]+)"&gt;([\s\S]*?)&lt;\/div&gt;/gi, '<div class="$1">$2<' + '/div>');
+          html = html.replace(/&lt;div class="([^"]+)"&gt;([\s\S]*?)&lt;\/div&gt;/gi, '<div class="$1">$2' + cDiv);
 
           // 吹き出し（両者とも左にラベルバッジ、右に吹き出しの統一レイアウト）
-          html = html.replace(/【(?:セラピスト|私)】([\s\S]*?)【\/(?:セラピスト|私)】/gi, '<div class="speech-therapist"><div class="avatar">セラピスト<' + '/div><div class="bubble">$1<' + '/div><' + '/div>');
-          html = html.replace(/【(?:お客様|相談)】([\s\S]*?)【\/(?:お客様|相談)】/gi, '<div class="speech-client"><div class="avatar">お客様<' + '/div><div class="bubble">$1<' + '/div><' + '/div>');
+          html = html.replace(/【(?:セラピスト|私)】([\s\S]*?)【\/(?:セラピスト|私)】/gi, '<div class="speech-therapist"><div class="avatar">セラピスト' + cDiv + '<div class="bubble">$1' + cDiv + cDiv);
+          html = html.replace(/【(?:お客様|相談)】([\s\S]*?)【\/(?:お客様|相談)】/gi, '<div class="speech-client"><div class="avatar">お客様' + cDiv + '<div class="bubble">$1' + cDiv + cDiv);
 
           // 各種装飾ボックス
-          html = html.replace(/【(?:POINT|ポイント)】([\s\S]*?)【\/(?:POINT|ポイント)】/gi, '<div class="box-point">$1<' + '/div>');
-          html = html.replace(/【(?:CHECK|チェック)】([\s\S]*?)【\/(?:CHECK|チェック)】/gi, '<div class="box-check">$1<' + '/div>');
-          html = html.replace(/【(?:付箋|つぶやき)】([\s\S]*?)【\/(?:付箋|つぶやき)】/gi, '<div class="box-fusen">$1<' + '/div>');
-          html = html.replace(/【(?:かぎ括弧|言葉)】([\s\S]*?)【\/(?:かぎ括弧|言葉)】/gi, '<div class="box-bracket">$1<' + '/div>');
-          html = html.replace(/【(?:カード|窪み)】([\s\S]*?)【\/(?:カード|窪み)】/gi, '<div class="box-inset">$1<' + '/div>');
-          html = html.replace(/【(?:二重線|ダブル)】([\s\S]*?)【\/(?:二重線|ダブル)】/gi, '<div class="box-double">$1<' + '/div>');
-          html = html.replace(/【(?:スティッチ|点線)】([\s\S]*?)【\/(?:スティッチ|点線)】/gi, '<div class="box-stitch">$1<' + '/div>');
-          html = html.replace(/【(?:角折り|メモ用紙)】([\s\S]*?)【\/(?:角折り|メモ用紙)】/gi, '<div class="box-folded">$1<' + '/div>');
-          html = html.replace(/【(?:ストライプ|斜線)】([\s\S]*?)【\/(?:ストライプ|斜線)】/gi, '<div class="box-stripe">$1<' + '/div>');
-          html = html.replace(/【(?:インフォ|info)】([\s\S]*?)【\/(?:インフォ|info)】/gi, '<div class="box-info">$1<' + '/div>');
-          html = html.replace(/【(?:はてな|疑問)】([\s\S]*?)【\/(?:はてな|疑問)】/gi, '<div class="box-question">$1<' + '/div>');
-          html = html.replace(/【(?:注意|アラート)】([\s\S]*?)【\/(?:注意|アラート)】/gi, '<div class="box-alert">$1<' + '/div>');
+          html = html.replace(/【(?:POINT|ポイント)】([\s\S]*?)【\/(?:POINT|ポイント)】/gi, '<div class="box-point">$1' + cDiv);
+          html = html.replace(/【(?:CHECK|チェック)】([\s\S]*?)【\/(?:CHECK|チェック)】/gi, '<div class="box-check">$1' + cDiv);
+          html = html.replace(/【(?:付箋|つぶやき)】([\s\S]*?)【\/(?:付箋|つぶやき)】/gi, '<div class="box-fusen">$1' + cDiv);
+          html = html.replace(/【(?:かぎ括弧|言葉)】([\s\S]*?)【\/(?:かぎ括弧|言葉)】/gi, '<div class="box-bracket">$1' + cDiv);
+          html = html.replace(/【(?:カード|窪み)】([\s\S]*?)【\/(?:カード|窪み)】/gi, '<div class="box-inset">$1' + cDiv);
+          html = html.replace(/【(?:二重線|ダブル)】([\s\S]*?)【\/(?:二重線|ダブル)】/gi, '<div class="box-double">$1' + cDiv);
+          html = html.replace(/【(?:スティッチ|点線)】([\s\S]*?)【\/(?:スティッチ|点線)】/gi, '<div class="box-stitch">$1' + cDiv);
+          html = html.replace(/【(?:角折り|メモ用紙)】([\s\S]*?)【\/(?:角折り|メモ用紙)】/gi, '<div class="box-folded">$1' + cDiv);
+          html = html.replace(/【(?:ストライプ|斜線)】([\s\S]*?)【\/(?:ストライプ|斜線)】/gi, '<div class="box-stripe">$1' + cDiv);
+          html = html.replace(/【(?:インフォ|info)】([\s\S]*?)【\/(?:インフォ|info)】/gi, '<div class="box-info">$1' + cDiv);
+          html = html.replace(/【(?:はてな|疑問)】([\s\S]*?)【\/(?:はてな|疑問)】/gi, '<div class="box-question">$1' + cDiv);
+          html = html.replace(/【(?:注意|アラート)】([\s\S]*?)【\/(?:注意|アラート)】/gi, '<div class="box-alert">$1' + cDiv);
 
           // マーカー
-          html = html.replace(/【(?:マーカー|強調)】([\s\S]*?)【\/(?:マーカー|強調)】/gi, '<span class="marker-bronze">$1<' + '/span>');
+          html = html.replace(/【(?:マーカー|強調)】([\s\S]*?)【\/(?:マーカー|強調)】/gi, '<span class="marker-bronze">$1' + cSpan);
 
           // 見出し変換
           html = html.replace(/<p>\s*###\s+(.*?)<\/p>/gi, '<h3>$1<' + '/h3>');
@@ -668,71 +675,68 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
           html = html.replace(/(?:^|\n)\s*#+\s*(?=\n|$)/g, '');
 
           // ==========================================
-          // ラ・シュエット専用 軽量ブログカード置換ロジック
+          // ラ・シュエット専用 軽量ブログカード置換ロジック（Astroパーサー安全対策済み）
           // ==========================================
-          const blogCardRegex = /【(?:ブログカード|card|CARD)】([\s\S]*?)【\/(?:ブログカード|card|CARD)】/gi;
-          const cardTargets = [];
-          let cardCounter = 0;
+          var blogCardRegex = /【(?:ブログカード|card|CARD)】([\s\S]*?)【\/(?:ブログカード|card|CARD)】/gi;
+          var cardTargets = [];
+          var cardCounter = 0;
 
           html = html.replace(blogCardRegex, function(match, target) {
-            let cleanTarget = target.replace(/<[^>]+>/g, '').trim();
-            let targetUrl = cleanTarget;
+            var cleanTarget = target.replace(/<[^>]+>/g, '').trim();
+            var targetUrl = cleanTarget;
             if (!cleanTarget.startsWith('http') && !cleanTarget.startsWith('/')) {
               targetUrl = '/posts/' + cleanTarget;
             }
             
-            const cardId = 'chouette-card-' + (++cardCounter);
+            var cardId = 'chouette-card-' + (++cardCounter);
             cardTargets.push({ id: cardId, url: targetUrl });
 
-            // 初期表示（フォールバック）用の安全なHTML
             return '<a href="' + targetUrl + '" id="' + cardId + '" class="box-blogcard not-prose">' +
               '<div class="box-blogcard-inner">' +
                 '<div class="box-blogcard-body">' +
                   '<div>' +
                     '<div class="box-blogcard-badge">' +
-                      '<span class="box-blogcard-badge-cat">コラム</span>' +
-                      '<span class="box-blogcard-badge-label">あわせて読みたい</span>' +
-                    '</div>' +
-                    '<h4 class="box-blogcard-title">' + (cleanTarget.startsWith('http') ? '関連記事を読む' : cleanTarget) + '</h4>' +
-                    '<p class="box-blogcard-desc">滋賀県草津市の女性専用完全個室サロン「ラ・シュエット」のコラム記事です。</p>' +
-                  '</div>' +
-                  '<div class="box-blogcard-cta"><span>記事を読む</span><svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></div>' +
-                '</div>' +
-              '</div>' +
-            '</a>';
+                      '<span class="box-blogcard-badge-cat">コラム' + cSpan +
+                      '<span class="box-blogcard-badge-label">あわせて読みたい' + cSpan +
+                    cDiv +
+                    '<h4 class="box-blogcard-title">' + (cleanTarget.startsWith('http') ? '関連記事を読む' : cleanTarget) + cH4 +
+                    '<p class="box-blogcard-desc">滋賀県草津市の女性専用完全個室サロン「ラ・シュエット」のコラム記事です。' + cP +
+                  cDiv +
+                  '<div class="box-blogcard-cta"><span>記事を読む' + cSpan + '<svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>' + cSvg + cDiv +
+                cDiv +
+              cDiv +
+            cA;
           });
 
           container.innerHTML = html;
 
-          // ブログカードのメタデータ非同期自動取得（キャッシュ対応）
           if (cardTargets.length > 0) {
             function updateCardDOM(cardEl, data) {
-              let imgHtml = '';
+              var imgHtml = '';
               if (data.img) {
-                imgHtml = '<div class="box-blogcard-thumb"><img src="' + data.img + '" alt="' + (data.title || '') + '" loading="lazy" /></div>';
+                imgHtml = '<div class="box-blogcard-thumb"><img src="' + data.img + '" alt="' + (data.title || '') + '" loading="lazy" />' + cDiv;
               }
               cardEl.innerHTML = '<div class="box-blogcard-inner">' +
                 imgHtml +
                 '<div class="box-blogcard-body">' +
                   '<div>' +
                     '<div class="box-blogcard-badge">' +
-                      '<span class="box-blogcard-badge-cat">' + (data.cat || 'コラム') + '</span>' +
-                      '<span class="box-blogcard-badge-label">あわせて読みたい</span>' +
-                    '</div>' +
-                    '<h4 class="box-blogcard-title">' + (data.title || '関連記事') + '</h4>' +
-                    (data.desc ? '<p class="box-blogcard-desc">' + data.desc + '</p>' : '') +
-                  '</div>' +
-                  '<div class="box-blogcard-cta"><span>記事を読む</span><svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></div>' +
-                '</div>' +
-              '</div>';
+                      '<span class="box-blogcard-badge-cat">' + (data.cat || 'コラム') + cSpan +
+                      '<span class="box-blogcard-badge-label">あわせて読みたい' + cSpan +
+                    cDiv +
+                    '<h4 class="box-blogcard-title">' + (data.title || '関連記事') + cH4 +
+                    (data.desc ? '<p class="box-blogcard-desc">' + data.desc + cP : '') +
+                  cDiv +
+                  '<div class="box-blogcard-cta"><span>記事を読む' + cSpan + '<svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>' + cSvg + cDiv +
+                cDiv +
+              cDiv;
             }
 
             cardTargets.forEach(function(item) {
-              const cardEl = document.getElementById(item.id);
+              var cardEl = document.getElementById(item.id);
               if (!cardEl) return;
 
-              // セッションキャッシュの確認（瞬時表示）
-              const cached = sessionStorage.getItem('bc_' + item.url);
+              var cached = sessionStorage.getItem('bc_' + item.url);
               if (cached) {
                 try {
                   updateCardDOM(cardEl, JSON.parse(cached));
@@ -740,22 +744,22 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
                 } catch(e) {}
               }
 
-              // 同一サイト内の記事HTMLからタイトル・画像・要約を自動抽出
               fetch(item.url)
                 .then(function(res) {
                   if (!res.ok) throw new Error('Not found');
                   return res.text();
                 })
                 .then(function(text) {
-                  const parser = new DOMParser();
-                  const doc = parser.parseFromString(text, 'text/html');
+                  var parser = new DOMParser();
+                  var doc = parser.parseFromString(text, 'text/html');
 
-                  const title = doc.querySelector('h1')?.innerText?.trim() || doc.querySelector('title')?.innerText?.replace(/\|.*/, '')?.trim() || '関連記事';
-                  const desc = doc.querySelector('meta[name="description"]')?.getAttribute('content')?.trim() || doc.querySelector('meta[property="og:description"]')?.getAttribute('content')?.trim() || '';
-                  const img = doc.querySelector('meta[property="og:image"]')?.getAttribute('content') || doc.querySelector('article img')?.getAttribute('src') || '';
-                  const cat = doc.querySelector('header a[href^="/category/"]')?.innerText?.trim() || 'コラム';
+                  var title = doc.querySelector('h1') ? doc.querySelector('h1').innerText.trim() : (doc.querySelector('title') ? doc.querySelector('title').innerText.replace(/\|.*/, '').trim() : '関連記事');
+                  var desc = (doc.querySelector('meta[name="description"]') && doc.querySelector('meta[name="description"]').getAttribute('content')) || (doc.querySelector('meta[property="og:description"]') && doc.querySelector('meta[property="og:description"]').getAttribute('content')) || '';
+                  var img = (doc.querySelector('meta[property="og:image"]') && doc.querySelector('meta[property="og:image"]').getAttribute('content')) || (doc.querySelector('article img') && doc.querySelector('article img').getAttribute('src')) || '';
+                  var catEl = doc.querySelector('header a[href^="/category/"]');
+                  var cat = catEl ? catEl.innerText.trim() : 'コラム';
 
-                  const cardData = { title: title, desc: desc, img: img, cat: cat };
+                  var cardData = { title: title, desc: desc, img: img, cat: cat };
                   try {
                     sessionStorage.setItem('bc_' + item.url, JSON.stringify(cardData));
                   } catch(e) {}
@@ -763,7 +767,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
                   updateCardDOM(cardEl, cardData);
                 })
                 .catch(function() {
-                  // 取得失敗時は初期フォールバックのまま安全に表示
+                  // フォールバック表示を維持
                 });
             });
           }
@@ -838,7 +842,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
         <a href={`/category/${categorySlug}`} class="inline-flex items-center gap-2 text-bronze hover:underline">
           「{currentCategory.name}」をもっと読む
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
           </svg>
         </a>
       </div>
