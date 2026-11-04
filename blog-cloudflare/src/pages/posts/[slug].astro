@@ -402,23 +402,59 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       box-shadow: 0 1px 3px rgba(34, 31, 29, 0.03);
     }
 
-    /* ブログカード装飾（こちらもどうぞ） */
+    /* ブログカード装飾（アイキャッチ画像連動・自動生成） */
     .blog-card-link {
-      display: block;
+      display: flex;
+      flex-direction: column;
       background-color: #FAF8F5;
       border: 1px solid #DCD3C6;
-      border-radius: 0.75rem;
-      padding: 1.25rem 1.5rem;
-      margin: 2.25rem 0;
+      border-radius: 0.875rem;
+      margin: 2.5rem 0;
       text-decoration: none;
+      overflow: hidden;
       transition: all 0.25s ease;
       box-shadow: 0 1px 4px rgba(34, 31, 29, 0.03);
+    }
+    @media (min-width: 640px) {
+      .blog-card-link {
+        flex-direction: row;
+        align-items: stretch;
+      }
     }
     .blog-card-link:hover {
       border-color: #8E735B;
       background-color: #FFFFFF;
-      box-shadow: 0 4px 14px rgba(142, 115, 91, 0.12);
+      box-shadow: 0 6px 18px rgba(142, 115, 91, 0.12);
       transform: translateY(-2px);
+    }
+    .blog-card-image-wrap {
+      width: 100%;
+      height: 160px;
+      background-color: #EDE7DF;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    @media (min-width: 640px) {
+      .blog-card-image-wrap {
+        width: 220px;
+        height: auto;
+      }
+    }
+    .blog-card-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    .blog-card-link:hover .blog-card-image {
+      transform: scale(1.03);
+    }
+    .blog-card-body {
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex-grow: 1;
     }
     .blog-card-tag {
       display: inline-flex;
@@ -429,35 +465,38 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       font-size: 0.7rem;
       font-weight: 600;
       letter-spacing: 0.05em;
-      padding: 0.2rem 0.65rem;
+      padding: 0.15rem 0.6rem;
       border-radius: 9999px;
-      margin-bottom: 0.65rem;
+      margin-bottom: 0.5rem;
+      align-self: flex-start;
     }
     .blog-card-title {
       font-family: 'Shippori Mincho', serif;
       font-size: 1.05rem;
       font-weight: 600;
       color: #221F1D;
-      line-height: 1.55;
-      margin-bottom: 0.4rem;
+      line-height: 1.5;
+      margin-bottom: 0.35rem;
       transition: color 0.2s ease;
     }
     .blog-card-link:hover .blog-card-title {
       color: #8E735B;
     }
     .blog-card-desc {
-      font-size: 0.85rem;
+      font-size: 0.825rem;
       color: #7D7571;
-      line-height: 1.65;
+      line-height: 1.6;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
     .blog-card-footer {
       display: flex;
       align-items: center;
       justify-content: flex-end;
       gap: 0.35rem;
-      margin-top: 0.75rem;
-      padding-top: 0.5rem;
-      border-top: 1px dashed #EDE7DF;
+      margin-top: 0.65rem;
       font-size: 0.75rem;
       color: #8E735B;
       font-weight: 500;
@@ -597,57 +636,27 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
           // マーカー
           html = html.replace(/【(?:マーカー|強調)】([\s\S]*?)【\/(?:マーカー|強調)】/gi, '<span class="marker-bronze">$1<' + '/span>');
 
-          // ブログカード（こちらもどうぞ / あわせて読みたい / ブログカード）
+          // 手動タグ（【こちらもどうぞ】...【/こちらもどうぞ】）の後方互換
           html = html.replace(/<p>\s*【(?:こちらもどうぞ|あわせて読みたい|ブログカード|関連記事)】([\s\S]*?)【\/(?:こちらもどうぞ|あわせて読みたい|ブログカード|関連記事)】\s*<\/p>|【(?:こちらもどうぞ|あわせて読みたい|ブログカード|関連記事)】([\s\S]*?)【\/(?:こちらもどうぞ|あわせて読みたい|ブログカード|関連記事)】/gi, function(match, content1, content2) {
             const raw = content1 || content2 || '';
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = raw;
-
-            // エディタが挿入した a タグの URL を優先取得
             const linkElem = tempDiv.querySelector('a');
             let href = linkElem ? (linkElem.getAttribute('href') || '') : '';
-
-            // 改行タグ等を正規化
             tempDiv.querySelectorAll('br').forEach(function(br) { br.replaceWith('\n'); });
             tempDiv.querySelectorAll('p').forEach(function(p) { p.after('\n'); });
-            const fullText = tempDiv.textContent || '';
-
-            // 改行または縦棒（|）で要素を分割
-            const parts = fullText.split(/[\n|｜]+/).map(function(s) { return s.trim(); }).filter(Boolean);
-
+            const parts = (tempDiv.textContent || '').split(/[\n|｜]+/).map(function(s) { return s.trim(); }).filter(Boolean);
             let url = href || '';
             let title = '';
             let desc = '';
-
             for (let i = 0; i < parts.length; i++) {
               const part = parts[i];
-              if (!url && (part.startsWith('http') || part.startsWith('/'))) {
-                url = part;
-              } else if (!title) {
-                title = part;
-              } else if (!desc) {
-                desc = part;
-              }
+              if (!url && (part.startsWith('http') || part.startsWith('/'))) url = part;
+              else if (!title) title = part;
+              else if (!desc) desc = part;
             }
-
-            if (!url && !title) return '';
-            if (!url) url = '#';
-            if (!title) title = url;
-
-            const descHtml = desc ? '<div class="blog-card-desc">' + desc + '<' + '/div>' : '';
-
-            return '<a href="' + url + '" class="blog-card-link">' +
-                     '<div class="blog-card-tag">' +
-                       '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /><' + '/svg>' +
-                       'こちらもどうぞ' +
-                     '<' + '/div>' +
-                     '<div class="blog-card-title">' + title + '<' + '/div>' +
-                     descHtml +
-                     '<div class="blog-card-footer">' +
-                       '<span>記事を読む<' + '/span>' +
-                       '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /><' + '/svg>' +
-                     '<' + '/div>' +
-                   '<' + '/a>';
+            if (!url) return '';
+            return '<div class="auto-blog-card-target" data-url="' + url + '" data-title="' + (title || '') + '" data-desc="' + (desc || '') + '"><' + '/div>';
           });
 
           // 見出し変換
@@ -661,6 +670,107 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
           html = html.replace(/(?:^|\n)\s*#+\s*(?=\n|$)/g, '');
 
           container.innerHTML = html;
+
+          // ==========================================
+          // 独立した自サイトURLの自動ブログカード化エンジン
+          // ==========================================
+          const paragraphs = container.querySelectorAll('p');
+          paragraphs.forEach(function(p) {
+            const text = p.textContent.trim();
+            const link = p.querySelector('a');
+
+            // 段落内にリンクが1つだけあり、そのリンクURLがテキストと同一、または/posts/記事への単独行リンクの場合
+            let targetUrl = '';
+            if (link && p.childNodes.length === 1 && (link.getAttribute('href') || '').includes('/posts/')) {
+              targetUrl = link.getAttribute('href');
+            } else if ((text.startsWith('http://') || text.startsWith('https://') || text.startsWith('/posts/')) && text.includes('/posts/')) {
+              targetUrl = text;
+            }
+
+            if (targetUrl) {
+              const placeholder = document.createElement('div');
+              placeholder.className = 'auto-blog-card-target';
+              placeholder.setAttribute('data-url', targetUrl);
+              p.parentNode.replaceChild(placeholder, p);
+            }
+          });
+
+          // カード対象を一括非同期取得＆レンダリング
+          const cardTargets = container.querySelectorAll('.auto-blog-card-target');
+          cardTargets.forEach(function(target) {
+            const rawUrl = target.getAttribute('data-url');
+            const customTitle = target.getAttribute('data-title');
+            const customDesc = target.getAttribute('data-desc');
+
+            if (!rawUrl) return;
+
+            // 相対パス化（同一オリジンfetch用）
+            let fetchPath = rawUrl;
+            try {
+              if (rawUrl.startsWith('http')) {
+                const parsed = new URL(rawUrl);
+                if (parsed.origin === window.location.origin) {
+                  fetchPath = parsed.pathname;
+                }
+              }
+            } catch(e) {}
+
+            fetch(fetchPath)
+              .then(function(res) {
+                if (!res.ok) throw new Error('Fetch failed');
+                return res.text();
+              })
+              .then(function(pageHtml) {
+                const doc = new DOMParser().parseFromString(pageHtml, 'text/html');
+                
+                // タイトル取得（og:title -> h1 -> title）
+                const title = customTitle || 
+                              doc.querySelector('meta[property="og:title"]')?.getAttribute('content')?.replace(/ \| .*/, '') || 
+                              doc.querySelector('h1')?.textContent?.trim() || 
+                              doc.title.replace(/ \| .*/, '') || 
+                              '記事を読む';
+
+                // 説明文取得
+                const desc = customDesc || 
+                             doc.querySelector('meta[property="og:description"]')?.getAttribute('content') || 
+                             doc.querySelector('meta[name="description"]')?.getAttribute('content') || 
+                             '';
+
+                // アイキャッチ画像取得
+                const ogImage = doc.querySelector('meta[property="og:image"]')?.getAttribute('content') || '';
+
+                const imageHtml = ogImage
+                  ? '<div class="blog-card-image-wrap"><img src="' + ogImage + '" alt="' + title + '" class="blog-card-image" loading="lazy" /></div>'
+                  : '';
+
+                const descHtml = desc ? '<div class="blog-card-desc">' + desc + '</div>' : '';
+
+                target.outerHTML =
+                  '<a href="' + rawUrl + '" class="blog-card-link">' +
+                    imageHtml +
+                    '<div class="blog-card-body">' +
+                      '<div class="blog-card-tag">' +
+                        '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>' +
+                        'こちらもどうぞ' +
+                      '</div>' +
+                      '<div class="blog-card-title">' + title + '</div>' +
+                      descHtml +
+                      '<div class="blog-card-footer">' +
+                        '<span>記事を読む</span>' +
+                        '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>' +
+                      '</div>' +
+                    '</div>' +
+                  '</a>';
+              })
+              .catch(function() {
+                // 万一取得できなかった場合のフォールバック（シンプルなカードリンク）
+                target.outerHTML =
+                  '<a href="' + rawUrl + '" class="blog-card-link" style="padding:1.25rem 1.5rem;">' +
+                    '<div class="blog-card-tag">こちらもどうぞ</div>' +
+                    '<div class="blog-card-title">' + (customTitle || rawUrl) + '</div>' +
+                  '</a>';
+              });
+          });
         })();
       </script>
 
