@@ -81,14 +81,14 @@
         </div>
       </div>
 
-      <!-- STEP 4: ご希望日とお名前（やり取り激減のための追加項目） -->
+      <!-- STEP 4: ご希望日とお名前 -->
       <div class="space-y-2 pt-2 border-t border-sand/50">
         <p class="text-xs font-medium text-bronze tracking-wider">
           STEP 4 — ご希望の日程とお名前
         </p>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label class="block text-[11px] text-taupe mb-1">ご希望日（必須）</label>
+            <label class="block text-[11px] text-taupe mb-1">ご希望日</label>
             <input 
               type="date" 
               id="simDateInput" 
@@ -118,8 +118,9 @@
           <h3 id="simCourseTitle" class="text-base sm:text-lg font-serif text-charcoal">
             アロマオイルトリートメント 120分
           </h3>
-          <p id="simCoursePrice" class="text-xl sm:text-2xl text-bronze mt-0.5 font-serif">
-            ¥8,970 <span class="text-xs text-taupe font-sans">（ご新規様特典：+10分無料延長）</span>
+          <p class="text-xl sm:text-2xl text-bronze mt-0.5 font-serif">
+            <span id="simCoursePrice">¥8,970</span>
+            <span id="simCourseBenefit" class="text-xs text-taupe font-sans ml-1">（ご新規様特典：+10分無料延長）</span>
           </p>
         </div>
 
@@ -142,8 +143,7 @@
 </section>
 
 <script is:inline>
-  // 診断・選択状態の初期値
-  const simData = {
+  var simData = {
     concern: '日常を忘れてとことん癒やされたい',
     pressure: 'しっかり密着圧',
     timeband: '日中（12:00—19:00）',
@@ -151,79 +151,76 @@
     price: '¥8,970'
   };
 
-  // 本日の日付をデフォルトセット
-  document.addEventListener('DOMContentLoaded', () => {
-    const dateInput = document.getElementById('simDateInput');
+  document.addEventListener('DOMContentLoaded', function() {
+    var dateInput = document.getElementById('simDateInput');
     if (dateInput) {
-      const today = new Date().toISOString().split('T')[0];
+      var today = new Date().toISOString().split('T')[0];
       dateInput.value = today;
       dateInput.min = today;
     }
   });
 
-  // ボタン選択処理
   function setSimValue(type, value, btnEl) {
     simData[type] = value;
     
-    // スタイル切り替え
-    const parent = btnEl.parentElement;
-    parent.querySelectorAll('.sim-btn').forEach(b => {
-      b.classList.remove('border-bronze', 'bg-champagne/70');
-      b.classList.add('border-sand');
-    });
+    var parent = btnEl.parentElement;
+    var buttons = parent.querySelectorAll('.sim-btn');
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].classList.remove('border-bronze', 'bg-champagne/70');
+      buttons[i].classList.add('border-sand');
+    }
     btnEl.classList.remove('border-sand');
     btnEl.classList.add('border-bronze', 'bg-champagne/70');
 
-    // コース判定（お悩みに応じてコースと価格を更新）
     updateCourseRecommendation();
   }
 
   function updateCourseRecommendation() {
-    const titleEl = document.getElementById('simCourseTitle');
-    const priceEl = document.getElementById('simCoursePrice');
-    const badgeEl = document.getElementById('simBadge');
+    var titleEl = document.getElementById('simCourseTitle');
+    var priceEl = document.getElementById('simCoursePrice');
+    var badgeEl = document.getElementById('simBadge');
 
-    if (simData.concern.includes('気軽に体験')) {
+    if (simData.concern.indexOf('気軽に体験') !== -1) {
       simData.course = 'アロマオイルトリートメント 60分';
       simData.price = '¥5,980';
-      badgeEl.textContent = '気軽にお試し';
-    } else if (simData.concern.includes('バランスよく')) {
+      if (badgeEl) badgeEl.textContent = '気軽にお試し';
+    } else if (simData.concern.indexOf('バランスよく') !== -1) {
       simData.course = 'アロマオイルトリートメント 90分';
       simData.price = '¥7,480';
-      badgeEl.textContent = '定番・全身ケア';
+      if (badgeEl) badgeEl.textContent = '定番・全身ケア';
     } else {
       simData.course = 'アロマオイルトリートメント 120分';
       simData.price = '¥8,970';
-      badgeEl.textContent = '一番人気・贅沢ケア';
+      if (badgeEl) badgeEl.textContent = '一番人気・贅沢ケア';
     }
 
-    titleEl.textContent = simData.course;
-    priceEl.innerHTML = `${simData.price} <span class="text-xs text-taupe font-sans">（ご新規様特典：+10分無料延長）</span>`;
+    if (titleEl) titleEl.textContent = simData.course;
+    if (priceEl) priceEl.textContent = simData.price;
   }
 
-  // LINE予約メッセージ自動送信
   function sendToLineReservation() {
-    const dateInput = document.getElementById('simDateInput');
-    const nameInput = document.getElementById('simNameInput');
+    var dateInput = document.getElementById('simDateInput');
+    var nameInput = document.getElementById('simNameInput');
 
-    const selectedDate = dateInput && dateInput.value ? dateInput.value : '未指定（相談希望）';
-    const clientName = nameInput && nameInput.value.trim() ? nameInput.value.trim() + ' 様' : '（お名前未記入）';
+    var selectedDate = (dateInput && dateInput.value) ? dateInput.value : '未指定（相談希望）';
+    var rawName = (nameInput && nameInput.value) ? nameInput.value.trim() : '';
+    var clientName = rawName ? rawName + ' 様' : '（お名前未記入）';
 
-    // LINEに流し込むメッセージテキストを作成
-    const msg = 
-`【おすすめコース診断からのご予約希望】
---------------------------------
-・お名前：${clientName}
-・ご希望日：${selectedDate}
-・希望時間帯：${simData.timeband}
-・ご希望コース：${simData.course}（${simData.price}）
-・お好みの圧：${simData.pressure}
-・お悩み・気分：${simData.concern}
---------------------------------
-上記の内容で空き状況の確認をお願いいたします。`;
+    var lines = [
+      '【おすすめコース診断からのご予約希望】',
+      '--------------------------------',
+      '・お名前：' + clientName,
+      '・ご希望日：' + selectedDate,
+      '・希望時間帯：' + simData.timeband,
+      '・ご希望コース：' + simData.course + '（' + simData.price + '）',
+      '・お好みの圧：' + simData.pressure,
+      '・お悩み・気分：' + simData.concern,
+      '--------------------------------',
+      '上記の内容で空き状況の確認をお願いいたします。'
+    ];
 
-    // 公式LINEのトーク画面にメッセージをセットして遷移
-    const lineUrl = `https://line.me/R/oaMessage/@nzuEONf/?${encodeURIComponent(msg)}`;
+    var msg = lines.join('\n');
+    var lineUrl = 'https://line.me/R/oaMessage/@nzuEONf/?' + encodeURIComponent(msg);
     window.open(lineUrl, '_blank');
   }
 </script>
