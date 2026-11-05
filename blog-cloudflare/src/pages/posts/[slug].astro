@@ -402,7 +402,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       box-shadow: 0 1px 3px rgba(34, 31, 29, 0.03);
     }
 
-    /* ブログカード装飾（アイキャッチ画像連動・自動生成） */
+    /* ブログカード装飾（内部記事・外部リンク共用） */
     .blog-card-link {
       display: flex;
       flex-direction: column;
@@ -433,6 +433,9 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       background-color: #EDE7DF;
       overflow: hidden;
       flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     @media (min-width: 640px) {
       .blog-card-image-wrap {
@@ -470,6 +473,9 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       margin-bottom: 0.5rem;
       align-self: flex-start;
     }
+    .blog-card-tag.is-external {
+      background-color: #7D7571;
+    }
     .blog-card-title {
       font-family: 'Shippori Mincho', serif;
       font-size: 1.05rem;
@@ -478,6 +484,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       line-height: 1.5;
       margin-bottom: 0.35rem;
       transition: color 0.2s ease;
+      word-break: break-word;
     }
     .blog-card-link:hover .blog-card-title {
       color: #8E735B;
@@ -490,6 +497,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      margin-bottom: 0.35rem;
     }
     .blog-card-footer {
       display: flex;
@@ -500,6 +508,12 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       font-size: 0.75rem;
       color: #8E735B;
       font-weight: 500;
+    }
+    .blog-card-domain {
+      font-size: 0.725rem;
+      color: #7D7571;
+      margin-right: auto;
+      font-family: monospace;
     }
 
     .entry-content h2 {
@@ -636,8 +650,8 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
           // マーカー
           html = html.replace(/【(?:マーカー|強調)】([\s\S]*?)【\/(?:マーカー|強調)】/gi, '<span class="marker-bronze">$1<' + '/span>');
 
-          // 手動タグ（【こちらもどうぞ】...【/こちらもどうぞ】）の後方互換
-          html = html.replace(/<p>\s*【(?:こちらもどうぞ|あわせて読みたい|ブログカード|関連記事)】([\s\S]*?)【\/(?:こちらもどうぞ|あわせて読みたい|ブログカード|関連記事)】\s*<\/p>|【(?:こちらもどうぞ|あわせて読みたい|ブログカード|関連記事)】([\s\S]*?)【\/(?:こちらもどうぞ|あわせて読みたい|ブログカード|関連記事)】/gi, function(match, content1, content2) {
+          // 手動タグ（【こちらもどうぞ】【外部リンク】等）
+          html = html.replace(/<p>\s*【(?:こちらもどうぞ|あわせて読みたい|ブログカード|関連記事|外部リンク|参考リンク)】([\s\S]*?)【\/(?:こちらもどうぞ|あわせて読みたい|ブログカード|関連記事|外部リンク|参考リンク)】\s*<\/p>|【(?:こちらもどうぞ|あわせて読みたい|ブログカード|関連記事|外部リンク|参考リンク)】([\s\S]*?)【\/(?:こちらもどうぞ|あわせて読みたい|ブログカード|関連記事|外部リンク|参考リンク)】/gi, function(match, content1, content2) {
             const raw = content1 || content2 || '';
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = raw;
@@ -672,19 +686,24 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
           container.innerHTML = html;
 
           // ==========================================
-          // 独立した自サイトURLの自動ブログカード化エンジン
+          // 独立URL（内部記事・外部サイトURL両対応）の自動ブログカード化
           // ==========================================
           const paragraphs = container.querySelectorAll('p');
           paragraphs.forEach(function(p) {
             const text = p.textContent.trim();
             const link = p.querySelector('a');
 
-            // 段落内にリンクが1つだけあり、そのリンクURLがテキストと同一、または/posts/記事への単独行リンクの場合
             let targetUrl = '';
-            if (link && p.childNodes.length === 1 && (link.getAttribute('href') || '').includes('/posts/')) {
-              targetUrl = link.getAttribute('href');
-            } else if ((text.startsWith('http://') || text.startsWith('https://') || text.startsWith('/posts/')) && text.includes('/posts/')) {
-              targetUrl = text;
+            if (link && p.childNodes.length === 1) {
+              const href = link.getAttribute('href') || '';
+              if (href.startsWith('http://') || href.startsWith('https://') || href.startsWith('/posts/')) {
+                targetUrl = href;
+              }
+            } else if (text.startsWith('http://') || text.startsWith('https://') || text.startsWith('/posts/')) {
+              // 空白を含まない単一URL行か判定
+              if (!/\s/.test(text)) {
+                targetUrl = text;
+              }
             }
 
             if (targetUrl) {
@@ -695,7 +714,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
             }
           });
 
-          // カード対象を一括非同期取得＆レンダリング
+          // カード対象を一括処理＆レンダリング
           const cardTargets = container.querySelectorAll('.auto-blog-card-target');
           cardTargets.forEach(function(target) {
             const rawUrl = target.getAttribute('data-url');
@@ -704,73 +723,107 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
 
             if (!rawUrl) return;
 
-            // 相対パス化（同一オリジンfetch用）
+            let isInternal = false;
             let fetchPath = rawUrl;
+            let domain = '';
+
             try {
-              if (rawUrl.startsWith('http')) {
+              if (rawUrl.startsWith('/')) {
+                isInternal = true;
+                domain = window.location.hostname;
+              } else if (rawUrl.startsWith('http')) {
                 const parsed = new URL(rawUrl);
+                domain = parsed.hostname;
                 if (parsed.origin === window.location.origin) {
+                  isInternal = true;
                   fetchPath = parsed.pathname;
                 }
               }
             } catch(e) {}
 
-            fetch(fetchPath)
-              .then(function(res) {
-                if (!res.ok) throw new Error('Fetch failed');
-                return res.text();
-              })
-              .then(function(pageHtml) {
-                const doc = new DOMParser().parseFromString(pageHtml, 'text/html');
-                
-                // タイトル取得（og:title -> h1 -> title）
-                const title = customTitle || 
-                              doc.querySelector('meta[property="og:title"]')?.getAttribute('content')?.replace(/ \| .*/, '') || 
-                              doc.querySelector('h1')?.textContent?.trim() || 
-                              doc.title.replace(/ \| .*/, '') || 
-                              '記事を読む';
+            // 内部リンク（自サイト記事）の場合はOGP・タイトルを非同期取得
+            if (isInternal) {
+              fetch(fetchPath)
+                .then(function(res) {
+                  if (!res.ok) throw new Error('Fetch failed');
+                  return res.text();
+                })
+                .then(function(pageHtml) {
+                  const doc = new DOMParser().parseFromString(pageHtml, 'text/html');
+                  const title = customTitle || 
+                                doc.querySelector('meta[property="og:title"]')?.getAttribute('content')?.replace(/ \| .*/, '') || 
+                                doc.querySelector('h1')?.textContent?.trim() || 
+                                doc.title.replace(/ \| .*/, '') || 
+                                '記事を読む';
 
-                // 説明文取得
-                const desc = customDesc || 
-                             doc.querySelector('meta[property="og:description"]')?.getAttribute('content') || 
-                             doc.querySelector('meta[name="description"]')?.getAttribute('content') || 
-                             '';
+                  const desc = customDesc || 
+                               doc.querySelector('meta[property="og:description"]')?.getAttribute('content') || 
+                               doc.querySelector('meta[name="description"]')?.getAttribute('content') || 
+                               '';
 
-                // アイキャッチ画像取得
-                const ogImage = doc.querySelector('meta[property="og:image"]')?.getAttribute('content') || '';
+                  const ogImage = doc.querySelector('meta[property="og:image"]')?.getAttribute('content') || '';
 
-                const imageHtml = ogImage
-                  ? '<div class="blog-card-image-wrap"><img src="' + ogImage + '" alt="' + title + '" class="blog-card-image" loading="lazy" /></div>'
-                  : '';
+                  const imageHtml = ogImage
+                    ? '<div class="blog-card-image-wrap"><img src="' + ogImage + '" alt="' + title + '" class="blog-card-image" loading="lazy" /></div>'
+                    : '';
 
-                const descHtml = desc ? '<div class="blog-card-desc">' + desc + '</div>' : '';
+                  const descHtml = desc ? '<div class="blog-card-desc">' + desc + '</div>' : '';
 
-                target.outerHTML =
-                  '<a href="' + rawUrl + '" class="blog-card-link">' +
-                    imageHtml +
-                    '<div class="blog-card-body">' +
-                      '<div class="blog-card-tag">' +
-                        '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>' +
-                        'こちらもどうぞ' +
+                  target.outerHTML =
+                    '<a href="' + rawUrl + '" class="blog-card-link">' +
+                      imageHtml +
+                      '<div class="blog-card-body">' +
+                        '<div class="blog-card-tag">' +
+                          '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>' +
+                          'こちらもどうぞ' +
+                        '</div>' +
+                        '<div class="blog-card-title">' + title + '</div>' +
+                        descHtml +
+                        '<div class="blog-card-footer">' +
+                          '<span>記事を読む</span>' +
+                          '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>' +
+                        '</div>' +
                       '</div>' +
-                      '<div class="blog-card-title">' + title + '</div>' +
-                      descHtml +
-                      '<div class="blog-card-footer">' +
-                        '<span>記事を読む</span>' +
-                        '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>' +
-                      '</div>' +
-                    '</div>' +
-                  '</a>';
-              })
-              .catch(function() {
-                // 万一取得できなかった場合のフォールバック（シンプルなカードリンク）
-                target.outerHTML =
-                  '<a href="' + rawUrl + '" class="blog-card-link" style="padding:1.25rem 1.5rem;">' +
-                    '<div class="blog-card-tag">こちらもどうぞ</div>' +
-                    '<div class="blog-card-title">' + (customTitle || rawUrl) + '</div>' +
-                  '</a>';
-              });
+                    '</a>';
+                })
+                .catch(function() {
+                  renderFallbackCard(target, rawUrl, customTitle || rawUrl, customDesc, 'こちらもどうぞ', false);
+                });
+            } else {
+              // 外部リンクの場合（CORS制約を回避し洗練された外部カードとして即時レンダリング）
+              const displayTitle = customTitle || rawUrl;
+              renderFallbackCard(target, rawUrl, displayTitle, customDesc, '外部リンク', true, domain);
+            }
           });
+
+          function renderFallbackCard(target, url, title, desc, tagText, isExternal, domain) {
+            const tagClass = isExternal ? 'blog-card-tag is-external' : 'blog-card-tag';
+            const iconSvg = isExternal
+              ? '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>'
+              : '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
+
+            const descHtml = desc ? '<div class="blog-card-desc">' + desc + '</div>' : '';
+            const domainHtml = domain ? '<span class="blog-card-domain">' + domain + '</span>' : '';
+            const targetAttr = isExternal ? ' target="_blank" rel="noopener noreferrer"' : '';
+            const actionText = isExternal ? 'サイトを見る' : '記事を読む';
+
+            target.outerHTML =
+              '<a href="' + url + '" class="blog-card-link"' + targetAttr + ' style="padding:1.25rem 1.5rem;">' +
+                '<div class="blog-card-body" style="padding:0;">' +
+                  '<div class="' + tagClass + '">' +
+                    iconSvg +
+                    tagText +
+                  '</div>' +
+                  '<div class="blog-card-title">' + title + '</div>' +
+                  descHtml +
+                  '<div class="blog-card-footer">' +
+                    domainHtml +
+                    '<span>' + actionText + '</span>' +
+                    '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>' +
+                  '</div>' +
+                '</div>' +
+              '</a>';
+          }
         })();
       </script>
 
