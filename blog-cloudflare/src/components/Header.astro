@@ -26,17 +26,19 @@ const faviconSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
   })();
 </script>
 
-<header class="bg-alabaster/95 backdrop-blur-sm border-b border-sand/40 sticky top-0 z-50 transition-all duration-300">
-  <div class="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex flex-col items-center text-center">
-    <!-- 英語サブ表記 -->
-    <p class="text-[10px] tracking-[0.25em] text-taupe uppercase font-light mb-1">
+<!-- id="site-header" とスクロールアニメーション用のクラスを追加 -->
+<header id="site-header" class="bg-alabaster/95 backdrop-blur-sm border-b border-sand/40 sticky top-0 z-50 transition-transform duration-300 ease-in-out">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 py-2.5 sm:py-4 flex flex-col items-center text-center">
+    
+    <!-- 英語サブ表記：スマホでは非表示にして高さを削減（PCのみ表示） -->
+    <p class="hidden sm:block text-[10px] tracking-[0.25em] text-taupe uppercase font-light mb-1">
       WOMEN ONLY — PRIVATE OIL MASSAGE SANCTUARY
     </p>
 
-    <!-- 屋号ロゴ（左側にフクロウアイコンを配置） -->
-    <a href="/" class="group inline-flex items-center justify-center gap-3">
+    <!-- 屋号ロゴ（スマホ時はサイズを最適化） -->
+    <a href="/" class="group inline-flex items-center justify-center gap-2.5 sm:gap-3">
       <!-- フクロウアイコン -->
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="w-8 h-8 sm:w-9 sm:h-9 shrink-0 transition-transform duration-300 group-hover:scale-105">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="w-7 h-7 sm:w-9 sm:h-9 shrink-0 transition-transform duration-300 group-hover:scale-105">
         <rect width="100" height="100" rx="26" fill="#8E735B" />
         <path d="M 50 20 C 40 20, 32 17, 26 15 C 24 22, 22 34, 22 48 C 22 68, 34 83, 50 83 C 66 83, 78 68, 78 48 C 78 34, 76 22, 74 15 C 68 17, 60 20, 50 20 Z" fill="#F7F4EF" />
         <ellipse cx="50" cy="65" rx="17" ry="13" fill="#EDE7DF" />
@@ -53,18 +55,18 @@ const faviconSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
         <rect x="53" y="81" width="7" height="4" rx="2" fill="#8E735B" />
       </svg>
 
-      <h1 class="text-2xl sm:text-3xl font-serif tracking-widest text-charcoal group-hover:text-bronze transition-colors duration-300">
-        La Chouette <span class="text-xs sm:text-sm font-sans tracking-normal text-taupe ml-1">— ラ・シュエット —</span>
+      <h1 class="text-xl sm:text-3xl font-serif tracking-widest text-charcoal group-hover:text-bronze transition-colors duration-300">
+        La Chouette <span class="text-[11px] sm:text-sm font-sans tracking-normal text-taupe ml-1">— ラ・シュエット —</span>
       </h1>
     </a>
 
-    <!-- 店舗基本情報 -->
-    <p class="text-[11px] text-taupe tracking-wider mt-1 font-light">
+    <!-- 店舗基本情報：スマホでは非表示にして高さを削減（PCのみ表示） -->
+    <p class="hidden sm:block text-[11px] text-taupe tracking-wider mt-1 font-light">
       滋賀県草津市大路 ｜ OPEN 8-00 — 27-00（女性専用・完全個室）
     </p>
 
     <!-- グローバルナビゲーション -->
-    <nav class="mt-4 flex flex-wrap items-center justify-center gap-x-5 sm:gap-x-8 gap-y-2 text-xs tracking-widest text-charcoal font-medium">
+    <nav class="mt-2.5 sm:mt-4 flex flex-wrap items-center justify-center gap-x-4 sm:gap-x-8 gap-y-1.5 sm:gap-y-2 text-[11px] sm:text-xs tracking-widest text-charcoal font-medium">
       {navItems.map((item) => (
         <a 
           href={item.href} 
@@ -76,3 +78,30 @@ const faviconSvg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
     </nav>
   </div>
 </header>
+
+<!-- スクロール検知スクリプト（下スクロールで格納・上スクロールで表示） -->
+<script is:inline>
+  let lastScrollY = window.scrollY;
+  const header = document.getElementById('site-header');
+
+  window.addEventListener('scroll', () => {
+    const currentScrollY = window.scrollY;
+
+    // 最上部（80px未満）にいるときは常にヘッダーを表示
+    if (currentScrollY <= 80) {
+      header.classList.remove('-translate-y-full');
+      lastScrollY = currentScrollY;
+      return;
+    }
+
+    // 下にスクロールした場合は上に格納して隠す
+    // 上にスクロールした場合は即座に再表示
+    if (currentScrollY > lastScrollY && currentScrollY > 120) {
+      header.classList.add('-translate-y-full');
+    } else {
+      header.classList.remove('-translate-y-full');
+    }
+
+    lastScrollY = currentScrollY;
+  }, { passive: true });
+</script>
