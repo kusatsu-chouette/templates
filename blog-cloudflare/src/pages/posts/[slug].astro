@@ -9,6 +9,7 @@ import {
 import { Image, PortableText } from "emdash/ui";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
+import CounselingCta from "../../components/CounselingCta.astro";
 import { formatDate } from "../../utils/locale";
 import { getReadingTime } from "../../utils/reading-time";
 import { resolveBlogSiteIdentity } from "../../utils/site-identity";
@@ -618,6 +619,18 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
         <PortableText value={postData.content} />
       </div>
 
+      <!-- 相談窓口CTAの展開用コンポーネント（非表示待機） -->
+      <div id="counseling-cta-template" style="display: none;">
+        <CounselingCta />
+      </div>
+
+      <!-- セラピストの控え室カテゴリー用：タグ未記入時の自動配置エリア -->
+      {categorySlug === 'salon-notes' && (
+        <div id="counseling-cta-auto" style="display: none;">
+          <CounselingCta />
+        </div>
+      )}
+
       <!-- スクリプト構文干渉対策済み変換ロジック -->
       <script is:inline>
         (function() {
@@ -628,6 +641,9 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
 
           // エスケープされた div の復元
           html = html.replace(/&lt;div class="([^"]+)"&gt;([\s\S]*?)&lt;\/div&gt;/gi, '<div class="$1">$2<' + '/div>');
+
+          // 相談窓口CTAプレースホルダーへの置換（【問い合わせ】【相談窓口】[[問い合わせ]] 等に対応）
+          html = html.replace(/<p>\s*(?:【(?:問い合わせ|問い合わせる|相談窓口|相談)】|\[\[(?:問い合わせ|問い合わせる|相談窓口|相談)\]\])\s*<\/p>|(?:【(?:問い合わせ|問い合わせる|相談窓口|相談)】|\[\[(?:問い合わせ|問い合わせる|相談窓口|相談)\]\])/gi, '<div class="counseling-cta-placeholder"><' + '/div>');
 
           // 吹き出し
           html = html.replace(/【(?:セラピスト|私)】([\s\S]*?)【\/(?:セラピスト|私)】/gi, '<div class="speech-therapist"><div class="avatar">セラピスト<' + '/div><div class="bubble">$1<' + '/div><' + '/div>');
@@ -684,6 +700,26 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
           html = html.replace(/(?:^|\n)\s*#+\s*(?=\n|$)/g, '');
 
           container.innerHTML = html;
+
+          // ==========================================
+          // 相談窓口CTAの実装展開
+          // ==========================================
+          const ctaTemplate = document.getElementById('counseling-cta-template');
+          const ctaPlaceholders = container.querySelectorAll('.counseling-cta-placeholder');
+
+          if (ctaTemplate) {
+            if (ctaPlaceholders.length > 0) {
+              ctaPlaceholders.forEach(function(placeholder) {
+                placeholder.innerHTML = ctaTemplate.innerHTML;
+              });
+            } else {
+              // 記事内に手動タグがなく「セラピストの控え室より」カテゴリーの場合は末尾に自動展開
+              const autoCta = document.getElementById('counseling-cta-auto');
+              if (autoCta) {
+                autoCta.style.display = 'block';
+              }
+            }
+          }
 
           // ==========================================
           // 独立URL（内部記事・外部サイトURL両対応）の自動ブログカード化
@@ -849,40 +885,42 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
         </div>
       </div>
 
-      <!-- 予約・LINE導線CTA -->
-      <section class="mt-12 bg-gradient-to-br from-champagne/60 to-alabaster rounded-3xl p-7 sm:p-10 border border-sand text-center shadow-xs">
-        <span class="text-xs font-mincho tracking-widest text-bronze uppercase">Reservation & Care</span>
-        <h2 class="text-xl sm:text-2xl font-mincho text-charcoal font-medium mt-2 mb-3">
-          心と身体をゆるめる、静かな休息の時間へ
-        </h2>
-        <p class="text-sm text-taupe max-w-lg mx-auto leading-relaxed mb-8">
-          草津市の完全個室サロン「ラ・シュエット」では、温かいホホバオイルを用いたオールハンドのトリートメントで、日々の緊張をほどく深い癒やしの時間をご提供しています。
-        </p>
+      <!-- 予約・LINE導線CTA（サロン施術用：セラピストの控え室カテゴリー以外で表示） -->
+      {categorySlug !== 'salon-notes' && (
+        <section class="mt-12 bg-gradient-to-br from-champagne/60 to-alabaster rounded-3xl p-7 sm:p-10 border border-sand text-center shadow-xs">
+          <span class="text-xs font-mincho tracking-widest text-bronze uppercase">Reservation & Care</span>
+          <h2 class="text-xl sm:text-2xl font-mincho text-charcoal font-medium mt-2 mb-3">
+            心と身体をゆるめる、静かな休息の時間へ
+          </h2>
+          <p class="text-sm text-taupe max-w-lg mx-auto leading-relaxed mb-8">
+            草津市の完全個室サロン「ラ・シュエット」では、温かいホホバオイルを用いたオールハンドのトリートメントで、日々の緊張をほどく深い癒やしの時間をご提供しています。
+          </p>
 
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
-          <a
-            href="https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="w-full sm:w-auto flex-1 inline-flex items-center justify-center px-6 py-3.5 bg-bronze text-white text-sm tracking-wider rounded-full hover:bg-[#78614C] transition duration-300 shadow-sm"
-          >
-            サロンWeb予約（Square）
-          </a>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
+            <a
+              href="https://app.squareup.com/appointments/book/fqk7s06sbwkojt/L7STD9CD9RRTC/start"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-full sm:w-auto flex-1 inline-flex items-center justify-center px-6 py-3.5 bg-bronze text-white text-sm tracking-wider rounded-full hover:bg-[#78614C] transition duration-300 shadow-sm"
+            >
+              サロンWeb予約（Square）
+            </a>
 
-          <a
-            href="https://lin.ee/nzuEONf"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="w-full sm:w-auto flex-1 inline-flex items-center justify-center px-6 py-3.5 bg-[#06C755] text-white text-sm tracking-wider rounded-full hover:opacity-95 transition duration-300 shadow-sm"
-          >
-            公式LINEで相談する
-          </a>
-        </div>
+            <a
+              href="https://lin.ee/nzuEONf"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-full sm:w-auto flex-1 inline-flex items-center justify-center px-6 py-3.5 bg-[#06C755] text-white text-sm tracking-wider rounded-full hover:opacity-95 transition duration-300 shadow-sm"
+            >
+              公式LINEで相談する
+            </a>
+          </div>
 
-        <p class="text-xs text-taupe/90 mt-6 leading-relaxed max-w-md mx-auto">
-          ※ 出張オイルトリートメントは移動時間と枠の事前調整が必要なため、Squareの即時予約は設けておりません。公式LINEまたはお電話（080-6219-3290）よりお気軽にご相談ください。
-        </p>
-      </section>
+          <p class="text-xs text-taupe/90 mt-6 leading-relaxed max-w-md mx-auto">
+            ※ 出張オイルトリートメントは移動時間と枠の事前調整が必要なため、Squareの即時予約は設けておりません。公式LINEまたはお電話（080-6219-3290）よりお気軽にご相談ください。
+          </p>
+        </section>
+      )}
 
       <!-- 前後のナビゲーション -->
       <div class="mt-12 pt-6 border-t border-sand flex items-center justify-between text-sm">
