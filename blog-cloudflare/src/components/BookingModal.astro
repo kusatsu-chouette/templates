@@ -51,6 +51,26 @@
           メールでお問い合わせ
         </a>
       </div>
+
+      <!-- 5. 直通LINE案内（公式LINEに不安がある方向け） -->
+      <div class="modal-direct-box">
+        <p class="direct-box-title">公式LINE等のご利用に不安がある方へ</p>
+        <p class="direct-box-desc">
+          どうしても公式LINEなどのご利用が心配な方は、男性セラピスト直通LINEへ直接ご連絡ください。
+        </p>
+        <div class="direct-box-id-badge">
+          <span class="id-label">直通LINE ID:</span>
+          <span class="id-code">chouette3290</span>
+        </div>
+        <a
+          href="https://line.me/ti/p/~chouette3290"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="direct-line-btn"
+        >
+          セラピスト直通LINEを開く
+        </a>
+      </div>
     </div>
   </div>
 </div>
@@ -81,12 +101,15 @@
     background: #ffffff;
     width: 100%;
     max-width: 440px;
+    max-height: 90vh;
+    overflow-y: auto;
     border-radius: 12px;
     padding: 2.25rem 1.5rem 1.75rem;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     z-index: 1;
     box-sizing: border-box;
     text-align: center;
+    -webkit-overflow-scrolling: touch;
   }
   .modal-close-btn {
     position: absolute;
@@ -110,7 +133,7 @@
     font-size: 0.9rem;
     color: #554e48;
     line-height: 1.6;
-    margin: 0 0 1.5rem;
+    margin: 0 0 1.25rem;
   }
   .modal-action-list {
     display: flex;
@@ -165,6 +188,67 @@
     background-color: #ffffff;
     color: #665b53;
     border: 1px solid #dcd4ce;
+  }
+
+  /* 直通LINE案内カード */
+  .modal-direct-box {
+    margin-top: 1.25rem;
+    padding: 1rem 0.85rem;
+    background-color: #fbf9f6;
+    border: 1px solid #dcd3c6;
+    border-radius: 8px;
+    text-align: center;
+  }
+  .direct-box-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #4a3e37;
+    margin: 0 0 0.35rem;
+  }
+  .direct-box-desc {
+    font-size: 0.78rem;
+    color: #6b635d;
+    line-height: 1.5;
+    margin: 0 0 0.65rem;
+  }
+  .direct-box-id-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    background-color: #ffffff;
+    border: 1px dashed #c4b8ab;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    margin-bottom: 0.65rem;
+  }
+  .id-label {
+    color: #7d7571;
+    font-size: 0.75rem;
+  }
+  .id-code {
+    font-weight: 700;
+    color: #221f1d;
+    letter-spacing: 0.03em;
+    user-select: all;
+  }
+  .direct-line-btn {
+    display: block;
+    width: 100%;
+    padding: 0.55rem 0.75rem;
+    background-color: #8e735b;
+    color: #ffffff;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.2s, opacity 0.2s;
+    box-sizing: border-box;
+  }
+  .direct-line-btn:hover {
+    background-color: #78614c;
+    opacity: 0.95;
   }
 </style>
 
