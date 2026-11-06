@@ -8,13 +8,16 @@ const { className = "" } = Astro.props;
 
 // 連絡先設定
 const officialLineUrl = "https://lin.ee/Sv8oVDh";
-// ※直通LINEのURLが決まりましたら下記を変更してください（例: https://line.me/ti/p/xxxxxx）
-const directLineUrl = "https://line.me/ti/p/YOUR_DIRECT_LINE_ID"; 
+const directLineId = "chouette3290";
+const directLineUrl = "https://line.me/ti/p/~" + directLineId;
 const emailAddress = "kusatsu.chouette@gmail.com";
-const mailtoUrl = `mailto:${emailAddress}?subject=${encodeURIComponent("【相談】ブログ「セラピストの控室」を読んで")}&body=${encodeURIComponent("お名前（ニックネーム可）：\n\nご相談内容：\n")}`;
+
+const mailSubject = encodeURIComponent("【相談】ブログ「セラピストの控室」を読んで");
+const mailBody = encodeURIComponent("お名前（ニックネーム可）：\n\nご相談内容：\n");
+const mailtoUrl = "mailto:" + emailAddress + "?subject=" + mailSubject + "&body=" + mailBody;
 ---
 
-<div class={`my-12 p-6 sm:p-8 rounded-2xl bg-[#EDE7DF] border border-[#DCD3C6] shadow-sm text-[#221F1D] ${className}`}>
+<div class={"my-12 p-6 sm:p-8 rounded-2xl bg-[#EDE7DF] border border-[#DCD3C6] shadow-sm text-[#221F1D] " + className}>
   <!-- ヘッダー部 -->
   <div class="text-center max-w-xl mx-auto mb-6">
     <span class="inline-block text-xs font-semibold tracking-wider text-[#8E735B] bg-[#F7F4EF] px-3 py-1 rounded-full mb-3 border border-[#DCD3C6]/60">
@@ -54,12 +57,12 @@ const mailtoUrl = `mailto:${emailAddress}?subject=${encodeURIComponent("【相�
       class="flex flex-col items-center justify-center p-4 bg-[#F7F4EF] hover:bg-[#8E735B]/10 border border-[#DCD3C6] hover:border-[#8E735B] rounded-xl transition duration-200 group text-center"
     >
       <div class="w-10 h-10 rounded-full bg-[#8E735B] flex items-center justify-center text-white mb-2 shadow-sm group-hover:scale-105 transition-transform">
-        <svg class="w-5 h-5 fill-none stroke-currentColor stroke-2 viewBox="0 0 24 24">
+        <svg class="w-5 h-5 fill-none stroke-currentColor stroke-2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
         </svg>
       </div>
       <span class="font-bold text-sm text-[#221F1D] group-hover:text-[#8E735B]">セラピスト直通LINE</span>
-      <span class="text-xs text-[#7D7571] mt-1">個別でじっくり話したい方へ</span>
+      <span class="text-xs text-[#7D7571] mt-1">ID: chouette3290</span>
     </a>
 
     <!-- 3. メール -->
@@ -68,7 +71,7 @@ const mailtoUrl = `mailto:${emailAddress}?subject=${encodeURIComponent("【相�
       class="flex flex-col items-center justify-center p-4 bg-[#F7F4EF] hover:bg-[#8E735B]/10 border border-[#DCD3C6] hover:border-[#8E735B] rounded-xl transition duration-200 group text-center"
     >
       <div class="w-10 h-10 rounded-full bg-[#7D7571] flex items-center justify-center text-white mb-2 shadow-sm group-hover:scale-105 transition-transform">
-        <svg class="w-5 h-5 fill-none stroke-currentColor stroke-2 viewBox="0 0 24 24">
+        <svg class="w-5 h-5 fill-none stroke-currentColor stroke-2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
         </svg>
       </div>
