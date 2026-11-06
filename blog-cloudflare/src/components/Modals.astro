@@ -47,6 +47,28 @@
           <span class="block text-[10px] text-taupe mt-0.5">kusatsu.chouette@gmail.com</span>
         </a>
       </div>
+
+      <!-- 男性セラピスト直通LINE（公式LINEに不安がある方向け） -->
+      <div class="p-3.5 sm:p-4 rounded-2xl bg-white/80 border border-sand text-center space-y-2 mt-2">
+        <p class="text-xs font-medium text-charcoal">
+          公式LINE等のご利用に不安がある方へ
+        </p>
+        <p class="text-[11px] text-taupe leading-relaxed">
+          どうしても公式LINEなどのご利用が心配な方は、男性セラピスト直通LINEへ直接ご連絡ください。
+        </p>
+        <div class="inline-flex items-center justify-center gap-1.5 px-3 py-1 rounded-lg bg-champagne border border-dashed border-bronze/40">
+          <span class="text-[11px] text-taupe">直通LINE ID:</span>
+          <span class="text-xs font-bold text-charcoal select-all tracking-wider font-mono">chouette3290</span>
+        </div>
+        <a
+          href="https://line.me/ti/p/~chouette3290"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block w-full py-2.5 px-4 rounded-xl bg-bronze text-alabaster hover:bg-bronzeDark transition-colors text-center text-xs font-medium shadow-sm"
+        >
+          セラピスト直通LINEを開く
+        </a>
+      </div>
     </div>
   </div>
 </div>
@@ -208,7 +230,7 @@
   window.openBookingWithCourse = function(courseName) {
     const displayEl = document.getElementById('selectedCourseDisplay');
     if (displayEl) {
-      displayEl.textContent = `選択中のコース：${courseName}`;
+      displayEl.textContent = '選択中のコース：' + courseName;
     }
     window.openBookingModal();
   };
@@ -245,7 +267,7 @@
   window.copySalonAddress = function() {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(SALON_CONFIG.address).then(() => {
-        showToast(`住所（${SALON_CONFIG.address}）をコピーしました。`);
+        showToast('住所（' + SALON_CONFIG.address + '）をコピーしました。');
       });
     } else {
       const tempInput = document.createElement('textarea');
@@ -254,7 +276,7 @@
       tempInput.select();
       document.execCommand('copy');
       document.body.removeChild(tempInput);
-      showToast(`住所（${SALON_CONFIG.address}）をコピーしました。`);
+      showToast('住所（' + SALON_CONFIG.address + '）をコピーしました。');
     }
   };
 
