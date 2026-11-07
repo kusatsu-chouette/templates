@@ -634,31 +634,31 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
           let html = container.innerHTML;
 
           // エスケープされた div の復元
-          html = html.replace(/&lt;div class="([^"]+)"&gt;([\s\S]*?)&lt;\/div&gt;/gi, '<div class="$1">$2<' + '/div>');
+          html = html.replace(/&lt;div class="([^"]+)"&gt;([\s\S]*?)&lt;\/div&gt;/gi, '<' + 'div class="$1">$2<' + '/div>');
 
           // 相談窓口CTAプレースホルダーへの置換（【相談する】または【相談】が記載された箇所のみ展開）
-          html = html.replace(/<p>\s*(?:【(?:相談する|相談)】|\[\[(?:相談する|相談)\]\])\s*<\/p>|(?:【(?:相談する|相談)】|\[\[(?:相談する|相談)\]\])/gi, '<div class="counseling-cta-placeholder"><' + '/div>');
+          html = html.replace(/<p>\s*(?:【(?:相談する|相談)】|\[\[(?:相談する|相談)\]\])\s*<\/p>|(?:【(?:相談する|相談)】|\[\[(?:相談する|相談)\]\])/gi, '<' + 'div class="counseling-cta-placeholder"><' + '/div>');
 
           // 吹き出し
-          html = html.replace(/【(?:セラピスト|私)】([\s\S]*?)【\/(?:セラピスト|私)】/gi, '<div class="speech-therapist"><div class="avatar">セラピスト<' + '/div><div class="bubble">$1<' + '/div><' + '/div>');
-          html = html.replace(/【(?:お客様|相談)】([\s\S]*?)【\/(?:お客様|相談)】/gi, '<div class="speech-client"><div class="avatar">お客様<' + '/div><div class="bubble">$1<' + '/div><' + '/div>');
+          html = html.replace(/【(?:セラピスト|私)】([\s\S]*?)【\/(?:セラピスト|私)】/gi, '<' + 'div class="speech-therapist"><' + 'div class="avatar">セラピスト<' + '/div><' + 'div class="bubble">$1<' + '/div><' + '/div>');
+          html = html.replace(/【(?:お客様|相談)】([\s\S]*?)【\/(?:お客様|相談)】/gi, '<' + 'div class="speech-client"><' + 'div class="avatar">お客様<' + '/div><' + 'div class="bubble">$1<' + '/div><' + '/div>');
 
           // 各種装飾ボックス
-          html = html.replace(/【(?:POINT|ポイント)】([\s\S]*?)【\/(?:POINT|ポイント)】/gi, '<div class="box-point">$1<' + '/div>');
-          html = html.replace(/【(?:CHECK|チェック)】([\s\S]*?)【\/(?:CHECK|チェック)】/gi, '<div class="box-check">$1<' + '/div>');
-          html = html.replace(/【(?:付箋|つぶやき)】([\s\S]*?)【\/(?:付箋|つぶやき)】/gi, '<div class="box-fusen">$1<' + '/div>');
-          html = html.replace(/【(?:かぎ括弧|言葉)】([\s\S]*?)【\/(?:かぎ括弧|言葉)】/gi, '<div class="box-bracket">$1<' + '/div>');
-          html = html.replace(/【(?:カード|窪み)】([\s\S]*?)【\/(?:カード|窪み)】/gi, '<div class="box-inset">$1<' + '/div>');
-          html = html.replace(/【(?:二重線|ダブル)】([\s\S]*?)【\/(?:二重線|ダブル)】/gi, '<div class="box-double">$1<' + '/div>');
-          html = html.replace(/【(?:スティッチ|点線)】([\s\S]*?)【\/(?:スティッチ|点線)】/gi, '<div class="box-stitch">$1<' + '/div>');
-          html = html.replace(/【(?:角折り|メモ用紙)】([\s\S]*?)【\/(?:角折り|メモ用紙)】/gi, '<div class="box-folded">$1<' + '/div>');
-          html = html.replace(/【(?:ストライプ|斜線)】([\s\S]*?)【\/(?:ストライプ|斜線)】/gi, '<div class="box-stripe">$1<' + '/div>');
-          html = html.replace(/【(?:インフォ|info)】([\s\S]*?)【\/(?:インフォ|info)】/gi, '<div class="box-info">$1<' + '/div>');
-          html = html.replace(/【(?:はてな|疑問)】([\s\S]*?)【\/(?:はてな|疑問)】/gi, '<div class="box-question">$1<' + '/div>');
-          html = html.replace(/【(?:注意|アラート)】([\s\S]*?)【\/(?:注意|アラート)】/gi, '<div class="box-alert">$1<' + '/div>');
+          html = html.replace(/【(?:POINT|ポイント)】([\s\S]*?)【\/(?:POINT|ポイント)】/gi, '<' + 'div class="box-point">$1<' + '/div>');
+          html = html.replace(/【(?:CHECK|チェック)】([\s\S]*?)【\/(?:CHECK|チェック)】/gi, '<' + 'div class="box-check">$1<' + '/div>');
+          html = html.replace(/【(?:付箋|つぶやき)】([\s\S]*?)【\/(?:付箋|つぶやき)】/gi, '<' + 'div class="box-fusen">$1<' + '/div>');
+          html = html.replace(/【(?:かぎ括弧|言葉)】([\s\S]*?)【\/(?:かぎ括弧|言葉)】/gi, '<' + 'div class="box-bracket">$1<' + '/div>');
+          html = html.replace(/【(?:カード|窪み)】([\s\S]*?)【\/(?:カード|窪み)】/gi, '<' + 'div class="box-inset">$1<' + '/div>');
+          html = html.replace(/【(?:二重線|ダブル)】([\s\S]*?)【\/(?:二重線|ダブル)】/gi, '<' + 'div class="box-double">$1<' + '/div>');
+          html = html.replace(/【(?:スティッチ|点線)】([\s\S]*?)【\/(?:スティッチ|点線)】/gi, '<' + 'div class="box-stitch">$1<' + '/div>');
+          html = html.replace(/【(?:角折り|メモ用紙)】([\s\S]*?)【\/(?:角折り|メモ用紙)】/gi, '<' + 'div class="box-folded">$1<' + '/div>');
+          html = html.replace(/【(?:ストライプ|斜線)】([\s\S]*?)【\/(?:ストライプ|斜線)】/gi, '<' + 'div class="box-stripe">$1<' + '/div>');
+          html = html.replace(/【(?:インフォ|info)】([\s\S]*?)【\/(?:インフォ|info)】/gi, '<' + 'div class="box-info">$1<' + '/div>');
+          html = html.replace(/【(?:はてな|疑問)】([\s\S]*?)【\/(?:はてな|疑問)】/gi, '<' + 'div class="box-question">$1<' + '/div>');
+          html = html.replace(/【(?:注意|アラート)】([\s\S]*?)【\/(?:注意|アラート)】/gi, '<' + 'div class="box-alert">$1<' + '/div>');
 
           // マーカー
-          html = html.replace(/【(?:マーカー|強調)】([\s\S]*?)【\/(?:マーカー|強調)】/gi, '<span class="marker-bronze">$1<' + '/span>');
+          html = html.replace(/【(?:マーカー|強調)】([\s\S]*?)【\/(?:マーカー|強調)】/gi, '<' + 'span class="marker-bronze">$1<' + '/span>');
 
           // 手動タグ（【こちらもどうぞ】【外部リンク】等）
           html = html.replace(/<p>\s*【(?:こちらもどうぞ|あわせて読みたい|ブログカード|関連記事|外部リンク|参考リンク)】([\s\S]*?)【\/(?:こちらもどうぞ|あわせて読みたい|ブログカード|関連記事|外部リンク|参考リンク)】\s*<\/p>|【(?:こちらもどうぞ|あわせて読みたい|ブログカード|関連記事|外部リンク|参考リンク)】([\s\S]*?)【\/(?:こちらもどうぞ|あわせて読みたい|ブログカード|関連記事|外部リンク|参考リンク)】/gi, function(match, content1, content2) {
@@ -680,14 +680,14 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
               else if (!desc) desc = part;
             }
             if (!url) return '';
-            return '<div class="auto-blog-card-target" data-url="' + url + '" data-title="' + (title || '') + '" data-desc="' + (desc || '') + '"><' + '/div>';
+            return '<' + 'div class="auto-blog-card-target" data-url="' + url + '" data-title="' + (title || '') + '" data-desc="' + (desc || '') + '"><' + '/div>';
           });
 
           // 見出し変換
-          html = html.replace(/<p>\s*###\s+(.*?)<\/p>/gi, '<h3>$1<' + '/h3>');
-          html = html.replace(/<p>\s*##\s+(.*?)<\/p>/gi, '<h2>$1<' + '/h2>');
-          html = html.replace(/###\s+([^<\n]+)/gi, '<h3>$1<' + '/h3>');
-          html = html.replace(/##\s+([^<\n]+)/gi, '<h2>$1<' + '/h2>');
+          html = html.replace(/<p>\s*###\s+(.*?)<\/p>/gi, '<' + 'h3>$1<' + '/h3>');
+          html = html.replace(/<p>\s*##\s+(.*?)<\/p>/gi, '<' + 'h2>$1<' + '/h2>');
+          html = html.replace(/###\s+([^<\n]+)/gi, '<' + 'h3>$1<' + '/h3>');
+          html = html.replace(/##\s+([^<\n]+)/gi, '<' + 'h2>$1<' + '/h2>');
 
           // 孤立した # の消去
           html = html.replace(/<p>\s*#+\s*<\/p>/gi, '');
@@ -696,7 +696,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
           container.innerHTML = html;
 
           // ==========================================
-          // 相談窓口CTAの実装展開（【相談する】が記述された箇所のみ展開）
+          // 相談窓口CTAの実装展開
           // ==========================================
           const ctaTemplate = document.getElementById('counseling-cta-template');
           const ctaPlaceholders = container.querySelectorAll('.counseling-cta-placeholder');
@@ -785,27 +785,30 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
                   const ogImage = doc.querySelector('meta[property="og:image"]')?.getAttribute('content') || '';
 
                   const imageHtml = ogImage
-                    ? '<div class="blog-card-image-wrap"><img src="' + ogImage + '" alt="' + title + '" class="blog-card-image" loading="lazy" /></div>'
+                    ? '<' + 'div class="blog-card-image-wrap"><' + 'img src="' + ogImage + '" alt="' + title + '" class="blog-card-image" loading="lazy" /><' + '/div>'
                     : '';
 
-                  const descHtml = desc ? '<div class="blog-card-desc">' + desc + '</div>' : '';
+                  const descHtml = desc ? '<' + 'div class="blog-card-desc">' + desc + '<' + '/div>' : '';
+
+                  const tagIcon = '<' + 'svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><' + 'path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /><' + '/svg>';
+                  const arrowIcon = '<' + 'svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><' + 'path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /><' + '/svg>';
 
                   target.outerHTML =
-                    '<a href="' + rawUrl + '" class="blog-card-link">' +
+                    '<' + 'a href="' + rawUrl + '" class="blog-card-link">' +
                       imageHtml +
-                      '<div class="blog-card-body">' +
-                        '<div class="blog-card-tag">' +
-                          '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>' +
+                      '<' + 'div class="blog-card-body">' +
+                        '<' + 'div class="blog-card-tag">' +
+                          tagIcon +
                           'こちらもどうぞ' +
-                        '</div>' +
-                        '<div class="blog-card-title">' + title + '</div>' +
+                        '<' + '/div>' +
+                        '<' + 'div class="blog-card-title">' + title + '<' + '/div>' +
                         descHtml +
-                        '<div class="blog-card-footer">' +
-                          '<span>記事を読む</span>' +
-                          '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>' +
-                        '</div>' +
-                      '</div>' +
-                    '</a>';
+                        '<' + 'div class="blog-card-footer">' +
+                          '<' + 'span>記事を読む<' + '/span>' +
+                          arrowIcon +
+                        '<' + '/div>' +
+                        '<' + '/div>' +
+                    '<' + '/a>';
                 })
                 .catch(function() {
                   renderFallbackCard(target, rawUrl, customTitle || rawUrl, customDesc, 'こちらもどうぞ', false);
@@ -820,30 +823,31 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
           function renderFallbackCard(target, url, title, desc, tagText, isExternal, domain) {
             const tagClass = isExternal ? 'blog-card-tag is-external' : 'blog-card-tag';
             const iconSvg = isExternal
-              ? '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>'
-              : '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
+              ? '<' + 'svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><' + 'path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /><' + '/svg>'
+              : '<' + 'svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><' + 'path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /><' + '/svg>';
 
-            const descHtml = desc ? '<div class="blog-card-desc">' + desc + '</div>' : '';
-            const domainHtml = domain ? '<span class="blog-card-domain">' + domain + '</span>' : '';
+            const descHtml = desc ? '<' + 'div class="blog-card-desc">' + desc + '<' + '/div>' : '';
+            const domainHtml = domain ? '<' + 'span class="blog-card-domain">' + domain + '<' + '/span>' : '';
             const targetAttr = isExternal ? ' target="_blank" rel="noopener noreferrer"' : '';
             const actionText = isExternal ? 'サイトを見る' : '記事を読む';
+            const arrowSvg = '<' + 'svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><' + 'path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /><' + '/svg>';
 
             target.outerHTML =
-              '<a href="' + url + '" class="blog-card-link"' + targetAttr + ' style="padding:1.25rem 1.5rem;">' +
-                '<div class="blog-card-body" style="padding:0;">' +
-                  '<div class="' + tagClass + '">' +
+              '<' + 'a href="' + url + '" class="blog-card-link"' + targetAttr + ' style="padding:1.25rem 1.5rem;">' +
+                '<' + 'div class="blog-card-body" style="padding:0;">' +
+                  '<' + 'div class="' + tagClass + '">' +
                     iconSvg +
                     tagText +
-                  '</div>' +
-                  '<div class="blog-card-title">' + title + '</div>' +
+                  '<' + '/div>' +
+                  '<' + 'div class="blog-card-title">' + title + '<' + '/div>' +
                   descHtml +
-                  '<div class="blog-card-footer">' +
+                  '<' + 'div class="blog-card-footer">' +
                     domainHtml +
-                    '<span>' + actionText + '</span>' +
-                    '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>' +
-                  '</div>' +
-                '</div>' +
-              '</a>';
+                    '<' + 'span>' + actionText + '<' + '/span>' +
+                    arrowSvg +
+                  '<' + '/div>' +
+                '<' + '/div>' +
+              '<' + '/a>';
           }
         })();
       </script>
