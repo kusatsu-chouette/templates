@@ -61,23 +61,59 @@ const seo = getSeoMeta(post, {
 
 // カテゴリー情報の判定・正規化（TypeScript型安全ガード）
 const rawTermsCategory = postData.terms?.category?.[0];
-const rawCategory = rawTermsCategory?.slug || postData.category || 'salon-notes';
-const categorySlug = typeof rawCategory === 'object' && rawCategory !== null ? rawCategory.slug : String(rawCategory);
+const rawCategory = rawTermsCategory?.slug || postData.category || "salon-notes";
+const categorySlug =
+  typeof rawCategory === "object" && rawCategory !== null
+    ? rawCategory.slug
+    : String(rawCategory);
 
-const categoryMap: Record<string, { name: string; subtitle: string; label: string }> = {
-  'relationship': { name: '人と心地よく付き合う', subtitle: '人間関係としなやかな境界線', label: '人間関係・境界線' },
-  'mind-relax': { name: '心の緊張をほどく', subtitle: 'がんばり屋さんの脱力論', label: '心・自律神経' },
-  'body-care': { name: 'からだの声を聴く', subtitle: '身体の強張りと自律神経', label: '身体・巡り' },
-  'lifestyle': { name: '夜と朝のセルフケア', subtitle: '自分を慈しむ余白の時間', label: 'セルフケア・余白' },
-  'salon-notes': { name: 'セラピストの控え室より', subtitle: 'セラピストの視点・サロンの空気感', label: 'サロン通信' },
+const categoryMap: Record<
+  string,
+  { name: string; subtitle: string; label: string }
+> = {
+  relationship: {
+    name: "人と心地よく付き合う",
+    subtitle: "人間関係としなやかな境界線",
+    label: "人間関係・境界線",
+  },
+  "mind-relax": {
+    name: "心の緊張をほどく",
+    subtitle: "がんばり屋さんの脱力論",
+    label: "心・自律神経",
+  },
+  "body-care": {
+    name: "からだの声を聴く",
+    subtitle: "身体の強張りと自律神経",
+    label: "身体・巡り",
+  },
+  lifestyle: {
+    name: "夜と朝のセルフケア",
+    subtitle: "自分を慈しむ余白の時間",
+    label: "セルフケア・余白",
+  },
+  "salon-notes": {
+    name: "セラピストの控え室より",
+    subtitle: "セラピストの視点・サロンの空気感",
+    label: "サロン通信",
+  },
 };
 
-const currentCategory = categoryMap[categorySlug] || { name: 'セラピストの控え室より', subtitle: 'セラピストの視点・サロンの空気感', label: 'サロン通信' };
+const currentCategory = categoryMap[categorySlug] || {
+  name: "セラピストの控え室より",
+  subtitle: "セラピストの視点・サロンの空気感",
+  label: "サロン通信",
+};
 
 const tags = postData.terms?.tag ?? [];
 const readingTime = getReadingTime(postData.content);
 const publishedAt = postData.publishedAt ?? null;
 const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
+
+const pageTitle = seo.title || `${postData.title} | 女性専用サロン La Chouette`;
+const pageDescription =
+  seo.description ||
+  postData.excerpt ||
+  `${postData.title} - 滋賀県草津市の女性専用完全個室サロン「ラ・シュエット」のブログです。`;
 ---
 
 <!DOCTYPE html>
@@ -85,8 +121,13 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{seo.title || `${postData.title} | 女性専用サロン La Chouette`}</title>
-  <meta name="description" content={seo.description || `${postData.title} - 滋賀県草津市の女性専用完全個室サロン「ラ・シュエット」のブログです。`} />
+  <title>{pageTitle}</title>
+  <meta name="description" content={pageDescription} />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={pageDescription} />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content={`${Astro.url.origin}${Astro.url.pathname.replace(/\/$/, "")}`} />
+  {featuredImageUrl && <meta property="og:image" content={featuredImageUrl} />}
 
   <!-- Tailwind CSS v3 CDN（is:inline 必須） -->
   <script is:inline src="https://cdn.tailwindcss.com"></script>
@@ -551,6 +592,10 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
       margin-bottom: 1.6rem;
       letter-spacing: 0.02em;
     }
+    .entry-content [class^="box-"] p:last-child,
+    .entry-content .bubble p:last-child {
+      margin-bottom: 0;
+    }
   </style>
 </head>
 
@@ -559,7 +604,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
 
   <main class="flex-grow pt-24 pb-20">
     <article class="max-w-3xl mx-auto px-5 sm:px-8">
-      
+
       <!-- パンくずリスト -->
       <nav class="flex items-center gap-2 text-xs text-taupe mb-8 overflow-x-auto whitespace-nowrap py-1">
         <a href="/" class="hover:text-bronze transition-colors">ホーム</a>
@@ -604,7 +649,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
 
       <!-- アイキャッチ画像 -->
       {postData.featured_image && (
-        <div class="mb-12 overflow-hidden rounded-2xl shadow-sm border border-sand">
+        <div id="post-featured-image" class="mb-12 overflow-hidden rounded-2xl shadow-sm border border-sand">
           <Image
             image={postData.featured_image}
             sizes="(min-width: 1024px) 768px, 92vw"
@@ -619,17 +664,10 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
         <PortableText value={postData.content} />
       </div>
 
-      <!-- 相談窓口CTAの展開用コンポーネント（非表示待機） -->
+      <!-- 相談窓口CTAの展開用テンプレート（本文内に【相談する】等があるときのみ展開） -->
       <div id="counseling-cta-template" style="display: none;">
         <CounselingCta />
       </div>
-
-      <!-- セラピストの控え室カテゴリー用：タグ未記入時の自動配置エリア -->
-      {categorySlug === 'salon-notes' && (
-        <div id="counseling-cta-auto" style="display: none;">
-          <CounselingCta />
-        </div>
-      )}
 
       <!-- スクリプト構文干渉対策済み変換ロジック -->
       <script is:inline>
@@ -640,85 +678,82 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
           let html = container.innerHTML;
 
           // エスケープされた div の復元
-          html = html.replace(/&lt;div class="([^"]+)"&gt;([\s\S]*?)&lt;\/div&gt;/gi, '<div class="$1">$2<' + '/div>');
+          html = html.replace(/&lt;div class="([^"]+)"&gt;([\s\S]*?)&lt;\/div&gt;/gi, '\x3cdiv class="$1"\x3e$2\x3c/div\x3e');
 
-          // 相談窓口CTAプレースホルダーへの置換（【問い合わせ】【相談窓口】[[問い合わせ]] 等に対応）
-          html = html.replace(/<p>\s*(?:【(?:問い合わせ|問い合わせる|相談窓口|相談)】|\[\[(?:問い合わせ|問い合わせる|相談窓口|相談)\]\])\s*<\/p>|(?:【(?:問い合わせ|問い合わせる|相談窓口|相談)】|\[\[(?:問い合わせ|問い合わせる|相談窓口|相談)\]\])/gi, '<div class="counseling-cta-placeholder"><' + '/div>');
+          // 相談窓口CTAプレースホルダーへの置換（【相談する】【相談】【相談窓口】【問い合わせ】等に対応）
+          html = html.replace(
+            /\x3cp\x3e\s*(?:【(?:相談する|相談窓口|相談|問い合わせる|問い合わせ)】|\[\[(?:相談する|相談窓口|相談|問い合わせる|問い合わせ)\]\])\s*\x3c\/p\x3e|(?:【(?:相談する|相談窓口|相談|問い合わせる|問い合わせ)】|\[\[(?:相談する|相談窓口|相談|問い合わせる|問い合わせ)\]\])/gi,
+            '\x3cdiv class="counseling-cta-placeholder"\x3e\x3c/div\x3e'
+          );
 
           // 吹き出し
-          html = html.replace(/【(?:セラピスト|私)】([\s\S]*?)【\/(?:セラピスト|私)】/gi, '<div class="speech-therapist"><div class="avatar">セラピスト<' + '/div><div class="bubble">$1<' + '/div><' + '/div>');
-          html = html.replace(/【(?:お客様|相談)】([\s\S]*?)【\/(?:お客様|相談)】/gi, '<div class="speech-client"><div class="avatar">お客様<' + '/div><div class="bubble">$1<' + '/div><' + '/div>');
+          html = html.replace(/(?:\x3cp\x3e\s*)?【(?:セラピスト|私)】(?:\s*\x3c\/p\x3e)?([\s\S]*?)(?:\x3cp\x3e\s*)?【\/(?:セラピスト|私)】(?:\s*\x3c\/p\x3e)?/gi, '\x3cdiv class="speech-therapist"\x3e\x3cdiv class="avatar"\x3eセラピスト\x3c/div\x3e\x3cdiv class="bubble"\x3e$1\x3c/div\x3e\x3c/div\x3e');
+          html = html.replace(/(?:\x3cp\x3e\s*)?【(?:お客様|相談)】(?:\s*\x3c\/p\x3e)?([\s\S]*?)(?:\x3cp\x3e\s*)?【\/(?:お客様|相談)】(?:\s*\x3c\/p\x3e)?/gi, '\x3cdiv class="speech-client"\x3e\x3cdiv class="avatar"\x3eお客様\x3c/div\x3e\x3cdiv class="bubble"\x3e$1\x3c/div\x3e\x3c/div\x3e');
 
           // 各種装飾ボックス
-          html = html.replace(/【(?:POINT|ポイント)】([\s\S]*?)【\/(?:POINT|ポイント)】/gi, '<div class="box-point">$1<' + '/div>');
-          html = html.replace(/【(?:CHECK|チェック)】([\s\S]*?)【\/(?:CHECK|チェック)】/gi, '<div class="box-check">$1<' + '/div>');
-          html = html.replace(/【(?:付箋|つぶやき)】([\s\S]*?)【\/(?:付箋|つぶやき)】/gi, '<div class="box-fusen">$1<' + '/div>');
-          html = html.replace(/【(?:かぎ括弧|言葉)】([\s\S]*?)【\/(?:かぎ括弧|言葉)】/gi, '<div class="box-bracket">$1<' + '/div>');
-          html = html.replace(/【(?:カード|窪み)】([\s\S]*?)【\/(?:カード|窪み)】/gi, '<div class="box-inset">$1<' + '/div>');
-          html = html.replace(/【(?:二重線|ダブル)】([\s\S]*?)【\/(?:二重線|ダブル)】/gi, '<div class="box-double">$1<' + '/div>');
-          html = html.replace(/【(?:スティッチ|点線)】([\s\S]*?)【\/(?:スティッチ|点線)】/gi, '<div class="box-stitch">$1<' + '/div>');
-          html = html.replace(/【(?:角折り|メモ用紙)】([\s\S]*?)【\/(?:角折り|メモ用紙)】/gi, '<div class="box-folded">$1<' + '/div>');
-          html = html.replace(/【(?:ストライプ|斜線)】([\s\S]*?)【\/(?:ストライプ|斜線)】/gi, '<div class="box-stripe">$1<' + '/div>');
-          html = html.replace(/【(?:インフォ|info)】([\s\S]*?)【\/(?:インフォ|info)】/gi, '<div class="box-info">$1<' + '/div>');
-          html = html.replace(/【(?:はてな|疑問)】([\s\S]*?)【\/(?:はてな|疑問)】/gi, '<div class="box-question">$1<' + '/div>');
-          html = html.replace(/【(?:注意|アラート)】([\s\S]*?)【\/(?:注意|アラート)】/gi, '<div class="box-alert">$1<' + '/div>');
+          html = html.replace(/(?:\x3cp\x3e\s*)?【(?:POINT|ポイント)】(?:\s*\x3c\/p\x3e)?([\s\S]*?)(?:\x3cp\x3e\s*)?【\/(?:POINT|ポイント)】(?:\s*\x3c\/p\x3e)?/gi, '\x3cdiv class="box-point"\x3e$1\x3c/div\x3e');
+          html = html.replace(/(?:\x3cp\x3e\s*)?【(?:CHECK|チェック)】(?:\s*\x3c\/p\x3e)?([\s\S]*?)(?:\x3cp\x3e\s*)?【\/(?:CHECK|チェック)】(?:\s*\x3c\/p\x3e)?/gi, '\x3cdiv class="box-check"\x3e$1\x3c/div\x3e');
+          html = html.replace(/(?:\x3cp\x3e\s*)?【(?:付箋|つぶやき)】(?:\s*\x3c\/p\x3e)?([\s\S]*?)(?:\x3cp\x3e\s*)?【\/(?:付箋|つぶやき)】(?:\s*\x3c\/p\x3e)?/gi, '\x3cdiv class="box-fusen"\x3e$1\x3c/div\x3e');
+          html = html.replace(/(?:\x3cp\x3e\s*)?【(?:かぎ括弧|言葉)】(?:\s*\x3c\/p\x3e)?([\s\S]*?)(?:\x3cp\x3e\s*)?【\/(?:かぎ括弧|言葉)】(?:\s*\x3c\/p\x3e)?/gi, '\x3cdiv class="box-bracket"\x3e$1\x3c/div\x3e');
+          html = html.replace(/(?:\x3cp\x3e\s*)?【(?:カード|窪み)】(?:\s*\x3c\/p\x3e)?([\s\S]*?)(?:\x3cp\x3e\s*)?【\/(?:カード|窪み)】(?:\s*\x3c\/p\x3e)?/gi, '\x3cdiv class="box-inset"\x3e$1\x3c/div\x3e');
+          html = html.replace(/(?:\x3cp\x3e\s*)?【(?:二重線|ダブル)】(?:\s*\x3c\/p\x3e)?([\s\S]*?)(?:\x3cp\x3e\s*)?【\/(?:二重線|ダブル)】(?:\s*\x3c\/p\x3e)?/gi, '\x3cdiv class="box-double"\x3e$1\x3c/div\x3e');
+          html = html.replace(/(?:\x3cp\x3e\s*)?【(?:スティッチ|点線)】(?:\s*\x3c\/p\x3e)?([\s\S]*?)(?:\x3cp\x3e\s*)?【\/(?:スティッチ|点線)】(?:\s*\x3c\/p\x3e)?/gi, '\x3cdiv class="box-stitch"\x3e$1\x3c/div\x3e');
+          html = html.replace(/(?:\x3cp\x3e\s*)?【(?:角折り|メモ用紙)】(?:\s*\x3c\/p\x3e)?([\s\S]*?)(?:\x3cp\x3e\s*)?【\/(?:角折り|メモ用紙)】(?:\s*\x3c\/p\x3e)?/gi, '\x3cdiv class="box-folded"\x3e$1\x3c/div\x3e');
+          html = html.replace(/(?:\x3cp\x3e\s*)?【(?:ストライプ|斜線)】(?:\s*\x3c\/p\x3e)?([\s\S]*?)(?:\x3cp\x3e\s*)?【\/(?:ストライプ|斜線)】(?:\s*\x3c\/p\x3e)?/gi, '\x3cdiv class="box-stripe"\x3e$1\x3c/div\x3e');
+          html = html.replace(/(?:\x3cp\x3e\s*)?【(?:インフォ|info)】(?:\s*\x3c\/p\x3e)?([\s\S]*?)(?:\x3cp\x3e\s*)?【\/(?:インフォ|info)】(?:\s*\x3c\/p\x3e)?/gi, '\x3cdiv class="box-info"\x3e$1\x3c/div\x3e');
+          html = html.replace(/(?:\x3cp\x3e\s*)?【(?:はてな|疑問)】(?:\s*\x3c\/p\x3e)?([\s\S]*?)(?:\x3cp\x3e\s*)?【\/(?:はてな|疑問)】(?:\s*\x3c\/p\x3e)?/gi, '\x3cdiv class="box-question"\x3e$1\x3c/div\x3e');
+          html = html.replace(/(?:\x3cp\x3e\s*)?【(?:注意|アラート)】(?:\s*\x3c\/p\x3e)?([\s\S]*?)(?:\x3cp\x3e\s*)?【\/(?:注意|アラート)】(?:\s*\x3c\/p\x3e)?/gi, '\x3cdiv class="box-alert"\x3e$1\x3c/div\x3e');
 
           // マーカー
-          html = html.replace(/【(?:マーカー|強調)】([\s\S]*?)【\/(?:マーカー|強調)】/gi, '<span class="marker-bronze">$1<' + '/span>');
+          html = html.replace(/【(?:マーカー|強調)】([\s\S]*?)【\/(?:マーカー|強調)】/gi, '\x3cspan class="marker-bronze"\x3e$1\x3c/span\x3e');
 
           // 手動タグ（【こちらもどうぞ】【外部リンク】等）
-          html = html.replace(/<p>\s*【(?:こちらもどうぞ|あわせて読みたい|ブログカード|関連記事|外部リンク|参考リンク)】([\s\S]*?)【\/(?:こちらもどうぞ|あわせて読みたい|ブログカード|関連記事|外部リンク|参考リンク)】\s*<\/p>|【(?:こちらもどうぞ|あわせて読みたい|ブログカード|関連記事|外部リンク|参考リンク)】([\s\S]*?)【\/(?:こちらもどうぞ|あわせて読みたい|ブログカード|関連記事|外部リンク|参考リンク)】/gi, function(match, content1, content2) {
-            const raw = content1 || content2 || '';
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = raw;
-            const linkElem = tempDiv.querySelector('a');
-            let href = linkElem ? (linkElem.getAttribute('href') || '') : '';
-            tempDiv.querySelectorAll('br').forEach(function(br) { br.replaceWith('\n'); });
-            tempDiv.querySelectorAll('p').forEach(function(p) { p.after('\n'); });
-            const parts = (tempDiv.textContent || '').split(/[\n|｜]+/).map(function(s) { return s.trim(); }).filter(Boolean);
-            let url = href || '';
-            let title = '';
-            let desc = '';
-            for (let i = 0; i < parts.length; i++) {
-              const part = parts[i];
-              if (!url && (part.startsWith('http') || part.startsWith('/'))) url = part;
-              else if (!title) title = part;
-              else if (!desc) desc = part;
+          html = html.replace(
+            /\x3cp\x3e\s*【(?:こちらもどうぞ|あわせて読みたい|ブログカード|関連記事|外部リンク|参考リンク)】([\s\S]*?)【\/(?:こちらもどうぞ|あわせて読みたい|ブログカード|関連記事|外部リンク|参考リンク)】\s*\x3c\/p\x3e|【(?:こちらもどうぞ|あわせて読みたい|ブログカード|関連記事|外部リンク|参考リンク)】([\s\S]*?)【\/(?:こちらもどうぞ|あわせて読みたい|ブログカード|関連記事|外部リンク|参考リンク)】/gi,
+            function(match, content1, content2) {
+              const raw = content1 || content2 || '';
+              const tempDiv = document.createElement('div');
+              tempDiv.innerHTML = raw;
+              const linkElem = tempDiv.querySelector('a');
+              const href = linkElem ? (linkElem.getAttribute('href') || '') : '';
+              tempDiv.querySelectorAll('br').forEach(function(br) { br.replaceWith('\n'); });
+              tempDiv.querySelectorAll('p').forEach(function(p) { p.after('\n'); });
+              const parts = (tempDiv.textContent || '').split(/[\n|｜]+/).map(function(s) { return s.trim(); }).filter(Boolean);
+              let url = href || '';
+              let title = '';
+              let desc = '';
+              parts.forEach(function(part) {
+                if (!url && (part.startsWith('http') || part.startsWith('/'))) url = part;
+                else if (!title) title = part;
+                else if (!desc) desc = part;
+              });
+              if (!url) return '';
+              return '\x3cdiv class="auto-blog-card-target" data-url="' + url + '" data-title="' + (title || '') + '" data-desc="' + (desc || '') + '"\x3e\x3c/div\x3e';
             }
-            if (!url) return '';
-            return '<div class="auto-blog-card-target" data-url="' + url + '" data-title="' + (title || '') + '" data-desc="' + (desc || '') + '"><' + '/div>';
-          });
+          );
 
           // 見出し変換
-          html = html.replace(/<p>\s*###\s+(.*?)<\/p>/gi, '<h3>$1<' + '/h3>');
-          html = html.replace(/<p>\s*##\s+(.*?)<\/p>/gi, '<h2>$1<' + '/h2>');
-          html = html.replace(/###\s+([^<\n]+)/gi, '<h3>$1<' + '/h3>');
-          html = html.replace(/##\s+([^<\n]+)/gi, '<h2>$1<' + '/h2>');
+          html = html.replace(/\x3cp\x3e\s*###\s+(.*?)\x3c\/p\x3e/gi, '\x3ch3\x3e$1\x3c/h3\x3e');
+          html = html.replace(/\x3cp\x3e\s*##\s+(.*?)\x3c\/p\x3e/gi, '\x3ch2\x3e$1\x3c/h2\x3e');
+          html = html.replace(/###\s+([^\x3c\n]+)/gi, '\x3ch3\x3e$1\x3c/h3\x3e');
+          html = html.replace(/##\s+([^\x3c\n]+)/gi, '\x3ch2\x3e$1\x3c/h2\x3e');
 
           // 孤立した # の消去
-          html = html.replace(/<p>\s*#+\s*<\/p>/gi, '');
+          html = html.replace(/\x3cp\x3e\s*#+\s*\x3c\/p\x3e/gi, '');
           html = html.replace(/(?:^|\n)\s*#+\s*(?=\n|$)/g, '');
 
           container.innerHTML = html;
 
           // ==========================================
-          // 相談窓口CTAの実装展開
+          // 相談窓口CTAの展開（本文中に【相談する】等があるときのみ表示）
           // ==========================================
           const ctaTemplate = document.getElementById('counseling-cta-template');
           const ctaPlaceholders = container.querySelectorAll('.counseling-cta-placeholder');
 
-          if (ctaTemplate) {
-            if (ctaPlaceholders.length > 0) {
-              ctaPlaceholders.forEach(function(placeholder) {
-                placeholder.innerHTML = ctaTemplate.innerHTML;
-              });
-            } else {
-              // 記事内に手動タグがなく「セラピストの控え室より」カテゴリーの場合は末尾に自動展開
-              const autoCta = document.getElementById('counseling-cta-auto');
-              if (autoCta) {
-                autoCta.style.display = 'block';
-              }
-            }
+          if (ctaTemplate && ctaPlaceholders.length) {
+            ctaPlaceholders.forEach(function(placeholder) {
+              placeholder.innerHTML = ctaTemplate.innerHTML;
+            });
           }
 
           // ==========================================
@@ -726,23 +761,22 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
           // ==========================================
           const paragraphs = container.querySelectorAll('p');
           paragraphs.forEach(function(p) {
-            const text = p.textContent.trim();
+            const text = (p.textContent || '').trim();
             const link = p.querySelector('a');
 
             let targetUrl = '';
-            if (link && p.childNodes.length === 1) {
-              const href = link.getAttribute('href') || '';
+            if (link && (p.childNodes.length === 1 || (link.textContent || '').trim() === text)) {
+              const href = (link.getAttribute('href') || '').trim();
               if (href.startsWith('http://') || href.startsWith('https://') || href.startsWith('/posts/')) {
                 targetUrl = href;
               }
             } else if (text.startsWith('http://') || text.startsWith('https://') || text.startsWith('/posts/')) {
-              // 空白を含まない単一URL行か判定
               if (!/\s/.test(text)) {
                 targetUrl = text;
               }
             }
 
-            if (targetUrl) {
+            if (targetUrl && p.parentNode) {
               const placeholder = document.createElement('div');
               placeholder.className = 'auto-blog-card-target';
               placeholder.setAttribute('data-url', targetUrl);
@@ -770,12 +804,12 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
               } else if (rawUrl.startsWith('http')) {
                 const parsed = new URL(rawUrl);
                 domain = parsed.hostname;
-                if (parsed.origin === window.location.origin) {
+                if (parsed.origin === window.location.origin || parsed.hostname === 'kusatsu-aroma.com') {
                   isInternal = true;
                   fetchPath = parsed.pathname;
                 }
               }
-            } catch(e) {}
+            } catch (e) {}
 
             // 内部リンク（自サイト記事）の場合はOGP・タイトルを非同期取得
             if (isInternal) {
@@ -786,47 +820,58 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
                 })
                 .then(function(pageHtml) {
                   const doc = new DOMParser().parseFromString(pageHtml, 'text/html');
-                  const title = customTitle || 
-                                doc.querySelector('meta[property="og:title"]')?.getAttribute('content')?.replace(/ \| .*/, '') || 
-                                doc.querySelector('h1')?.textContent?.trim() || 
-                                doc.title.replace(/ \| .*/, '') || 
-                                '記事を読む';
+                  const ogTitleElem = doc.querySelector('meta[property="og:title"]');
+                  const h1Elem = doc.querySelector('h1');
+                  const ogDescElem = doc.querySelector('meta[property="og:description"]');
+                  const metaDescElem = doc.querySelector('meta[name="description"]');
+                  const ogImgElem = doc.querySelector('meta[property="og:image"]');
+                  const featuredImgElem = doc.querySelector('#post-featured-image img');
 
-                  const desc = customDesc || 
-                               doc.querySelector('meta[property="og:description"]')?.getAttribute('content') || 
-                               doc.querySelector('meta[name="description"]')?.getAttribute('content') || 
-                               '';
+                  const title =
+                    customTitle ||
+                    (ogTitleElem && ogTitleElem.getAttribute('content') ? ogTitleElem.getAttribute('content').replace(/ \| .*/, '') : '') ||
+                    (h1Elem && h1Elem.textContent ? h1Elem.textContent.trim() : '') ||
+                    (doc.title ? doc.title.replace(/ \| .*/, '') : '') ||
+                    '記事を読む';
 
-                  const ogImage = doc.querySelector('meta[property="og:image"]')?.getAttribute('content') || '';
+                  const desc =
+                    customDesc ||
+                    (ogDescElem && ogDescElem.getAttribute('content') ? ogDescElem.getAttribute('content') : '') ||
+                    (metaDescElem && metaDescElem.getAttribute('content') ? metaDescElem.getAttribute('content') : '') ||
+                    '';
+
+                  const ogImage =
+                    (ogImgElem && ogImgElem.getAttribute('content') ? ogImgElem.getAttribute('content') : '') ||
+                    (featuredImgElem && featuredImgElem.getAttribute('src') ? featuredImgElem.getAttribute('src') : '');
 
                   const imageHtml = ogImage
-                    ? '<div class="blog-card-image-wrap"><img src="' + ogImage + '" alt="' + title + '" class="blog-card-image" loading="lazy" /></div>'
+                    ? '\x3cdiv class="blog-card-image-wrap"\x3e\x3cimg src="' + ogImage + '" alt="' + title + '" class="blog-card-image" loading="lazy" /\x3e\x3c/div\x3e'
                     : '';
 
-                  const descHtml = desc ? '<div class="blog-card-desc">' + desc + '</div>' : '';
+                  const descHtml = desc ? '\x3cdiv class="blog-card-desc"\x3e' + desc + '\x3c/div\x3e' : '';
 
                   target.outerHTML =
-                    '<a href="' + rawUrl + '" class="blog-card-link">' +
+                    '\x3ca href="' + fetchPath + '" class="blog-card-link"\x3e' +
                       imageHtml +
-                      '<div class="blog-card-body">' +
-                        '<div class="blog-card-tag">' +
-                          '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>' +
+                      '\x3cdiv class="blog-card-body"\x3e' +
+                        '\x3cdiv class="blog-card-tag"\x3e' +
+                          '\x3csvg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"\x3e\x3cpath stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /\x3e\x3c/svg\x3e' +
                           'こちらもどうぞ' +
-                        '</div>' +
-                        '<div class="blog-card-title">' + title + '</div>' +
+                        '\x3c/div\x3e' +
+                        '\x3cdiv class="blog-card-title"\x3e' + title + '\x3c/div\x3e' +
                         descHtml +
-                        '<div class="blog-card-footer">' +
-                          '<span>記事を読む</span>' +
-                          '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>' +
-                        '</div>' +
-                      '</div>' +
-                    '</a>';
+                        '\x3cdiv class="blog-card-footer"\x3e' +
+                          '\x3cspan\x3e記事を読む\x3c/span\x3e' +
+                          '\x3csvg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"\x3e\x3cpath stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /\x3e\x3c/svg\x3e' +
+                        '\x3c/div\x3e' +
+                      '\x3c/div\x3e' +
+                    '\x3c/a\x3e';
                 })
                 .catch(function() {
                   renderFallbackCard(target, rawUrl, customTitle || rawUrl, customDesc, 'こちらもどうぞ', false);
                 });
             } else {
-              // 外部リンクの場合（CORS制約を回避し洗練された外部カードとして即時レンダリング）
+              // 外部リンクの場合（CORS制約を回避し外部カードとして即時レンダリング）
               const displayTitle = customTitle || rawUrl;
               renderFallbackCard(target, rawUrl, displayTitle, customDesc, '外部リンク', true, domain);
             }
@@ -835,30 +880,30 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
           function renderFallbackCard(target, url, title, desc, tagText, isExternal, domain) {
             const tagClass = isExternal ? 'blog-card-tag is-external' : 'blog-card-tag';
             const iconSvg = isExternal
-              ? '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>'
-              : '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
+              ? '\x3csvg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"\x3e\x3cpath stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /\x3e\x3c/svg\x3e'
+              : '\x3csvg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"\x3e\x3cpath stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /\x3e\x3c/svg\x3e';
 
-            const descHtml = desc ? '<div class="blog-card-desc">' + desc + '</div>' : '';
-            const domainHtml = domain ? '<span class="blog-card-domain">' + domain + '</span>' : '';
+            const descHtml = desc ? '\x3cdiv class="blog-card-desc"\x3e' + desc + '\x3c/div\x3e' : '';
+            const domainHtml = domain ? '\x3cspan class="blog-card-domain"\x3e' + domain + '\x3c/span\x3e' : '';
             const targetAttr = isExternal ? ' target="_blank" rel="noopener noreferrer"' : '';
             const actionText = isExternal ? 'サイトを見る' : '記事を読む';
 
             target.outerHTML =
-              '<a href="' + url + '" class="blog-card-link"' + targetAttr + ' style="padding:1.25rem 1.5rem;">' +
-                '<div class="blog-card-body" style="padding:0;">' +
-                  '<div class="' + tagClass + '">' +
+              '\x3ca href="' + url + '" class="blog-card-link"' + targetAttr + ' style="padding:1.25rem 1.5rem;"\x3e' +
+                '\x3cdiv class="blog-card-body" style="padding:0;"\x3e' +
+                  '\x3cdiv class="' + tagClass + '"\x3e' +
                     iconSvg +
                     tagText +
-                  '</div>' +
-                  '<div class="blog-card-title">' + title + '</div>' +
+                  '\x3c/div\x3e' +
+                  '\x3cdiv class="blog-card-title"\x3e' + title + '\x3c/div\x3e' +
                   descHtml +
-                  '<div class="blog-card-footer">' +
+                  '\x3cdiv class="blog-card-footer"\x3e' +
                     domainHtml +
-                    '<span>' + actionText + '</span>' +
-                    '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>' +
-                  '</div>' +
-                '</div>' +
-              '</a>';
+                    '\x3cspan\x3e' + actionText + '\x3c/span\x3e' +
+                    '\x3csvg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"\x3e\x3cpath stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /\x3e\x3c/svg\x3e' +
+                  '\x3c/div\x3e' +
+                '\x3c/div\x3e' +
+              '\x3c/a\x3e';
           }
         })();
       </script>
@@ -885,8 +930,8 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
         </div>
       </div>
 
-      <!-- 予約・LINE導線CTA（サロン施術用：セラピストの控え室カテゴリー以外で表示） -->
-      {categorySlug !== 'salon-notes' && (
+      <!-- 予約・LINE導線CTA（サロン施術用・セラピストの控え室カテゴリー以外で表示） -->
+      {categorySlug !== "salon-notes" && (
         <section class="mt-12 bg-gradient-to-br from-champagne/60 to-alabaster rounded-3xl p-7 sm:p-10 border border-sand text-center shadow-xs">
           <span class="text-xs font-mincho tracking-widest text-bronze uppercase">Reservation & Care</span>
           <h2 class="text-xl sm:text-2xl font-mincho text-charcoal font-medium mt-2 mb-3">
@@ -907,7 +952,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
             </a>
 
             <a
-              href="https://lin.ee/nzuEONf"
+              href="https://lin.ee/Sv8oVDh"
               target="_blank"
               rel="noopener noreferrer"
               class="w-full sm:w-auto flex-1 inline-flex items-center justify-center px-6 py-3.5 bg-[#06C755] text-white text-sm tracking-wider rounded-full hover:opacity-95 transition duration-300 shadow-sm"
