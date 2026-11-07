@@ -1,5 +1,7 @@
 ---
 // templates/blog-cloudflare/src/pages/posts/[slug].astro
+export const prerender = false;
+
 import {
   getEmDashEntry,
   getSeoMeta,
@@ -26,7 +28,10 @@ if (!post) {
   return Astro.rewrite("/404");
 }
 
-if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+const astroAny = Astro as any;
+if (astroAny.cache?.enabled && cacheHint) {
+  astroAny.cache.set(cacheHint);
+}
 
 // アイキャッチ画像のURL取得
 function getImageUrl(img: unknown): string | undefined {
@@ -642,7 +647,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
           // エスケープされた div の復元
           html = html.replace(/&lt;div class="([^"]+)"&gt;([\s\S]*?)&lt;\/div&gt;/gi, '<div class="$1">$2<' + '/div>');
 
-          // 相談窓口CTAプレースホルダーへの置換（【問い合わせ】【相談窓口】[[問い合わせ]] 等に対応）
+          // 相談窓口CTAプレースホルダーへの置換
           html = html.replace(/<p>\s*(?:【(?:問い合わせ|問い合わせる|相談窓口|相談)】|\[\[(?:問い合わせ|問い合わせる|相談窓口|相談)\]\])\s*<\/p>|(?:【(?:問い合わせ|問い合わせる|相談窓口|相談)】|\[\[(?:問い合わせ|問い合わせる|相談窓口|相談)\]\])/gi, '<div class="counseling-cta-placeholder"><' + '/div>');
 
           // 吹き出し
@@ -713,7 +718,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
                 placeholder.innerHTML = ctaTemplate.innerHTML;
               });
             } else {
-              // 記事内に手動タグがなく「セラピストの控え室より」カテゴリーの場合は末尾に自動展開
               const autoCta = document.getElementById('counseling-cta-auto');
               if (autoCta) {
                 autoCta.style.display = 'block';
@@ -736,7 +740,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
                 targetUrl = href;
               }
             } else if (text.startsWith('http://') || text.startsWith('https://') || text.startsWith('/posts/')) {
-              // 空白を含まない単一URL行か判定
               if (!/\s/.test(text)) {
                 targetUrl = text;
               }
@@ -800,33 +803,33 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
                   const ogImage = doc.querySelector('meta[property="og:image"]')?.getAttribute('content') || '';
 
                   const imageHtml = ogImage
-                    ? '<div class="blog-card-image-wrap"><img src="' + ogImage + '" alt="' + title + '" class="blog-card-image" loading="lazy" /></div>'
+                    ? '<div class="blog-card-image-wrap"><img src="' + ogImage + '" alt="' + title + '" class="blog-card-image" loading="lazy" /><' + '/div>'
                     : '';
 
-                  const descHtml = desc ? '<div class="blog-card-desc">' + desc + '</div>' : '';
+                  const descHtml = desc ? '<div class="blog-card-desc">' + desc + '<' + '/div>' : '';
 
                   target.outerHTML =
-                    '<a href="' + rawUrl + '" class="blog-card-link">' +
+                    '<' + 'a href="' + rawUrl + '" class="blog-card-link">' +
                       imageHtml +
-                      '<div class="blog-card-body">' +
-                        '<div class="blog-card-tag">' +
-                          '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>' +
+                      '<' + 'div class="blog-card-body">' +
+                        '<' + 'div class="blog-card-tag">' +
+                          '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /><' + '/svg>' +
                           'こちらもどうぞ' +
-                        '</div>' +
-                        '<div class="blog-card-title">' + title + '</div>' +
+                        '<' + '/div>' +
+                        '<' + 'div class="blog-card-title">' + title + '<' + '/div>' +
                         descHtml +
-                        '<div class="blog-card-footer">' +
-                          '<span>記事を読む</span>' +
-                          '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>' +
-                        '</div>' +
-                      '</div>' +
-                    '</a>';
+                        '<' + 'div class="blog-card-footer">' +
+                          '<' + 'span>記事を読む<' + '/span>' +
+                          '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /><' + '/svg>' +
+                        '<' + '/div>' +
+                      '<' + '/div>' +
+                    '<' + '/a>';
                 })
                 .catch(function() {
-                  renderFallbackCard(target, rawUrl, customTitle || rawUrl, customDesc, 'こちらもどうぞ', false);
+                  renderFallbackCard(target, rawUrl, customTitle || rawUrl, customDesc, 'こちらもどうぞ', false, domain);
                 });
             } else {
-              // 外部リンクの場合（CORS制約を回避し洗練された外部カードとして即時レンダリング）
+              // 外部リンクの場合
               const displayTitle = customTitle || rawUrl;
               renderFallbackCard(target, rawUrl, displayTitle, customDesc, '外部リンク', true, domain);
             }
@@ -835,30 +838,30 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
           function renderFallbackCard(target, url, title, desc, tagText, isExternal, domain) {
             const tagClass = isExternal ? 'blog-card-tag is-external' : 'blog-card-tag';
             const iconSvg = isExternal
-              ? '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>'
-              : '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
+              ? '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /><' + '/svg>'
+              : '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /><' + '/svg>';
 
-            const descHtml = desc ? '<div class="blog-card-desc">' + desc + '</div>' : '';
-            const domainHtml = domain ? '<span class="blog-card-domain">' + domain + '</span>' : '';
+            const descHtml = desc ? '<div class="blog-card-desc">' + desc + '<' + '/div>' : '';
+            const domainHtml = domain ? '<span class="blog-card-domain">' + domain + '<' + '/span>' : '';
             const targetAttr = isExternal ? ' target="_blank" rel="noopener noreferrer"' : '';
             const actionText = isExternal ? 'サイトを見る' : '記事を読む';
 
             target.outerHTML =
-              '<a href="' + url + '" class="blog-card-link"' + targetAttr + ' style="padding:1.25rem 1.5rem;">' +
-                '<div class="blog-card-body" style="padding:0;">' +
-                  '<div class="' + tagClass + '">' +
+              '<' + 'a href="' + url + '" class="blog-card-link"' + targetAttr + ' style="padding:1.25rem 1.5rem;">' +
+                '<' + 'div class="blog-card-body" style="padding:0;">' +
+                  '<' + 'div class="' + tagClass + '">' +
                     iconSvg +
                     tagText +
-                  '</div>' +
-                  '<div class="blog-card-title">' + title + '</div>' +
+                  '<' + '/div>' +
+                  '<' + 'div class="blog-card-title">' + title + '<' + '/div>' +
                   descHtml +
-                  '<div class="blog-card-footer">' +
+                  '<' + 'div class="blog-card-footer">' +
                     domainHtml +
-                    '<span>' + actionText + '</span>' +
-                    '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>' +
-                  '</div>' +
-                '</div>' +
-              '</a>';
+                    '<' + 'span>' + actionText + '<' + '/span>' +
+                    '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /><' + '/svg>' +
+                  '<' + '/div>' +
+                '<' + '/div>' +
+              '<' + '/a>';
           }
         })();
       </script>
@@ -907,7 +910,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
             </a>
 
             <a
-              href="https://lin.ee/nzuEONf"
+              href="https://lin.ee/Sv8oVDh"
               target="_blank"
               rel="noopener noreferrer"
               class="w-full sm:w-auto flex-1 inline-flex items-center justify-center px-6 py-3.5 bg-[#06C755] text-white text-sm tracking-wider rounded-full hover:opacity-95 transition duration-300 shadow-sm"
