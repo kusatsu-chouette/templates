@@ -648,7 +648,8 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
           html = html.replace(/&lt;div class="([^"]+)"&gt;([\s\S]*?)&lt;\/div&gt;/gi, '<div class="$1">$2<' + '/div>');
 
           // 相談窓口CTAプレースホルダーへの置換
-          html = html.replace(/<p>\s*(?:【(?:問い合わせ|問い合わせる|相談窓口|相談)】|\[\[(?:問い合わせ|問い合わせる|相談窓口|相談)\]\])\s*<\/p>|(?:【(?:問い合わせ|問い合わせる|相談窓口|相談)】|\[\[(?:問い合わせ|問い合わせる|相談窓口|相談)\]\])/gi, '<div class="counseling-cta-placeholder"><' + '/div>');
+         // 相談窓口CTAプレースホルダーへの置換（【相談する】のみに限定）
+html = html.replace(/<p>\s*(?:【\s*相談する\s*】|\[\[\s*相談する\s*\]\])\s*<\/p>|(?:【\s*相談する\s*】|\[\[\s*相談する\s*\]\])/gi, '<div class="counseling-cta-placeholder"><' + '/div>');
 
           // 吹き出し
           html = html.replace(/【(?:セラピスト|私)】([\s\S]*?)【\/(?:セラピスト|私)】/gi, '<div class="speech-therapist"><div class="avatar">セラピスト<' + '/div><div class="bubble">$1<' + '/div><' + '/div>');
