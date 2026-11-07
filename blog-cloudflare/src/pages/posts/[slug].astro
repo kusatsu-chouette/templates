@@ -210,6 +210,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
     .box-bracket::after {
       content: '';
       position: absolute;
+      top: auto;
       bottom: 0;
       right: 0;
       width: 24px;
@@ -624,13 +625,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
         <CounselingCta />
       </div>
 
-      <!-- セラピストの控え室カテゴリー用：タグ未記入時の自動配置エリア -->
-      {categorySlug === 'salon-notes' && (
-        <div id="counseling-cta-auto" style="display: none;">
-          <CounselingCta />
-        </div>
-      )}
-
       <!-- スクリプト構文干渉対策済み変換ロジック -->
       <script is:inline>
         (function() {
@@ -642,8 +636,8 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
           // エスケープされた div の復元
           html = html.replace(/&lt;div class="([^"]+)"&gt;([\s\S]*?)&lt;\/div&gt;/gi, '<div class="$1">$2<' + '/div>');
 
-          // 相談窓口CTAプレースホルダーへの置換（【問い合わせ】【相談窓口】[[問い合わせ]] 等に対応）
-          html = html.replace(/<p>\s*(?:【(?:問い合わせ|問い合わせる|相談窓口|相談)】|\[\[(?:問い合わせ|問い合わせる|相談窓口|相談)\]\])\s*<\/p>|(?:【(?:問い合わせ|問い合わせる|相談窓口|相談)】|\[\[(?:問い合わせ|問い合わせる|相談窓口|相談)\]\])/gi, '<div class="counseling-cta-placeholder"><' + '/div>');
+          // 相談窓口CTAプレースホルダーへの置換（【相談する】または【相談】が記載された箇所のみ展開）
+          html = html.replace(/<p>\s*(?:【(?:相談する|相談)】|\[\[(?:相談する|相談)\]\])\s*<\/p>|(?:【(?:相談する|相談)】|\[\[(?:相談する|相談)\]\])/gi, '<div class="counseling-cta-placeholder"><' + '/div>');
 
           // 吹き出し
           html = html.replace(/【(?:セラピスト|私)】([\s\S]*?)【\/(?:セラピスト|私)】/gi, '<div class="speech-therapist"><div class="avatar">セラピスト<' + '/div><div class="bubble">$1<' + '/div><' + '/div>');
@@ -702,23 +696,15 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
           container.innerHTML = html;
 
           // ==========================================
-          // 相談窓口CTAの実装展開
+          // 相談窓口CTAの実装展開（【相談する】が記述された箇所のみ展開）
           // ==========================================
           const ctaTemplate = document.getElementById('counseling-cta-template');
           const ctaPlaceholders = container.querySelectorAll('.counseling-cta-placeholder');
 
-          if (ctaTemplate) {
-            if (ctaPlaceholders.length > 0) {
-              ctaPlaceholders.forEach(function(placeholder) {
-                placeholder.innerHTML = ctaTemplate.innerHTML;
-              });
-            } else {
-              // 記事内に手動タグがなく「セラピストの控え室より」カテゴリーの場合は末尾に自動展開
-              const autoCta = document.getElementById('counseling-cta-auto');
-              if (autoCta) {
-                autoCta.style.display = 'block';
-              }
-            }
+          if (ctaTemplate && ctaPlaceholders.length > 0) {
+            ctaPlaceholders.forEach(function(placeholder) {
+              placeholder.innerHTML = ctaTemplate.innerHTML;
+            });
           }
 
           // ==========================================
@@ -736,7 +722,6 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
                 targetUrl = href;
               }
             } else if (text.startsWith('http://') || text.startsWith('https://') || text.startsWith('/posts/')) {
-              // 空白を含まない単一URL行か判定
               if (!/\s/.test(text)) {
                 targetUrl = text;
               }
@@ -826,7 +811,7 @@ const publishDate = publishedAt ? formatDate(publishedAt, "long") : null;
                   renderFallbackCard(target, rawUrl, customTitle || rawUrl, customDesc, 'こちらもどうぞ', false);
                 });
             } else {
-              // 外部リンクの場合（CORS制約を回避し洗練された外部カードとして即時レンダリング）
+              // 外部リンクの場合
               const displayTitle = customTitle || rawUrl;
               renderFallbackCard(target, rawUrl, displayTitle, customDesc, '外部リンク', true, domain);
             }
